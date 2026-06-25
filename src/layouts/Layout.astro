@@ -1,5 +1,7 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
@@ -408,7 +410,9 @@ const canonical = Astro.site
 </style>
 </head>
 <body>
+  <Header />
   <slot />
+  <Footer />
 
   <script>
     function initReveal() {
