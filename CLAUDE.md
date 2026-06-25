@@ -44,13 +44,32 @@ Non sostituire con SVG ridisegnati o icone generiche.
 - `/referenze` — le 3 righe scorrevoli con etichetta categoria
 - `/contatti` — contatti
 
-Nav con link reali alle pagine, non anchor (`#sezione`).
+Nav con link reali alle pagine, non anchor (`#sezione`). Header/Footer sono
+componenti condivisi in `src/components/`, inclusi in `Layout.astro` attorno
+allo `<slot/>` — non duplicarli nelle singole pagine.
+
+## Immagini stock
+
+`public/images/stock-*.jpg` — foto Unsplash (nessuna attribuzione
+richiesta), tema idro-termo-industriale generico. Niente foto di hotel o
+enti specifici: in Referenze ci sono clienti reali, va evitata qualunque
+associazione visiva fuorviante.
+- `stock-saldatura.jpg` — banner home
+- `stock-rubinetto.jpg` — banner servizi
+- `stock-cantiere.jpg` — banner dove operiamo
+- `stock-progettazione.jpg` — banner chi-siamo (sezione mission)
 
 ## Log sessioni
 
-- 2026-06-26: Sessione di fix su sito già esistente (one-page). Avviata
-  conversione a CLAUDE.md + rimozione hero SVG schema tecnico (sostituito
-  da logo reale con effetto sobrio) + rimozione headline ad effetto +
-  fix marquee/referenze + conversione multipagina + immagini stock.
-  Loghi reali già presenti da commit precedente (f1596e9) — non
-  riscaricare, sono già quelli giusti.
+- 2026-06-26: Sessione di fix su sito già esistente (one-page → multipagina).
+  Rimosso hero SVG schema tecnico (sostituito da logo reale con halo +
+  respiro), rimosse le headline ad effetto, centrata/coloreta "Chi si
+  affida a noi", convertito a 6 pagine Astro con Header/Footer condivisi,
+  aggiunte 4 immagini stock royalty-free. Loghi reali già presenti da
+  commit precedente (f1596e9) — non riscaricare.
+  Errore da non ripetere: quando si scaricano in batch più immagini
+  Unsplash per ID, verificare SEMPRE col Read tool quale file corrisponde
+  a quale soggetto prima di copiarlo con un nome descrittivo — gli ID
+  sono stati scambiati 3 volte in questa sessione (rubinetto→cane,
+  saldatura→sigillante, progettazione→cacciavite) e corretti solo dopo
+  ispezione visiva post-screenshot.
