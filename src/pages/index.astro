@@ -33,32 +33,10 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
     <div class="hero-art reveal">
-      <svg viewBox="0 0 420 380" fill="none">
-        <!-- background grid -->
-        <g opacity="0.5">
-          <path d="M0,40 H420 M0,120 H420 M0,200 H420 M0,280 H420 M0,360 H420" stroke="#2d5563" stroke-width="0.6"/>
-          <path d="M60,0 V380 M160,0 V380 M260,0 V380 M360,0 V380" stroke="#2d5563" stroke-width="0.6"/>
-        </g>
-        <!-- pipe run -->
-        <path d="M40,300 H140 V160 H260 V90 H380" stroke="#2d5563" stroke-width="4" fill="none" stroke-linejoin="round"/>
-        <!-- valve 1 -->
-        <circle cx="140" cy="230" r="20" fill="#eef2f1" stroke="#16242a" stroke-width="2.5"/>
-        <polygon points="128,218 140,230 128,242" fill="#c1632b"/>
-        <polygon points="152,218 140,230 152,242" fill="#c1632b"/>
-        <!-- valve 2 -->
-        <circle cx="260" cy="125" r="20" fill="#eef2f1" stroke="#16242a" stroke-width="2.5"/>
-        <polygon points="248,113 260,125 248,137" fill="#c1632b"/>
-        <polygon points="272,113 260,125 272,137" fill="#c1632b"/>
-        <!-- gauge -->
-        <circle cx="380" cy="90" r="32" fill="#eef2f1" stroke="#16242a" stroke-width="2.5"/>
-        <line x1="380" y1="90" x2="396" y2="76" stroke="#c1632b" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="380" cy="90" r="3" fill="#16242a"/>
-        <text x="380" y="138" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#46565c">PN16</text>
-        <!-- annotations -->
-        <text x="80" y="290" font-family="IBM Plex Mono" font-size="10" fill="#46565c">DN50</text>
-        <text x="170" y="150" font-family="IBM Plex Mono" font-size="10" fill="#46565c">DN32</text>
-        <circle cx="40" cy="300" r="3.5" fill="#16242a"/>
-      </svg>
+      <div class="hero-logo-stage">
+        <div class="hero-logo-halo" aria-hidden="true"></div>
+        <img class="hero-logo" src="/images/tecnoconsult-logo.png" alt="Tecno Consult Srl" />
+      </div>
     </div>
   </div>
 

@@ -146,7 +146,34 @@ const canonical = Astro.site
   .btn-ghost:hover{border-color:var(--petrol); color:var(--petrol);}
 
   .hero-art{display:flex; justify-content:center;}
-  .hero-art svg{width:100%; max-width:420px; height:auto;}
+  .hero-logo-stage{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    max-width:420px;
+    aspect-ratio:1;
+  }
+  .hero-logo-halo{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background:radial-gradient(closest-side, rgba(193,99,43,0.16), rgba(45,85,99,0.14) 55%, transparent 75%);
+    filter:blur(18px);
+  }
+  .hero-logo{
+    position:relative;
+    width:62%;
+    max-width:280px;
+    height:auto;
+    animation:logoScaleIn .9s ease-out both, logoBreathe 6s ease-in-out 0.9s infinite;
+  }
+  @keyframes logoScaleIn{ from{opacity:0; transform:scale(0.92);} to{opacity:1; transform:scale(1);} }
+  @keyframes logoBreathe{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.02);} }
+  @media (prefers-reduced-motion:reduce){
+    .hero-logo{animation:none;}
+  }
 
   /* ---------- datasheet strip ---------- */
   .datasheet{
