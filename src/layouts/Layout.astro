@@ -195,6 +195,20 @@ const canonical = Astro.site
   .ds-key{font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.1em; color:var(--ink-soft); text-transform:uppercase;}
   .ds-val{font-family:'IBM Plex Mono',monospace; font-size:1.3rem; font-weight:600; color:var(--petrol); margin-top:2px;}
 
+  /* ---------- banner image ---------- */
+  .banner-image{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+    border-radius:var(--radius);
+    border:1px solid var(--line-soft);
+    display:block;
+  }
+  .banner-image-wrap{padding:46px 0 0;}
+  @media (max-width:640px){
+    .banner-image{height:180px;}
+  }
+
   /* ---------- pipe divider ---------- */
   .pipe-divider{display:block; width:100%; height:34px;}
 
