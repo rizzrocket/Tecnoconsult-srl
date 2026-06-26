@@ -23,14 +23,27 @@ import Layout from '../layouts/Layout.astro';
       </ul>
     </div>
     <div class="reveal" style="display:flex; justify-content:center;">
-      <svg width="280" height="280" viewBox="0 0 280 280" fill="none">
-        <g opacity="0.4">
-          <path d="M0,70 H280 M0,140 H280 M0,210 H280" stroke="#2d5563" stroke-width="0.6"/>
-          <path d="M70,0 V280 M140,0 V280 M210,0 V280" stroke="#2d5563" stroke-width="0.6"/>
+      <svg width="300" height="300" viewBox="0 0 300 300" fill="none">
+        <!-- coverage rings centered on San Donà di Piave -->
+        <circle cx="155" cy="150" r="125" stroke="#2d5563" stroke-width="1" stroke-dasharray="3 5" opacity="0.3"/>
+        <circle cx="155" cy="150" r="88" stroke="#2d5563" stroke-width="1" stroke-dasharray="3 5" opacity="0.4"/>
+        <circle cx="155" cy="150" r="50" stroke="#2d5563" stroke-width="1" stroke-dasharray="3 5" opacity="0.5"/>
+        <!-- compass ticks -->
+        <g stroke="#46565c" stroke-width="1.2" opacity="0.6">
+          <line x1="155" y1="17" x2="155" y2="27"/>
+          <line x1="155" y1="273" x2="155" y2="283"/>
+          <line x1="22" y1="150" x2="32" y2="150"/>
+          <line x1="278" y1="150" x2="288" y2="150"/>
         </g>
-        <path d="M90,60 L150,50 L200,90 L210,150 L180,210 L120,225 L75,180 L60,110 Z" fill="#2d5563" opacity="0.12" stroke="#2d5563" stroke-width="2"/>
-        <circle cx="150" cy="130" r="6" fill="#c1632b"/>
-        <text x="150" y="115" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#16242a">SAN DONÀ DI PIAVE</text>
+        <!-- regional split: Veneto (left/sotto) vs Friuli Venezia Giulia (destra/sopra) -->
+        <line x1="60" y1="255" x2="245" y2="55" stroke="#2d5563" stroke-width="1" stroke-dasharray="2 4" opacity="0.45"/>
+        <text x="78" y="215" font-family="IBM Plex Mono" font-size="11" font-weight="600" fill="#2d5563">VENETO</text>
+        <text x="178" y="92" font-family="IBM Plex Mono" font-size="9.5" font-weight="600" fill="#2d5563">FRIULI</text>
+        <text x="178" y="104" font-family="IBM Plex Mono" font-size="9.5" font-weight="600" fill="#2d5563">VENEZIA GIULIA</text>
+        <!-- pin: San Donà di Piave -->
+        <circle cx="155" cy="150" r="9" fill="none" stroke="#c1632b" stroke-width="1.5"/>
+        <circle cx="155" cy="150" r="4" fill="#c1632b"/>
+        <text x="155" y="178" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" font-weight="600" fill="#16242a">SAN DONÀ DI PIAVE</text>
       </svg>
     </div>
   </div>

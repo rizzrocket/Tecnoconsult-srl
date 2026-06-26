@@ -109,7 +109,21 @@ const canonical = Astro.site
     white-space:nowrap;
   }
   .nav-tel:hover{background:var(--petrol); color:#fff;}
-  .nav-toggle{display:none;}
+  .nav-toggle-input{display:none;}
+  .nav-toggle{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    width:34px;
+    height:34px;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  .nav-toggle span{display:block; width:100%; height:2px; background:var(--ink); border-radius:2px; transition:transform .25s ease, opacity .25s ease;}
+  .nav-toggle-input:checked ~ .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle-input:checked ~ .nav-toggle span:nth-child(2){opacity:0;}
+  .nav-toggle-input:checked ~ .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
   /* ---------- hero ---------- */
   .hero{
@@ -204,7 +218,7 @@ const canonical = Astro.site
     border:1px solid var(--line-soft);
     display:block;
   }
-  .banner-image-wrap{padding:46px 0 0;}
+  .banner-image-wrap{padding-top:46px;}
   @media (max-width:640px){
     .banner-image{height:180px;}
   }
@@ -399,7 +413,7 @@ const canonical = Astro.site
   /* ---------- responsive ---------- */
   @media (max-width:920px){
     .hero-grid{grid-template-columns:1fr;}
-    .hero-art{order:-1;}
+    .hero-logo-stage{max-width:240px; margin:8px auto 0;}
     .datasheet .wrap{grid-template-columns:repeat(2,1fr);}
     .ds-item:nth-child(2n){border-right:none;}
     .chisiamo{grid-template-columns:1fr;}
@@ -410,7 +424,22 @@ const canonical = Astro.site
     .pillar{border-left:none; padding-left:0; border-top:1px solid var(--line); padding-top:18px;}
     .pillar:first-child{border-top:none; padding-top:0;}
     .contatti{grid-template-columns:1fr; padding:36px 26px;}
-    .nav-links{display:none;}
+    .nav{flex-wrap:wrap;}
+    .nav-toggle{display:flex; order:3;}
+    .nav-links{
+      display:none;
+      order:4;
+      flex-direction:column;
+      width:100%;
+      gap:0;
+      margin-top:14px;
+      padding-top:10px;
+      border-top:1px solid var(--line-soft);
+    }
+    .nav-toggle-input:checked ~ .nav-links{display:flex;}
+    .nav-links li{width:100%;}
+    .nav-links a{display:block; padding:12px 2px; border-bottom:1px solid var(--line-soft); font-size:0.94rem;}
+    .nav-links li:last-child a{border-bottom:none;}
   }
   @media (max-width:640px){
     .ref-row{flex-direction:column; align-items:flex-start; gap:8px;}
