@@ -317,6 +317,81 @@ const canonical = Astro.site
     background:var(--paper);
     white-space:nowrap;
   }
+  .brand-logo-chip {
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    padding: 12px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 72px;
+    width: 160px;
+  }
+  .brand-logo-chip img {
+    max-height: 40px;
+    max-width: 120px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(30%);
+    transition: filter .2s;
+  }
+  .brand-logo-chip:hover img { filter: grayscale(0%); }
+
+  .maps-embed { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line-soft); }
+
+  .brand-territory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .bt-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .bt-logo {
+    flex-shrink: 0;
+    width: 80px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .bt-logo img {
+    max-width: 80px;
+    max-height: 40px;
+    object-fit: contain;
+    width: auto;
+    height: auto;
+  }
+  .bt-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--ink);
+  }
+  .bt-zone {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--petrol);
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  @media (max-width: 920px) {
+    .brand-territory-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .brand-territory-grid { grid-template-columns: 1fr; }
+  }
   .brand-note{font-size:0.78rem; color:var(--ink-soft); margin-top:16px;}
 
   .ref-chip{
@@ -411,8 +486,23 @@ const canonical = Astro.site
   .hours{font-size:0.78rem; color:#8fa0a5; margin-top:18px; line-height:1.5;}
 
   /* ---------- footer ---------- */
-  footer{padding:30px 0 50px; font-size:0.76rem; color:var(--ink-soft);}
-  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); padding-top:20px;}
+  footer { padding: 40px 0 30px; font-size: 0.78rem; color: var(--ink-soft); border-top: 1px solid var(--line); margin-top: 40px; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; padding-bottom: 28px; }
+  .footer-brand { display: flex; align-items: center; gap: 10px; }
+  .footer-col-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--petrol); margin-bottom: 12px; }
+  .footer-nav { display: flex; flex-direction: column; gap: 8px; }
+  .footer-nav a { color: var(--ink-soft); text-decoration: none; font-size: 0.82rem; }
+  .footer-nav a:hover { color: var(--petrol); }
+  .footer-contacts { display: flex; flex-direction: column; gap: 6px; }
+  .footer-contacts a, .footer-contacts span { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--ink-soft); text-decoration: none; }
+  .footer-contacts a:hover { color: var(--copper); }
+  .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding-top: 18px; border-top: 1px solid var(--line-soft); font-size: 0.72rem; }
+  @media (max-width: 720px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+  }
 
   /* ---------- responsive ---------- */
   @media (max-width:920px){

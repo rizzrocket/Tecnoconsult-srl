@@ -75,3 +75,5 @@ associazione visiva fuorviante.
   ispezione visiva post-screenshot.
 - 2026-06-29: og:image + JSON-LD, sitemap + robots.txt, nav active state, marquee 9 marchi,
   referenze complete (28 voci in 3 categorie), fix h2 contatti.
+- 2026-06-29 (sessione 2): Loghi marchi nel marquee, griglia brand/territorio in dove-operiamo,
+  Google Maps in dove-operiamo e contatti, preview servizi in home, footer a 3 colonne.
