@@ -73,3 +73,5 @@ associazione visiva fuorviante.
   sono stati scambiati 3 volte in questa sessione (rubinetto→cane,
   saldatura→sigillante, progettazione→cacciavite) e corretti solo dopo
   ispezione visiva post-screenshot.
+- 2026-06-29: og:image + JSON-LD, sitemap + robots.txt, nav active state, marquee 9 marchi,
+  referenze complete (28 voci in 3 categorie), fix h2 contatti.

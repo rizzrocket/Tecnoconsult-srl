@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tecnoconsult-srl.it/sitemap-index.xml
