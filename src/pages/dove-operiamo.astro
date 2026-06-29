@@ -6,16 +6,12 @@ import Layout from '../layouts/Layout.astro';
   description="Tecno Consult opera in Veneto e Friuli Venezia Giulia: 9 marchi rappresentati, grossisti, installatori, tecnici e progettisti."
 >
 
-<div class="wrap banner-image-wrap reveal">
-  <img class="banner-image" src="/images/stock-cantiere.jpg" alt="Mezzo da cantiere sul territorio" loading="lazy" />
-</div>
-
 <section>
   <div class="wrap dove">
     <div class="reveal">
       <p class="eyebrow" style="margin-bottom:16px;">Dove operiamo</p>
       <p style="line-height:1.7;">Operiamo nel mercato idro-termo-sanitario, condizionamento, trattamento aria e acqua ed energie alternative in Veneto e Friuli Venezia Giulia.</p>
-      <details class="expand-block" style="margin-top:10px;"><summary>Leggi tutto</summary><p style="margin-top:10px; font-size:0.9rem; line-height:1.75; color:var(--ink-soft);">Operiamo nei settori civile, industriale, terziario, commerciale, navale, alberghiero e termale. I prodotti e gli impianti che trattiamo comprendono: energie alternative, impianti solari termici e fotovoltaici, pompe di calore, biomassa, caldaie, scaldabagni, centrali termiche e frigorifere, terminali per riscaldamento e condizionamento, sistemi di tubazioni e raccordi per impianti idrici e radianti, aria compressa, impianti termali e antincendio, impianti di aspirazione centralizzata, sistemi di ventilazione residenziale e meccanica controllata, regolazione e termoregolazione, staffaggi e sostegni in acciaio inox.</p></details>
+      <p style="margin-top:14px; font-size:0.9rem; line-height:1.75; color:var(--ink-soft);">Operiamo nei settori civile, industriale, terziario, commerciale, navale, alberghiero e termale. I prodotti e gli impianti che trattiamo comprendono: energie alternative, impianti solari termici e fotovoltaici, pompe di calore, biomassa, caldaie, scaldabagni, centrali termiche e frigorifere, terminali per riscaldamento e condizionamento, sistemi di tubazioni e raccordi per impianti idrici e radianti, aria compressa, impianti termali e antincendio, impianti di aspirazione centralizzata, sistemi di ventilazione residenziale e meccanica controllata, regolazione e termoregolazione, staffaggi e sostegni in acciaio inox.</p>
       <ul class="dove-list">
         <li><b>Veneto</b> (tutte le province per almeno un marchio)</li>
         <li><b>Friuli Venezia Giulia</b> (copertura completa)</li>
@@ -24,17 +20,10 @@ import Layout from '../layouts/Layout.astro';
       </ul>
     </div>
     <div class="reveal">
-      <div class="maps-embed">
-        <iframe
-          src="https://maps.google.com/maps?q=Via+Barcis+2,+30027+San+Don%C3%A0+di+Piave+VE+Italy&t=&z=13&ie=UTF8&iwloc=&output=embed"
-          width="100%"
-          height="320"
-          style="border:0; border-radius:var(--radius); filter:grayscale(20%);"
-          allowfullscreen
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Sede Tecno Consult — San Donà di Piave">
-        </iframe>
+      <div class="photo-ph map-ph">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <span class="map-addr">Via Barcis 2, 30027 San Donà di Piave (VE)</span>
+        Mappa in arrivo
       </div>
     </div>
   </div>
@@ -53,63 +42,63 @@ import Layout from '../layouts/Layout.astro';
         <div class="bt-logo"><img src="/images/brands/aquatechnik.png" alt="Aquatechnik" /></div>
         <div class="bt-info">
           <div class="bt-name">Aquatechnik Group SpA</div>
-          <div class="bt-zone">Veneto (tranne VR) · FVG</div>
+          <div class="bt-zone">Veneto (escluso Verona) · Friuli Venezia Giulia</div>
         </div>
       </div>
       <div class="bt-card">
         <div class="bt-logo"><img src="/images/brands/radiant.svg" alt="Radiant" /></div>
         <div class="bt-info">
           <div class="bt-name">Radiant Bruciatori SpA</div>
-          <div class="bt-zone">Veneto (tranne RO) · FVG · Trento</div>
+          <div class="bt-zone">Veneto (escluso Rovigo) · Friuli Venezia Giulia · Trento</div>
         </div>
       </div>
       <div class="bt-card">
         <div class="bt-logo"><img src="/images/brands/gda.jpg" alt="GDA" /></div>
         <div class="bt-info">
           <div class="bt-name">General D'Aspirazione</div>
-          <div class="bt-zone">Veneto (tranne VR e RO) · FVG</div>
+          <div class="bt-zone">Veneto (escluso Verona e Rovigo) · Friuli Venezia Giulia</div>
         </div>
       </div>
       <div class="bt-card">
         <div class="bt-logo"><img src="/images/brands/itap.jpg" alt="ITAP" /></div>
         <div class="bt-info">
           <div class="bt-name">Itap SpA</div>
-          <div class="bt-zone">Veneto · FVG · Trento</div>
+          <div class="bt-zone">Veneto · Friuli Venezia Giulia · Trento</div>
         </div>
       </div>
       <div class="bt-card">
         <div class="bt-logo"><img src="/images/brands/gia.png" alt="GIA" /></div>
         <div class="bt-info">
           <div class="bt-name">GIA SpA</div>
-          <div class="bt-zone">FVG</div>
+          <div class="bt-zone">Friuli Venezia Giulia</div>
         </div>
       </div>
       <div class="bt-card">
         <div class="bt-logo"><img src="/images/brands/fantini-cosmi.png" alt="Fantini Cosmi" /></div>
         <div class="bt-info">
           <div class="bt-name">Fantini Cosmi SpA</div>
-          <div class="bt-zone">Veneto (tranne VR) · FVG</div>
+          <div class="bt-zone">Veneto (escluso Verona) · Friuli Venezia Giulia</div>
         </div>
       </div>
       <div class="bt-card">
         <div class="bt-logo"><img src="/images/brands/winkler-solar.png" alt="Winkler Solar" /></div>
         <div class="bt-info">
           <div class="bt-name">Winkler Solar</div>
-          <div class="bt-zone">VI · PD · RO · FVG</div>
+          <div class="bt-zone">Vicenza · Padova · Rovigo · Friuli Venezia Giulia</div>
         </div>
       </div>
       <div class="bt-card">
         <div class="bt-logo"><img src="/images/brands/swell-system.png" alt="Swell System" /></div>
         <div class="bt-info">
           <div class="bt-name">Swell System</div>
-          <div class="bt-zone">Veneto (tranne VR) · FVG (tranne TS)</div>
+          <div class="bt-zone">Veneto (escluso Verona) · Friuli Venezia Giulia (escluso Trieste)</div>
         </div>
       </div>
       <div class="bt-card">
         <div class="bt-logo"><img src="/images/brands/oli.jpg" alt="OLI" /></div>
         <div class="bt-info">
           <div class="bt-name">OLI Srl</div>
-          <div class="bt-zone">Veneto · FVG</div>
+          <div class="bt-zone">Veneto · Friuli Venezia Giulia</div>
         </div>
       </div>
     </div>

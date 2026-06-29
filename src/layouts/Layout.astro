@@ -113,17 +113,20 @@ const canonical = Astro.site
     white-space:nowrap;
   }
   .nav-tel:hover{background:var(--petrol); color:#fff;}
+  .nav-tel-mobile{display:none;}
   .nav-toggle-input{display:none;}
   .nav-toggle{
     display:none;
     flex-direction:column;
     justify-content:center;
+    align-items:center;
     gap:5px;
-    width:34px;
-    height:34px;
+    width:44px;
+    height:44px;
     cursor:pointer;
     flex-shrink:0;
   }
+  .nav-toggle span{width:24px;}
   .nav-toggle span{display:block; width:100%; height:2px; background:var(--ink); border-radius:2px; transition:transform .25s ease, opacity .25s ease;}
   .nav-toggle-input:checked ~ .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
   .nav-toggle-input:checked ~ .nav-toggle span:nth-child(2){opacity:0;}
@@ -212,20 +215,6 @@ const canonical = Astro.site
   .ds-item:last-child{border-right:none;}
   .ds-key{font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.1em; color:var(--ink-soft); text-transform:uppercase;}
   .ds-val{font-family:'IBM Plex Mono',monospace; font-size:1.3rem; font-weight:600; color:var(--petrol); margin-top:2px;}
-
-  /* ---------- banner image ---------- */
-  .banner-image{
-    width:100%;
-    height:280px;
-    object-fit:cover;
-    border-radius:var(--radius);
-    border:1px solid var(--line-soft);
-    display:block;
-  }
-  .banner-image-wrap{padding-top:46px;}
-  @media (max-width:640px){
-    .banner-image{height:180px;}
-  }
 
   /* ---------- pipe divider ---------- */
   .pipe-divider{display:block; width:100%; height:34px;}
@@ -534,6 +523,14 @@ const canonical = Astro.site
     .nav-links li{width:100%;}
     .nav-links a{display:block; padding:12px 2px; border-bottom:1px solid var(--line-soft); font-size:0.94rem;}
     .nav-links li:last-child a{border-bottom:none;}
+    .nav-tel{display:none;}
+    .nav-tel-mobile{display:block;}
+    .nav-tel-mobile a{
+      font-size:1rem;
+      padding:14px 0;
+      color:var(--copper);
+      font-weight:600;
+    }
   }
   @media (max-width:640px){
     .ref-row{flex-direction:column; align-items:flex-start; gap:8px;}
@@ -590,6 +587,16 @@ const canonical = Astro.site
 
   /* padding sezioni più generoso */
   section { padding: 90px 0; }
+  @media (max-width: 768px) {
+    section { padding: 52px 0; }
+  }
+  @media (max-width: 480px) {
+    section { padding: 36px 0; }
+  }
+  @media (max-width: 560px) {
+    .section-head h2 { font-size: 1.45rem; }
+    .footer-bottom { flex-direction: column; gap: 4px; }
+  }
 
   /* bottoni più raffinati */
   .btn {
@@ -617,6 +624,113 @@ const canonical = Astro.site
   .expand-block[open] summary::before { transform: rotate(90deg); }
   .expand-block[open] summary { color: var(--ink-soft); }
   .expand-block > p, .expand-block > div { margin-top: 14px; }
+
+  /* ===== Placeholder foto generico ===== */
+  .photo-ph{
+    background:
+      repeating-linear-gradient(45deg, rgba(45,85,99,0.05) 0 10px, transparent 10px 20px),
+      var(--paper);
+    border:1.5px dashed var(--line);
+    border-radius:var(--radius);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    color:var(--ink-soft);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    text-align:center;
+    padding:18px;
+  }
+  .photo-ph svg{opacity:0.55;}
+
+  /* home: chi siamo a due colonne */
+  .chisiamo-home{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:48px;
+    align-items:center;
+  }
+  .chisiamo-home .photo-ph{aspect-ratio:3/2;}
+  @media (max-width:760px){ .chisiamo-home{grid-template-columns:1fr;} }
+
+  /* founder card placeholder */
+  .founder-photo{aspect-ratio:4/3; margin-bottom:16px;}
+
+  /* dove operiamo: placeholder mappa */
+  .map-ph{min-height:320px; height:100%;}
+  .map-ph .map-addr{color:var(--ink); font-size:0.82rem; text-transform:none; letter-spacing:0; margin-top:6px; line-height:1.5;}
+
+  /* ===== servizi: flex + pannello sotto griglia ===== */
+  .servizi-flex{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top:30px;
+    justify-content:center;
+  }
+  .servizi-flex .servizio-card{
+    flex:0 1 calc((100% - 48px) / 4);
+    text-align:left;
+    cursor:pointer;
+    transition:border-color .4s ease, box-shadow .4s ease, background .4s ease;
+  }
+  .servizio-card .card-cue{
+    margin-top:12px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--petrol);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .servizio-card .card-cue::before{content:"▸"; transition:transform .2s;}
+  .servizio-card.is-open{border-color:var(--petrol); box-shadow:0 4px 18px rgba(45,85,99,0.10);}
+  .servizio-card.is-open .card-cue::before{transform:rotate(90deg);}
+  .servizio-card.flash{
+    border-color:var(--copper);
+    box-shadow:0 0 0 3px rgba(193,99,43,0.22);
+    background:#fbf1ea;
+  }
+
+  .servizio-panel{
+    margin-top:20px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--surface);
+    padding:28px;
+  }
+  .servizio-panel[hidden]{display:none;}
+  .servizio-panel .panel-inner{display:flex; gap:28px; align-items:flex-start;}
+  .panel-text{flex:1; min-width:0;}
+  .panel-text h3{font-size:1.15rem; color:var(--petrol); margin-bottom:12px;}
+  .panel-text p{font-size:0.92rem; line-height:1.75; color:var(--ink-soft);}
+  .panel-photo{flex:0 0 300px; max-width:40%;}
+  .panel-photo .photo-ph{height:220px;}
+  @media (max-width:920px){
+    .servizi-flex .servizio-card{flex-basis:calc((100% - 16px) / 2);}
+  }
+  @media (max-width:760px){
+    .servizio-panel .panel-inner{flex-direction:column;}
+    .panel-photo{flex-basis:auto; max-width:100%; width:100%;}
+  }
+  @media (max-width:560px){
+    .servizi-flex .servizio-card{flex-basis:100%;}
+  }
+
+  /* ===== Referenze: blocchi con colore differenziato ===== */
+  section.ref-block{padding:48px 0;}
+  section.ref-block .ref-section-cat{border-left-color:var(--rb-accent); color:var(--rb-accent);}
+  section.ref-block .ref-name-chip{background:var(--rb-chip-bg); border-color:var(--rb-accent);}
+  section.ref-block .ref-name-chip:hover{border-color:var(--rb-accent); color:var(--rb-accent);}
+  section.ref-block--hotellerie{ --rb-accent:#b8860b; --rb-chip-bg:#fffaf0; background:#fdf6ec; }
+  section.ref-block--sanita{ --rb-accent:#1a6e8a; --rb-chip-bg:#f4fafd; background:#edf5fb; }
+  section.ref-block--industria{ --rb-accent:#4a5568; --rb-chip-bg:#f7f8fa; background:#eef0f3; }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Tecno Consult Srl","url":"https://tecnoconsult-srl.it","logo":"https://tecnoconsult-srl.it/images/tecnoconsult-logo.png","address":{"@type":"PostalAddress","streetAddress":"Via Barcis 2","addressLocality":"San Donà di Piave","postalCode":"30027","addressRegion":"VE","addressCountry":"IT"},"telephone":"+390421512000","email":"info@tecnoconsult-srl.it"}</script>
 </head>

@@ -1,5 +1,37 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+// Tutti i clienti delle 3 categorie, in ordine misto, riga unica (no etichette)
+const clienti = [
+  'Hotel Napoleon — Jesolo',
+  'Stratex Bodino — Sutrio (UD)',
+  'Hotel Orologio — Venezia',
+  'Magazzini Arredo 3 — Scorzè (VE)',
+  'Ospedale Civile di Cividale',
+  'Falkensteiner Aparthotel — Jesolo',
+  'Complesso residenziale — Treviso',
+  'Hotel Caorle — Caorle (VE)',
+  'Guardia di Finanza FVG',
+  'Hotel Rosa Salva — Venezia',
+  'Concessionaria Opel e Land Rover — Conegliano',
+  'Camping Union Lido — Cavallino (VE)',
+  'Hotel Carnia — Carnia (UD)',
+  'Complesso residenziale Eraclea — Eraclea (VE)',
+  'Grand Hotel Excelsior — Lido di Venezia',
+  'Capitaneria di Porto — Trieste',
+  'Hotel a Lignano Prata',
+  'Complesso polifunzionale — Udine',
+  'Hotel Nettuno — Jesolo',
+  'Scuole di Fagagna',
+  'Hotel Europa Regina',
+  'Complesso residenziale — Bibione (VE)',
+  'Grand Hotel Victoria — Abano Terme',
+  'Ospedale Borgo Trento — Verona',
+  'Hotel Allmar — Jesolo',
+  'Complesso residenziale — Fagagna (UD)',
+  'Hotel a Murano — Venezia',
+  'Etigraf — Portogruaro (VE)',
+];
 ---
 <Layout>
 
@@ -18,7 +50,7 @@ import Layout from '../layouts/Layout.astro';
     <div class="hero-art reveal">
       <div class="hero-logo-stage">
         <div class="hero-logo-halo" aria-hidden="true"></div>
-        <img class="hero-logo" src="/images/tecnoconsult-logo.png" alt="Tecno Consult Srl" />
+        <img class="hero-logo" src="/images/tecnoconsult-logo.png" alt="Tecno Consult Srl" fetchpriority="high" />
       </div>
     </div>
   </div>
@@ -42,128 +74,33 @@ import Layout from '../layouts/Layout.astro';
   </div>
   <div class="marquee">
     <div class="marquee-track">
-      <div class="brand-logo-chip"><img src="/images/brands/aquatechnik.png" alt="Aquatechnik" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/itap.jpg" alt="ITAP" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/radiant.svg" alt="Radiant" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/gda.jpg" alt="GDA" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/gia.png" alt="GIA" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/fantini-cosmi.png" alt="Fantini Cosmi" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/winkler-solar.png" alt="Winkler Solar" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/swell-system.png" alt="Swell System" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/oli.jpg" alt="OLI" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/aquatechnik.png" alt="Aquatechnik" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/itap.jpg" alt="ITAP" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/radiant.svg" alt="Radiant" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/gda.jpg" alt="GDA" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/gia.png" alt="GIA" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/fantini-cosmi.png" alt="Fantini Cosmi" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/winkler-solar.png" alt="Winkler Solar" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/swell-system.png" alt="Swell System" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/oli.jpg" alt="OLI" loading="lazy" /></div>
       <!-- duplica per loop -->
-      <div class="brand-logo-chip"><img src="/images/brands/aquatechnik.png" alt="Aquatechnik" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/itap.jpg" alt="ITAP" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/radiant.svg" alt="Radiant" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/gda.jpg" alt="GDA" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/gia.png" alt="GIA" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/fantini-cosmi.png" alt="Fantini Cosmi" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/winkler-solar.png" alt="Winkler Solar" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/swell-system.png" alt="Swell System" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/oli.jpg" alt="OLI" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/aquatechnik.png" alt="Aquatechnik" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/itap.jpg" alt="ITAP" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/radiant.svg" alt="Radiant" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/gda.jpg" alt="GDA" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/gia.png" alt="GIA" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/fantini-cosmi.png" alt="Fantini Cosmi" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/winkler-solar.png" alt="Winkler Solar" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/swell-system.png" alt="Swell System" loading="lazy" /></div>
+      <div class="brand-logo-chip"><img src="/images/brands/oli.jpg" alt="OLI" loading="lazy" /></div>
     </div>
   </div>
 </div>
-
-<div class="wrap banner-image-wrap reveal">
-  <img class="banner-image" src="/images/stock-saldatura.jpg" alt="Lavorazione industriale in officina" loading="lazy" />
-</div>
-
-<!-- ============ CHI SI AFFIDA A NOI ============ -->
-<section class="section-affida">
-  <div class="wrap">
-    <span class="marquee-label-affida" style="display:block; margin-bottom:28px;">Chi si affida a noi</span>
-  </div>
-
-  <div class="ref-row">
-    <span class="ref-cat">Hotellerie</span>
-    <div class="marquee">
-      <div class="marquee-track" style="animation-duration:48s;">
-        <div class="ref-chip">Grand Hotel Excelsior — Lido di Venezia</div>
-        <div class="ref-chip">Hotel Allmar — Jesolo</div>
-        <div class="ref-chip">Falkensteiner Aparthotel — Jesolo</div>
-        <div class="ref-chip">Hotel Napoleon — Jesolo</div>
-        <div class="ref-chip">Hotel Nettuno — Jesolo</div>
-        <div class="ref-chip">Hotel Caorle — Caorle (VE)</div>
-        <div class="ref-chip">Camping Union Lido — Cavallino (VE)</div>
-        <div class="ref-chip">Hotel a Lignano Prata</div>
-        <div class="ref-chip">Grand Hotel Victoria — Abano Terme</div>
-        <div class="ref-chip">Hotel Orologio — Venezia</div>
-        <div class="ref-chip">Hotel Rosa Salva — Venezia</div>
-        <div class="ref-chip">Hotel a Murano — Venezia</div>
-        <div class="ref-chip">Hotel Europa Regina</div>
-        <div class="ref-chip">Hotel Carnia — Carnia (UD)</div>
-        <div class="ref-chip">Grand Hotel Excelsior — Lido di Venezia</div>
-        <div class="ref-chip">Hotel Allmar — Jesolo</div>
-        <div class="ref-chip">Falkensteiner Aparthotel — Jesolo</div>
-        <div class="ref-chip">Hotel Napoleon — Jesolo</div>
-        <div class="ref-chip">Hotel Nettuno — Jesolo</div>
-        <div class="ref-chip">Hotel Caorle — Caorle (VE)</div>
-        <div class="ref-chip">Camping Union Lido — Cavallino (VE)</div>
-        <div class="ref-chip">Hotel a Lignano Prata</div>
-        <div class="ref-chip">Grand Hotel Victoria — Abano Terme</div>
-        <div class="ref-chip">Hotel Orologio — Venezia</div>
-        <div class="ref-chip">Hotel Rosa Salva — Venezia</div>
-        <div class="ref-chip">Hotel a Murano — Venezia</div>
-        <div class="ref-chip">Hotel Europa Regina</div>
-        <div class="ref-chip">Hotel Carnia — Carnia (UD)</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="ref-row" style="margin-top:14px;">
-    <span class="ref-cat">Sanità &amp; enti pubblici</span>
-    <div class="marquee">
-      <div class="marquee-track" style="animation-duration:30s; animation-direction:reverse;">
-        <div class="ref-chip">Ospedale Civile di Cividale</div>
-        <div class="ref-chip">Ospedale Borgo Trento — Verona</div>
-        <div class="ref-chip">Capitaneria di Porto — Trieste</div>
-        <div class="ref-chip">Guardia di Finanza FVG</div>
-        <div class="ref-chip">Scuole di Fagagna</div>
-        <div class="ref-chip">Ospedale Civile di Cividale</div>
-        <div class="ref-chip">Ospedale Borgo Trento — Verona</div>
-        <div class="ref-chip">Capitaneria di Porto — Trieste</div>
-        <div class="ref-chip">Guardia di Finanza FVG</div>
-        <div class="ref-chip">Scuole di Fagagna</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="ref-row" style="margin-top:14px;">
-    <span class="ref-cat">Industria &amp; residenziale</span>
-    <div class="marquee">
-      <div class="marquee-track" style="animation-duration:38s;">
-        <div class="ref-chip">Magazzini Arredo 3 — Scorzè (VE)</div>
-        <div class="ref-chip">Etigraf — Portogruaro (VE)</div>
-        <div class="ref-chip">Concessionaria Opel e Land Rover — Conegliano</div>
-        <div class="ref-chip">Stratex Bodino — Sutrio (UD)</div>
-        <div class="ref-chip">Complesso residenziale — Fagagna (UD)</div>
-        <div class="ref-chip">Complesso residenziale — Treviso</div>
-        <div class="ref-chip">Complesso residenziale Eraclea — Eraclea (VE)</div>
-        <div class="ref-chip">Complesso residenziale — Bibione (VE)</div>
-        <div class="ref-chip">Complesso polifunzionale — Udine</div>
-        <div class="ref-chip">Magazzini Arredo 3 — Scorzè (VE)</div>
-        <div class="ref-chip">Etigraf — Portogruaro (VE)</div>
-        <div class="ref-chip">Concessionaria Opel e Land Rover — Conegliano</div>
-        <div class="ref-chip">Stratex Bodino — Sutrio (UD)</div>
-        <div class="ref-chip">Complesso residenziale — Fagagna (UD)</div>
-        <div class="ref-chip">Complesso residenziale — Treviso</div>
-        <div class="ref-chip">Complesso residenziale Eraclea — Eraclea (VE)</div>
-        <div class="ref-chip">Complesso residenziale — Bibione (VE)</div>
-        <div class="ref-chip">Complesso polifunzionale — Udine</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="wrap" style="margin-top:24px;">
-    <a href="/referenze" class="btn btn-ghost">Tutte le referenze →</a>
-  </div>
-</section>
 
 <!-- ============ CHI SIAMO (intro) ============ -->
 <section>
-  <div class="wrap">
-    <div class="reveal" style="max-width:640px;">
+  <div class="wrap chisiamo-home">
+    <div class="reveal">
       <p class="eyebrow" style="margin-bottom:18px;">Chi siamo</p>
       <p>Tecno Consult è un'agenzia di rappresentanza con sede a San Donà di Piave (VE). Siamo un team di cinque persone con esperienza diretta nel settore termoidraulico — dalla vendita alla progettazione tecnica — al servizio di grossisti, installatori, tecnici e progettisti in Veneto e Friuli Venezia Giulia.</p>
       <div class="cta-row" style="margin-top:22px;">
@@ -171,6 +108,28 @@ import Layout from '../layouts/Layout.astro';
         <a href="/contatti" class="btn btn-primary">Contattaci</a>
       </div>
     </div>
+    <div class="photo-ph reveal" aria-hidden="true">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.8"/><path d="M21 16l-5-5L5 19" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Foto in arrivo
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHI SI AFFIDA A NOI ============ -->
+<section class="section-affida">
+  <div class="wrap">
+    <span class="marquee-label-affida" style="display:block; margin-bottom:28px;">Chi si affida a noi</span>
+  </div>
+
+  <div class="marquee">
+    <div class="marquee-track" style="animation-duration:60s;">
+      {clienti.map((c) => <div class="ref-chip">{c}</div>)}
+      {clienti.map((c) => <div class="ref-chip">{c}</div>)}
+    </div>
+  </div>
+
+  <div class="wrap" style="margin-top:28px;">
+    <a href="/referenze" class="btn btn-ghost">Tutte le referenze →</a>
   </div>
 </section>
 
@@ -183,26 +142,26 @@ import Layout from '../layouts/Layout.astro';
       <p>Dall'offerta alla consegna, dal cantiere alla formazione.</p>
     </div>
     <div class="servizi-grid" style="grid-template-columns:repeat(4,1fr);">
-      <div class="servizio-card reveal">
+      <a href="/servizi#vendita" class="servizio-card reveal">
         <svg width="30" height="30" viewBox="0 0 30 30"><path d="M5,22 L11,10 L19,18 L25,8" fill="none" stroke="#2d5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h3>Vendita</h3>
         <p>Visite programmate, contratti e listini, affiancamento ai responsabili commerciali.</p>
-      </div>
-      <div class="servizio-card reveal">
+      </a>
+      <a href="/servizi#preventivazione" class="servizio-card reveal">
         <svg width="30" height="30" viewBox="0 0 30 30"><rect x="6" y="6" width="18" height="18" fill="none" stroke="#2d5563" stroke-width="2"/><line x1="6" y1="13" x2="24" y2="13" stroke="#2d5563" stroke-width="1.5"/><line x1="6" y1="19" x2="18" y2="19" stroke="#2d5563" stroke-width="1.5"/></svg>
         <h3>Preventivazione e progettazione</h3>
         <p>Offerte, dimensionamenti e disegni esecutivi a supporto della scelta e dell'installazione.</p>
-      </div>
-      <div class="servizio-card reveal">
+      </a>
+      <a href="/servizi#assistenza-post-vendita" class="servizio-card reveal">
         <svg width="30" height="30" viewBox="0 0 30 30"><path d="M7,16 L13,22 L24,9" fill="none" stroke="#c1632b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h3>Assistenza post-vendita</h3>
         <p>Sopralluoghi in cantiere, supporto tecnico e indirizzamento ai centri assistenza.</p>
-      </div>
-      <div class="servizio-card reveal">
+      </a>
+      <a href="/servizi#centro-didattico" class="servizio-card reveal">
         <svg width="30" height="30" viewBox="0 0 30 30"><rect x="4" y="7" width="22" height="13" rx="1.5" fill="none" stroke="#2d5563" stroke-width="2"/><line x1="11" y1="24" x2="19" y2="24" stroke="#2d5563" stroke-width="2"/><line x1="15" y1="20" x2="15" y2="24" stroke="#2d5563" stroke-width="2"/></svg>
         <h3>Showroom e formazione</h3>
         <p>200 m² di spazio espositivo. Corsi e webinar fino a 30 persone.</p>
-      </div>
+      </a>
     </div>
     <div style="margin-top:22px;">
       <a href="/servizi" class="btn btn-ghost">Tutti i servizi →</a>
