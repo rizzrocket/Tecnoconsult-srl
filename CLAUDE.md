@@ -77,3 +77,7 @@ associazione visiva fuorviante.
   referenze complete (28 voci in 3 categorie), fix h2 contatti.
 - 2026-06-29 (sessione 2): Loghi marchi nel marquee, griglia brand/territorio in dove-operiamo,
   Google Maps in dove-operiamo e contatti, preview servizi in home, footer a 3 colonne.
+- 2026-06-29 (sessione 3): "Leggi tutto" su mission/servizi/dove-operiamo, sezione referenze
+  in home con 3 marquee, referenze page redesign con chip-grid per categoria,
+  chi-siamo: Mauro unificato in founder card (rimosso dal team grid → 4 card),
+  upgrade grafico generale (hover card, padding, details/summary).

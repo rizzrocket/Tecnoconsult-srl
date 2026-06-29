@@ -544,6 +544,79 @@ const canonical = Astro.site
     .team-grid{grid-template-columns:repeat(2,1fr);}
     .servizi-grid{grid-template-columns:1fr;}
   }
+
+  /* ===== Sezione referenze in home ===== */
+  .section-affida { padding: 60px 0; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+  /* ===== Referenze page: chip-grid per categoria ===== */
+  .ref-section-header { margin-bottom: 20px; }
+  .ref-section-cat {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--petrol);
+    border-left: 3px solid var(--copper);
+    padding-left: 14px;
+  }
+  .ref-name-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .ref-name-chip {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.84rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 8px 14px;
+    transition: border-color .2s, color .2s;
+  }
+  .ref-name-chip:hover { border-color: var(--petrol); color: var(--petrol); }
+
+  /* ===== Upgrade grafico generale ===== */
+  /* card hover universale */
+  .servizio-card, .team-card, .founder-card, .bt-card {
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .servizio-card:hover, .team-card:hover, .bt-card:hover {
+    border-color: var(--petrol);
+    box-shadow: 0 4px 18px rgba(45,85,99,0.08);
+  }
+
+  /* sezioni alternate */
+  section:nth-of-type(even) { background: var(--surface); }
+
+  /* padding sezioni più generoso */
+  section { padding: 90px 0; }
+
+  /* bottoni più raffinati */
+  .btn {
+    transition: background .2s ease, border-color .2s ease, color .2s ease;
+    letter-spacing: 0.01em;
+  }
+
+  /* details/summary "Leggi tutto" */
+  .expand-block { margin-top: 12px; }
+  .expand-block summary {
+    cursor: pointer;
+    list-style: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--petrol);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+  }
+  .expand-block summary::-webkit-details-marker { display: none; }
+  .expand-block summary::before { content: "▸"; transition: transform .2s; }
+  .expand-block[open] summary::before { transform: rotate(90deg); }
+  .expand-block[open] summary { color: var(--ink-soft); }
+  .expand-block > p, .expand-block > div { margin-top: 14px; }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Tecno Consult Srl","url":"https://tecnoconsult-srl.it","logo":"https://tecnoconsult-srl.it/images/tecnoconsult-logo.png","address":{"@type":"PostalAddress","streetAddress":"Via Barcis 2","addressLocality":"San Donà di Piave","postalCode":"30027","addressRegion":"VE","addressCountry":"IT"},"telephone":"+390421512000","email":"info@tecnoconsult-srl.it"}</script>
 </head>
