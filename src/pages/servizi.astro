@@ -1,14 +1,62 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const servizi = [
+  {
+    id: 'vendita',
+    titolo: 'Vendita',
+    breve: 'Visite costanti e programmate, contratti, listini e affiancamento commerciale.',
+    completo: 'Il personale di vendita, in particolar modo la proprietà, garantisce visite costanti e programmate ai clienti per contratti e accordi commerciali, consegna e spiegazione listini. Affiancamenti a responsabili e direttori commerciali delle aziende rappresentate. Mantenimento delle relazioni in essere e ricerca di nuovi clienti.',
+    icona: '<path d="M5,22 L11,10 L19,18 L25,8" fill="none" stroke="#2d5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  },
+  {
+    id: 'promozione-esterna',
+    titolo: 'Promozione esterna',
+    breve: 'Aggiornamento clientela, cataloghi, eventi, corsi e lancio nuovi prodotti.',
+    completo: 'Attraverso personale commerciale e tecnico che opera nel mercato offriamo visite di aggiornamento alla clientela, consegna e spiegazione di documentazione, cataloghi e listini, manuali e schede tecniche. Proposta e organizzazione di giornate al banco, eventi, meeting, corsi di formazione presso il nostro Centro didattico o le aziende mandanti. Ricerca nuovi clienti e visite ai progettisti per la redazione di capitolati.',
+    icona: '<path d="M6,12 L6,18 L11,18 L18,24 V6 L11,12 Z" fill="none" stroke="#2d5563" stroke-width="2" stroke-linejoin="round"/><path d="M21,11 Q24,15 21,19" fill="none" stroke="#c1632b" stroke-width="2"/>',
+  },
+  {
+    id: 'preventivazione',
+    titolo: 'Preventivazione e progettazione',
+    breve: 'Offerte, dimensionamenti, varianti e disegni esecutivi a supporto della vendita.',
+    completo: 'I nostri tecnici e la proprietà mettono la loro esperienza al servizio dei clienti garantendo la redazione di offerte, dimensionamenti, comparazioni e varianti, guide alla vendita e disegni esecutivi esplicativi con schede tecniche allegate. Offriamo inoltre consulenza continua telefonica e di persona a clienti, installatori, tecnici, progettisti e privati per facilitare la scelta e la corretta installazione dei prodotti.',
+    icona: '<rect x="6" y="6" width="18" height="18" fill="none" stroke="#2d5563" stroke-width="2"/><line x1="6" y1="13" x2="24" y2="13" stroke="#2d5563" stroke-width="1.5"/><line x1="6" y1="19" x2="18" y2="19" stroke="#2d5563" stroke-width="1.5"/>',
+  },
+  {
+    id: 'segreteria',
+    titolo: 'Segreteria',
+    breve: 'Gestione ordini, disponibilità prodotti, appuntamenti e aggiornamenti commerciali.',
+    completo: "Il personale della segreteria gestisce gli ordini inviandoli alle aziende e seguendone l'iter fino alla consegna, informa sulla disponibilità dei prodotti e sui tempi di consegna, gestisce appuntamenti e aggiornamenti via mail su promozioni, listini, novità e schede tecniche. Gestisce inoltre controversie, resi e perizie tecniche.",
+    icona: '<rect x="5" y="9" width="20" height="14" rx="1.5" fill="none" stroke="#2d5563" stroke-width="2"/><path d="M5,9 L15,17 L25,9" fill="none" stroke="#2d5563" stroke-width="2"/>',
+  },
+  {
+    id: 'assistenza-pre-vendita',
+    titolo: 'Assistenza pre-vendita',
+    breve: 'Ricerca e formazione centri assistenza, corsi e accreditamento tecnico.',
+    completo: 'I tecnici e i commerciali ricercano centri assistenza sui prodotti realizzati dalle aziende mandanti, organizzano corsi e affiancamento per formarli e accreditarli. Offrono il servizio di consulenza, preventivazione e progettazione a supporto della rete di installatori e rivenditori.',
+    icona: '<circle cx="13" cy="13" r="8" fill="none" stroke="#2d5563" stroke-width="2"/><line x1="19" y1="19" x2="25" y2="25" stroke="#2d5563" stroke-width="2" stroke-linecap="round"/>',
+  },
+  {
+    id: 'assistenza-post-vendita',
+    titolo: 'Assistenza post-vendita',
+    breve: 'Sopralluoghi in cantiere, supporto tecnico e indirizzamento ai centri assistenza.',
+    completo: "Il personale tecnico e la proprietà sono disponibili per sopralluoghi in cantiere per formare e informare il personale di installazione sull'uso corretto delle attrezzature. Prestito e noleggio attrezzature per l'installazione. Sopralluoghi per perizie e inconvenienti. Indirizzo ai centri assistenza opportuni con sollecito di intervento.",
+    icona: '<path d="M7,16 L13,22 L24,9" fill="none" stroke="#c1632b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>',
+  },
+  {
+    id: 'centro-didattico',
+    titolo: 'Centro didattico e showroom',
+    breve: '200 m² espositivi. Corsi, webinar e presentazioni fino a 30 persone.',
+    completo: "La Tecno Consult mette a disposizione un ufficio e area esposizione tecnica e didattica di oltre 200 m² per prodotti e attrezzature delle aziende mandanti. Organizziamo presentazioni, corsi di formazione e informazione, webinar sui prodotti e servizi nostri e delle aziende rappresentate, con capienza a sedere per 30 persone, proiezione, area dimostrativa e area conviviale.",
+    icona: '<rect x="4" y="7" width="22" height="13" rx="1.5" fill="none" stroke="#2d5563" stroke-width="2"/><line x1="11" y1="24" x2="19" y2="24" stroke="#2d5563" stroke-width="2"/><line x1="15" y1="20" x2="15" y2="24" stroke="#2d5563" stroke-width="2"/>',
+  },
+];
 ---
 <Layout
   title="Servizi — Tecno Consult Srl"
   description="Sette aree di servizio, un'unica squadra che segue il prodotto dalla vendita all'assistenza in cantiere."
 >
-
-<div class="wrap banner-image-wrap reveal">
-  <img class="banner-image" src="/images/stock-rubinetto.jpg" alt="Componente idraulico in funzione" loading="lazy" />
-</div>
 
 <!-- ============ SERVIZI ============ -->
 <section>
@@ -17,51 +65,112 @@ import Layout from '../layouts/Layout.astro';
       <p class="eyebrow">Servizi</p>
       <p>Sette aree di servizio, un'unica squadra che segue il prodotto in tutte le sue fasi.</p>
     </div>
-    <div class="servizi-grid">
-  <div class="servizio-card reveal">
-    <svg width="30" height="30" viewBox="0 0 30 30"><path d="M5,22 L11,10 L19,18 L25,8" fill="none" stroke="#2d5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <h3>Vendita</h3>
-    <p>Visite costanti e programmate, contratti, listini e affiancamento commerciale.</p>
-    <details class="expand-block"><summary>Leggi tutto</summary><p>Il personale di vendita, in particolar modo la proprietà, garantisce visite costanti e programmate ai clienti per contratti e accordi commerciali, consegna e spiegazione listini. Affiancamenti a responsabili e direttori commerciali delle aziende rappresentate. Mantenimento delle relazioni in essere e ricerca di nuovi clienti.</p></details>
-  </div>
-  <div class="servizio-card reveal">
-    <svg width="30" height="30" viewBox="0 0 30 30"><path d="M6,12 L6,18 L11,18 L18,24 V6 L11,12 Z" fill="none" stroke="#2d5563" stroke-width="2" stroke-linejoin="round"/><path d="M21,11 Q24,15 21,19" fill="none" stroke="#c1632b" stroke-width="2"/></svg>
-    <h3>Promozione esterna</h3>
-    <p>Aggiornamento clientela, cataloghi, eventi, corsi e lancio nuovi prodotti.</p>
-    <details class="expand-block"><summary>Leggi tutto</summary><p>Attraverso personale commerciale e tecnico che opera nel mercato offriamo visite di aggiornamento alla clientela, consegna e spiegazione di documentazione, cataloghi e listini, manuali e schede tecniche. Proposta e organizzazione di giornate al banco, eventi, meeting, corsi di formazione presso il nostro Centro didattico o le aziende mandanti. Ricerca nuovi clienti e visite ai progettisti per la redazione di capitolati.</p></details>
-  </div>
-  <div class="servizio-card reveal">
-    <svg width="30" height="30" viewBox="0 0 30 30"><rect x="6" y="6" width="18" height="18" fill="none" stroke="#2d5563" stroke-width="2"/><line x1="6" y1="13" x2="24" y2="13" stroke="#2d5563" stroke-width="1.5"/><line x1="6" y1="19" x2="18" y2="19" stroke="#2d5563" stroke-width="1.5"/></svg>
-    <h3>Preventivazione e progettazione</h3>
-    <p>Offerte, dimensionamenti, varianti e disegni esecutivi a supporto della vendita.</p>
-    <details class="expand-block"><summary>Leggi tutto</summary><p>I nostri tecnici e la proprietà mettono la loro esperienza al servizio dei clienti garantendo la redazione di offerte, dimensionamenti, comparazioni e varianti, guide alla vendita e disegni esecutivi esplicativi con schede tecniche allegate. Offriamo inoltre consulenza continua telefonica e di persona a clienti, installatori, tecnici, progettisti e privati per facilitare la scelta e la corretta installazione dei prodotti.</p></details>
-  </div>
-  <div class="servizio-card reveal">
-    <svg width="30" height="30" viewBox="0 0 30 30"><rect x="5" y="9" width="20" height="14" rx="1.5" fill="none" stroke="#2d5563" stroke-width="2"/><path d="M5,9 L15,17 L25,9" fill="none" stroke="#2d5563" stroke-width="2"/></svg>
-    <h3>Segreteria</h3>
-    <p>Gestione ordini, disponibilità prodotti, appuntamenti e aggiornamenti commerciali.</p>
-    <details class="expand-block"><summary>Leggi tutto</summary><p>Il personale della segreteria gestisce gli ordini inviandoli alle aziende e seguendone l'iter fino alla consegna, informa sulla disponibilità dei prodotti e sui tempi di consegna, gestisce appuntamenti e aggiornamenti via mail su promozioni, listini, novità e schede tecniche. Gestisce inoltre controversie, resi e perizie tecniche.</p></details>
-  </div>
-  <div class="servizio-card reveal">
-    <svg width="30" height="30" viewBox="0 0 30 30"><circle cx="13" cy="13" r="8" fill="none" stroke="#2d5563" stroke-width="2"/><line x1="19" y1="19" x2="25" y2="25" stroke="#2d5563" stroke-width="2" stroke-linecap="round"/></svg>
-    <h3>Assistenza pre-vendita</h3>
-    <p>Ricerca e formazione centri assistenza, corsi e accreditamento tecnico.</p>
-    <details class="expand-block"><summary>Leggi tutto</summary><p>I tecnici e i commerciali ricercano centri assistenza sui prodotti realizzati dalle aziende mandanti, organizzano corsi e affiancamento per formarli e accreditarli. Offrono il servizio di consulenza, preventivazione e progettazione a supporto della rete di installatori e rivenditori.</p></details>
-  </div>
-  <div class="servizio-card reveal">
-    <svg width="30" height="30" viewBox="0 0 30 30"><path d="M7,16 L13,22 L24,9" fill="none" stroke="#c1632b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <h3>Assistenza post-vendita</h3>
-    <p>Sopralluoghi in cantiere, supporto tecnico e indirizzamento ai centri assistenza.</p>
-    <details class="expand-block"><summary>Leggi tutto</summary><p>Il personale tecnico e la proprietà sono disponibili per sopralluoghi in cantiere per formare e informare il personale di installazione sull'uso corretto delle attrezzature. Prestito e noleggio attrezzature per l'installazione. Sopralluoghi per perizie e inconvenienti. Indirizzo ai centri assistenza opportuni con sollecito di intervento.</p></details>
-  </div>
-  <div class="servizio-card reveal">
-    <svg width="30" height="30" viewBox="0 0 30 30"><rect x="4" y="7" width="22" height="13" rx="1.5" fill="none" stroke="#2d5563" stroke-width="2"/><line x1="11" y1="24" x2="19" y2="24" stroke="#2d5563" stroke-width="2"/><line x1="15" y1="20" x2="15" y2="24" stroke="#2d5563" stroke-width="2"/></svg>
-    <h3>Centro didattico e showroom</h3>
-    <p>200 m² espositivi. Corsi, webinar e presentazioni fino a 30 persone.</p>
-    <details class="expand-block"><summary>Leggi tutto</summary><p>La Tecno Consult mette a disposizione un ufficio e area esposizione tecnica e didattica di oltre 200 m² per prodotti e attrezzature delle aziende mandanti. Organizziamo presentazioni, corsi di formazione e informazione, webinar sui prodotti e servizi nostri e delle aziende rappresentate, con capienza a sedere per 30 persone, proiezione, area dimostrativa e area conviviale.</p></details>
-  </div>
-</div>
+
+    <div class="servizi-flex" id="servizi-flex">
+      {servizi.map((s) => (
+        <div
+          class="servizio-card reveal"
+          id={s.id}
+          role="button"
+          tabindex="0"
+          aria-expanded="false"
+          data-titolo={s.titolo}
+          data-completo={s.completo}
+        >
+          <svg width="30" height="30" viewBox="0 0 30 30" set:html={s.icona} />
+          <h3>{s.titolo}</h3>
+          <p>{s.breve}</p>
+          <span class="card-cue">Leggi tutto</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="servizio-panel" id="servizio-panel" hidden>
+      <div class="panel-inner">
+        <div class="panel-text">
+          <h3 id="panel-titolo"></h3>
+          <p id="panel-completo"></p>
+        </div>
+        <div class="panel-photo">
+          <div class="photo-ph" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.8"/><path d="M21 16l-5-5L5 19" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Foto servizio in arrivo
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
+
+<script>
+  function initServizi() {
+    const grid = document.getElementById('servizi-flex');
+    const panel = document.getElementById('servizio-panel');
+    if (!grid || !panel) return;
+
+    const titoloEl = document.getElementById('panel-titolo');
+    const completoEl = document.getElementById('panel-completo');
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>('.servizio-card'));
+    let current: HTMLElement | null = null;
+
+    function closePanel() {
+      panel.hidden = true;
+      cards.forEach((c) => {
+        c.classList.remove('is-open');
+        c.setAttribute('aria-expanded', 'false');
+      });
+      current = null;
+    }
+
+    function openPanel(card: HTMLElement) {
+      if (current === card) {
+        closePanel();
+        return;
+      }
+      cards.forEach((c) => {
+        c.classList.remove('is-open');
+        c.setAttribute('aria-expanded', 'false');
+      });
+      titoloEl!.textContent = card.dataset.titolo || '';
+      completoEl!.textContent = card.dataset.completo || '';
+      panel.hidden = false;
+      card.classList.add('is-open');
+      card.setAttribute('aria-expanded', 'true');
+      current = card;
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener('click', () => openPanel(card));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openPanel(card);
+        }
+      });
+    });
+
+    // Flash highlight della card corrispondente all'hash (#slug).
+    // L'hash può non essere ancora applicato al momento di astro:page-load
+    // (navigazione con View Transitions), quindi rileggiamo dopo un tick.
+    let flashed = false;
+    function flashFromHash() {
+      if (flashed) return;
+      const hash = window.location.hash.replace('#', '');
+      if (!hash) return;
+      const target = document.getElementById(hash);
+      if (target && target.classList.contains('servizio-card')) {
+        flashed = true;
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.classList.add('flash');
+        setTimeout(() => target.classList.remove('flash'), 2000);
+      }
+    }
+    // L'hash con View Transitions può essere applicato dopo page-load:
+    // riproviamo per una breve finestra finché non lo troviamo.
+    [0, 100, 250, 500].forEach((d) => setTimeout(flashFromHash, d));
+    window.addEventListener('hashchange', flashFromHash, { once: true });
+  }
+  document.addEventListener('astro:page-load', initServizi);
+</script>
 
 </Layout>
