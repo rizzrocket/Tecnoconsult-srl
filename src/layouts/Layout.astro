@@ -891,33 +891,25 @@ const canonical = Astro.site
   section.ref-block--sanita{ --rb-accent:#1a6e8a; --rb-chip-bg:#f4fafd; background:#edf5fb; }
   section.ref-block--industria{ --rb-accent:#4a5568; --rb-chip-bg:#f7f8fa; background:#eef0f3; }
 
-  /* ===== Transizioni di pagina: wipe orizzontale petrol/copper ===== */
-  ::view-transition-old(root){ animation: fadeOutSoft 550ms ease both; mix-blend-mode:normal; }
-  ::view-transition-new(root){ animation: fadeInSoft 550ms ease 120ms both; mix-blend-mode:normal; }
-  @keyframes fadeOutSoft{ to{ opacity:0; } }
-  @keyframes fadeInSoft{ from{ opacity:0; } }
-  .page-wipe{position:fixed; inset:0; z-index:9999; pointer-events:none;}
-  .wipe-bar{position:absolute; inset:0; transform:translateX(-100%);}
-  .wipe-bar--petrol{background:var(--petrol);}
-  .wipe-bar--copper{background:var(--copper);}
-  .page-wipe.is-animating .wipe-bar--petrol{animation:pageWipeSweep 650ms cubic-bezier(.65,0,.35,1);}
-  .page-wipe.is-animating .wipe-bar--copper{animation:pageWipeSweep 650ms cubic-bezier(.65,0,.35,1) 90ms;}
-  @keyframes pageWipeSweep{
-    0%{transform:translateX(-100%);}
-    45%{transform:translateX(0%);}
-    55%{transform:translateX(0%);}
-    100%{transform:translateX(100%);}
-  }
+  /* ===== Transizioni di pagina: traccia tecnica ===== */
+  ::view-transition-old(root), ::view-transition-new(root){ animation:none; mix-blend-mode:normal; }
+  #tc-transition{position:fixed; inset:0; z-index:9999; pointer-events:none;}
+  #tc-transition svg{display:block; width:100%; height:100%;}
   @media (prefers-reduced-motion:reduce){
-    .page-wipe{display:none;}
+    #tc-transition{display:none;}
   }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Tecno Consult Srl","url":"https://tecnoconsult-srl.it","logo":"https://tecnoconsult-srl.it/images/tecnoconsult-logo.png","address":{"@type":"PostalAddress","streetAddress":"Via Barcis 2","addressLocality":"San Donà di Piave","postalCode":"30027","addressRegion":"VE","addressCountry":"IT"},"telephone":"+390421512000","email":"info@tecnoconsult-srl.it"}</script>
 </head>
 <body>
-  <div class="page-wipe" id="page-wipe" aria-hidden="true">
-    <span class="wipe-bar wipe-bar--petrol"></span>
-    <span class="wipe-bar wipe-bar--copper"></span>
+  <div id="tc-transition" transition:persist aria-hidden="true">
+    <svg id="tc-transition-svg">
+      <rect id="tc-curtain" x="0" y="0" width="100%" height="100%" style="fill:var(--paper); opacity:0;"></rect>
+      <line id="tc-ref-line" style="stroke:var(--petrol); stroke-width:2.5; fill:none;"></line>
+      <circle id="tc-ref-dot" r="5" style="fill:var(--copper); opacity:0;"></circle>
+      <g id="tc-ticks"></g>
+      <g id="tc-mesh"></g>
+    </svg>
   </div>
   <Header />
   <slot />
@@ -969,20 +961,173 @@ const canonical = Astro.site
     }
     document.addEventListener('astro:page-load', initPipeDividers);
 
-    function startPageWipe() {
-      const el = document.getElementById('page-wipe');
-      if (!el) return;
-      el.classList.remove('is-animating');
-      void el.offsetWidth;
-      el.classList.add('is-animating');
+    function initPageTransition() {
+      const svg = document.getElementById('tc-transition-svg');
+      const curtain = document.getElementById('tc-curtain');
+      const refLine = document.getElementById('tc-ref-line');
+      const refDot = document.getElementById('tc-ref-dot');
+      const ticksWrap = document.getElementById('tc-ticks');
+      const meshWrap = document.getElementById('tc-mesh');
+      if (!svg || svg.dataset.tcInit) return;
+      svg.dataset.tcInit = '1';
+
+      const REF_DRAW = 700, REF_HOLD = 80, REF_ERASE = 380;
+      const MESH_N = 22, MESH_STAGGER = 14, MESH_DRAW = 550, MESH_HOLD = 90, MESH_ERASE = 380;
+
+      function rand(a, b) { return a + Math.random() * (b - a); }
+      function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+      function reduceMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+
+      function buildTracePath(y0, W, H) {
+        let x = 0, y = y0;
+        let d = 'M0 ' + y0.toFixed(1);
+        const steps = 6;
+        for (let i = 0; i < steps; i++) {
+          const isLast = i === steps - 1;
+          if (i % 2 === 0) {
+            let dx;
+            if (isLast) dx = W - x;
+            else {
+              const forward = Math.random() < 0.72;
+              dx = forward ? rand(W * 0.08, W * 0.2) : -rand(W * 0.03, W * 0.09);
+            }
+            x = clamp(x + dx, 0, W);
+            d += ' L' + x.toFixed(1) + ' ' + y.toFixed(1);
+          } else {
+            const dy = (Math.random() < 0.5 ? -1 : 1) * rand(H * 0.06, H * 0.18);
+            y = clamp(y + dy, H * 0.03, H * 0.97);
+            d += ' L' + x.toFixed(1) + ' ' + y.toFixed(1);
+          }
+        }
+        if (x < W) d += ' L' + W + ' ' + y.toFixed(1);
+        return d;
+      }
+
+      function playCoverPhase() {
+        return new Promise((resolve) => {
+          if (reduceMotion()) { resolve(); return; }
+
+          const W = window.innerWidth, H = window.innerHeight;
+          svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+          const cy = H / 2;
+
+          meshWrap.innerHTML = '';
+          ticksWrap.innerHTML = '';
+          curtain.style.transition = 'none';
+          curtain.style.opacity = '0';
+
+          refLine.setAttribute('x1', 0); refLine.setAttribute('y1', String(cy));
+          refLine.setAttribute('x2', String(W)); refLine.setAttribute('y2', String(cy));
+          const refLen = W;
+          refLine.style.transition = 'none';
+          refLine.style.strokeDasharray = String(refLen);
+          refLine.style.strokeDashoffset = String(refLen);
+          refDot.setAttribute('cx', '0'); refDot.setAttribute('cy', String(cy));
+          refDot.style.transition = 'none';
+          refDot.style.opacity = '0';
+
+          const N_TICKS = 14;
+          const ticks = [];
+          for (let i = 1; i < N_TICKS; i++) {
+            const tx = (W / N_TICKS) * i;
+            const t = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            t.setAttribute('x1', String(tx)); t.setAttribute('x2', String(tx));
+            t.setAttribute('y1', String(cy - 7)); t.setAttribute('y2', String(cy + 7));
+            t.setAttribute('stroke', '#2D5563');
+            t.setAttribute('stroke-width', '1.5');
+            t.style.opacity = '0';
+            ticksWrap.appendChild(t);
+            ticks.push({ el: t, x: tx });
+          }
+
+          void svg.getBoundingClientRect();
+
+          curtain.style.transition = 'opacity ' + MESH_DRAW + 'ms ease';
+          refLine.style.transition = 'stroke-dashoffset ' + REF_DRAW + 'ms cubic-bezier(.45,0,.2,1)';
+          refDot.style.transition = 'cx ' + REF_DRAW + 'ms cubic-bezier(.45,0,.2,1), opacity 150ms ease';
+          ticks.forEach((tk) => {
+            tk.el.style.transition = 'opacity 150ms ease';
+            tk.el.style.transitionDelay = Math.round((tk.x / W) * REF_DRAW) + 'ms';
+          });
+
+          requestAnimationFrame(() => {
+            refLine.style.strokeDashoffset = '0';
+            refDot.style.opacity = '1';
+            refDot.setAttribute('cx', String(W));
+            ticks.forEach((tk) => { tk.el.style.opacity = '1'; });
+          });
+
+          setTimeout(() => {
+            refLine.style.transition = 'stroke-dashoffset ' + REF_ERASE + 'ms ease-in';
+            refDot.style.transition = 'cx ' + REF_ERASE + 'ms ease-in, opacity 200ms ease';
+            refLine.style.strokeDashoffset = String(-refLen);
+            refDot.style.opacity = '0';
+            ticks.forEach((tk) => {
+              tk.el.style.transition = 'opacity 180ms ease';
+              tk.el.style.transitionDelay = '0ms';
+              tk.el.style.opacity = '0';
+            });
+          }, REF_DRAW + REF_HOLD);
+
+          const meshStart = REF_DRAW + REF_HOLD + REF_ERASE;
+
+          setTimeout(() => {
+            const traces = [];
+            for (let i = 0; i < MESH_N; i++) {
+              const y0 = clamp((H / (MESH_N - 1)) * i + rand(-H * 0.02, H * 0.02), H * 0.02, H * 0.98);
+              const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+              p.setAttribute('d', buildTracePath(y0, W, H));
+              p.setAttribute('fill', 'none');
+              p.setAttribute('stroke', (i % 3 === 0) ? '#C1632B' : '#2D5563');
+              p.setAttribute('stroke-width', (i % 3 === 0) ? '1.6' : '1.3');
+              p.setAttribute('stroke-linecap', 'round');
+              p.setAttribute('stroke-linejoin', 'round');
+              p.style.opacity = (i % 3 === 0) ? '0.8' : '0.55';
+              meshWrap.appendChild(p);
+              const len = p.getTotalLength();
+              p.style.strokeDasharray = String(len);
+              p.style.strokeDashoffset = String(len);
+              traces.push({ el: p, len, delay: i * MESH_STAGGER });
+            }
+
+            requestAnimationFrame(() => {
+              curtain.style.opacity = '0.94';
+              traces.forEach((tr) => {
+                tr.el.style.transition = 'stroke-dashoffset ' + MESH_DRAW + 'ms cubic-bezier(.4,0,.2,1) ' + tr.delay + 'ms';
+                tr.el.style.strokeDashoffset = '0';
+              });
+            });
+
+            svg.__tcTraces = traces;
+            const lastDrawFinish = MESH_DRAW + (MESH_N - 1) * MESH_STAGGER;
+            setTimeout(resolve, lastDrawFinish + MESH_HOLD);
+          }, meshStart);
+        });
+      }
+
+      function playErasePhase() {
+        if (reduceMotion()) return;
+        const traces = svg.__tcTraces || [];
+        curtain.style.transition = 'opacity ' + MESH_ERASE + 'ms ease';
+        curtain.style.opacity = '0';
+        traces.forEach((tr) => {
+          tr.el.style.transition = 'stroke-dashoffset ' + MESH_ERASE + 'ms ease-in ' + tr.delay + 'ms';
+          tr.el.style.strokeDashoffset = String(-tr.len);
+        });
+        const lastEraseFinish = MESH_ERASE + (traces.length ? (traces.length - 1) * MESH_STAGGER : 0);
+        setTimeout(() => { meshWrap.innerHTML = ''; }, lastEraseFinish + 60);
+      }
+
+      document.addEventListener('astro:before-preparation', (event) => {
+        const originalLoader = event.loader;
+        event.loader = async () => {
+          await playCoverPhase();
+          await originalLoader();
+        };
+      });
+      document.addEventListener('astro:after-swap', playErasePhase);
     }
-    function endPageWipe() {
-      const el = document.getElementById('page-wipe');
-      if (!el) return;
-      el.classList.remove('is-animating');
-    }
-    document.addEventListener('astro:before-preparation', startPageWipe);
-    document.addEventListener('astro:page-load', endPageWipe);
+    initPageTransition();
   </script>
 </body>
 </html>
