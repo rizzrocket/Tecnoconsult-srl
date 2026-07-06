@@ -30,18 +30,27 @@ sostituite quando individuate.
 
 Logo reale Tecnoconsult scaricato da tecnoconsult-srl.it, NON ridisegnato:
 - `public/images/tecnoconsult-icon.png` — icona, usata in nav/favicon
-- `public/images/tecnoconsult-logo.png` — versione con wordmark
+- `public/images/tecnoconsult-logo.png` — versione con wordmark, usata in
+  og:image e JSON-LD (Layout.astro, tutte le pagine) — non toccare
+- `public/images/tecnoconsult-logo-home.png` — stessa immagine, variante con
+  le due "O" del wordmark rese trasparenti (era riempimento bianco pieno),
+  usata solo per l'hero della home
 
 Non sostituire con SVG ridisegnati o icone generiche.
 
 ## Struttura multipagina
 
-- `/` Home — hero + numeri (datasheet) + marchi rappresentati + breve intro
-  chi siamo (link "Scopri il team" → /chi-siamo) + CTA verso /contatti
-- `/chi-siamo` — testo completo chi siamo + team (5 card) + mission/pillars
+- `/` Home — hero + numeri (datasheet) + griglia 4 marchi rappresentati +
+  anteprima mappa di copertura (link a /dove-operiamo#mappa-copertura) +
+  breve intro chi siamo (link "Scopri il team" → /chi-siamo) + CTA verso
+  /contatti
+- `/chi-siamo` — testo completo chi siamo + team grid + mission + vision +
+  showroom
 - `/servizi` — le 7 card servizi
-- `/dove-operiamo` — testo + mappa illustrativa
-- `/referenze` — le 3 righe scorrevoli con etichetta categoria
+- `/dove-operiamo` — testo + griglia territorio 4 marchi + mappa SVG
+  interattiva per provincia (`#mappa-copertura`, hover desktop / tap mobile)
+- `/referenze` — le 3 sezioni con chip clienti per categoria (sempre tutte
+  visibili, nessun filtro)
 - `/contatti` — contatti
 
 Nav con link reali alle pagine, non anchor (`#sezione`). Header/Footer sono
@@ -81,3 +90,20 @@ associazione visiva fuorviante.
   in home con 3 marquee, referenze page redesign con chip-grid per categoria,
   chi-siamo: Mauro unificato in founder card (rimosso dal team grid → 4 card),
   upgrade grafico generale (hover card, padding, details/summary).
+- 2026-07-06: Riduzione da 9 a 4 marchi rappresentati (solo Radiant, Itap, GDA,
+  Aquatechnik) su tutto il sito — rimossi Fantini Cosmi, Winkler Solar, Swell
+  System, OLI, GIA da home e dove-operiamo, datasheet aggiornato (4 marchi,
+  12 province). Home: marquee marchi → griglia statica 4 loghi linkati a
+  /dove-operiamo#mappa-copertura, placeholder mappa → anteprima cliccabile
+  (mappa-nordest.svg), marquee "Chi si affida a noi" rallentato a 95s, hero
+  logo aggiornato a tecnoconsult-logo-home.png (O trasparenti, fix via script
+  Python/Pillow con flood fill dai due buchi del wordmark — non toccare
+  tecnoconsult-logo.png, resta invariato per og:image/JSON-LD). Dove operiamo:
+  rimossa lista bullet zone, brand-territory-grid ridotta a 4 card con testo
+  provincia preciso, nuova sezione `#mappa-copertura` con SVG inline
+  interattivo (tooltip hover desktop + tap toggle mobile via pointerType,
+  mostra loghi marchi per provincia o "Nessun marchio attivo" per Bolzano).
+  Chi-siamo: aggiunta card Riccardo Scarabel nel team grid (solo nome, come
+  la card vuota), titolo "Il nostro show-room" sopra la gallery, nuova
+  sezione Vision (placeholder, testo da fornire) dopo Mission. Referenze:
+  rimossi i 4 filtri a pillole, le 3 categorie restano sempre visibili.

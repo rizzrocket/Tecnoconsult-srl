@@ -1,17 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// Copertura territoriale per marchio, allineata a /dove-operiamo
+// I 4 marchi rappresentati
 const marchi = [
-  { nome: 'Aquatechnik', file: 'aquatechnik.png', zona: 'Veneto (escluso Verona) · Friuli Venezia Giulia' },
-  { nome: 'ITAP', file: 'itap.jpg', zona: 'Veneto · Friuli Venezia Giulia · Trento' },
-  { nome: 'Radiant', file: 'radiant.svg', zona: 'Veneto (escluso Rovigo) · Friuli Venezia Giulia · Trento' },
-  { nome: 'GDA', file: 'gda.jpg', zona: 'Veneto (escluso Verona e Rovigo) · Friuli Venezia Giulia' },
-  { nome: 'GIA', file: 'gia.png', zona: 'Friuli Venezia Giulia' },
-  { nome: 'Fantini Cosmi', file: 'fantini-cosmi.png', zona: 'Veneto (escluso Verona) · Friuli Venezia Giulia' },
-  { nome: 'Winkler Solar', file: 'winkler-solar.png', zona: 'Vicenza · Padova · Rovigo · Friuli Venezia Giulia' },
-  { nome: 'Swell System', file: 'swell-system.png', zona: 'Veneto (escluso Verona) · Friuli Venezia Giulia (escluso Trieste)' },
-  { nome: 'OLI', file: 'oli.jpg', zona: 'Veneto · Friuli Venezia Giulia' },
+  { nome: 'Radiant', file: 'radiant.svg' },
+  { nome: 'ITAP', file: 'itap.jpg' },
+  { nome: 'GDA', file: 'gda.jpg' },
+  { nome: 'Aquatechnik', file: 'aquatechnik.png' },
 ];
 
 // Tutti i clienti delle 3 categorie, in ordine misto, riga unica (no etichette)
@@ -63,7 +58,7 @@ const clienti = [
     <div class="hero-art reveal">
       <div class="hero-logo-stage">
         <div class="hero-logo-halo" aria-hidden="true"></div>
-        <img class="hero-logo" src="/images/tecnoconsult-logo.png" alt="Tecno Consult Srl" fetchpriority="high" />
+        <img class="hero-logo" src="/images/tecnoconsult-logo-home.png" alt="Tecno Consult Srl" fetchpriority="high" />
       </div>
     </div>
   </div>
@@ -71,8 +66,8 @@ const clienti = [
   <div class="datasheet">
     <div class="wrap">
       <div class="ds-item"><div class="ds-key">Fondazione</div><div class="ds-val" data-counter data-target="1996"><span class="ds-val-visual" aria-hidden="true">0</span><span class="sr-only">1996</span></div></div>
-      <div class="ds-item"><div class="ds-key">Marchi rappresentati</div><div class="ds-val" data-counter data-target="9"><span class="ds-val-visual" aria-hidden="true">0</span><span class="sr-only">9</span></div></div>
-      <div class="ds-item"><div class="ds-key">Province coperte</div><div class="ds-val" data-counter data-target="8"><span class="ds-val-visual" aria-hidden="true">0</span><span class="sr-only">8</span></div></div>
+      <div class="ds-item"><div class="ds-key">Marchi rappresentati</div><div class="ds-val" data-counter data-target="4"><span class="ds-val-visual" aria-hidden="true">0</span><span class="sr-only">4</span></div></div>
+      <div class="ds-item"><div class="ds-key">Province coperte</div><div class="ds-val" data-counter data-target="12"><span class="ds-val-visual" aria-hidden="true">0</span><span class="sr-only">12</span></div></div>
       <div class="ds-item"><div class="ds-key">Showroom</div><div class="ds-val" data-counter data-target="200" data-suffix=" m²"><span class="ds-val-visual" aria-hidden="true">0</span><span class="sr-only">200 m²</span></div></div>
     </div>
   </div>
@@ -84,34 +79,22 @@ const clienti = [
 <div class="marquee-section">
   <div class="wrap">
     <span class="marquee-label">Marchi rappresentati</span>
-  </div>
-  <div class="marquee marquee--brands">
-    <div class="marquee-track">
+    <div class="brand-logo-grid">
       {marchi.map((m) => (
-        <div class="brand-logo-chip" data-zona={m.zona}>
+        <a class="brand-logo-tile" href="/dove-operiamo#mappa-copertura" aria-label={`${m.nome} — copertura territoriale`}>
           <img src={`/images/brands/${m.file}`} alt={m.nome} loading="lazy" />
-          <span class="brand-tooltip" role="tooltip">{m.zona}</span>
-        </div>
-      ))}
-      {/* duplica per loop */}
-      {marchi.map((m) => (
-        <div class="brand-logo-chip" data-zona={m.zona}>
-          <img src={`/images/brands/${m.file}`} alt={m.nome} loading="lazy" />
-          <span class="brand-tooltip" role="tooltip">{m.zona}</span>
-        </div>
+        </a>
       ))}
     </div>
   </div>
 </div>
 
-<!-- ============ MAPPA DI COPERTURA (placeholder) ============ -->
+<!-- ============ MAPPA DI COPERTURA ============ -->
 <section>
   <div class="wrap">
-    <div class="coverage-ph-card reveal">
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="#2d5563" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4,10 L15,16 L4,22 Z"/><path d="M26,10 L15,16 L26,22 Z"/><line x1="15" y1="16" x2="15" y2="6"/><line x1="9" y1="6" x2="21" y2="6"/></svg>
-      <h3>Mappa di copertura in arrivo</h3>
-      <p>Stiamo aggiornando il dettaglio delle province coperte per ciascun marchio.</p>
-    </div>
+    <a class="coverage-preview-card reveal" href="/dove-operiamo#mappa-copertura" aria-label="Vai alla mappa di copertura territoriale">
+      <img src="/images/mappa-nordest.svg" alt="Anteprima mappa di copertura territoriale Tecno Consult" loading="lazy" />
+    </a>
   </div>
 </section>
 
@@ -140,7 +123,7 @@ const clienti = [
   </div>
 
   <div class="marquee">
-    <div class="marquee-track" style="animation-duration:60s;">
+    <div class="marquee-track" style="animation-duration:95s;">
       {clienti.map((c) => <div class="ref-chip">{c}</div>)}
       {clienti.map((c) => <div class="ref-chip">{c}</div>)}
     </div>
@@ -224,69 +207,6 @@ const clienti = [
     els.forEach((el) => obs.observe(el));
   }
   document.addEventListener('astro:page-load', initCounters);
-
-  function initBrandTooltips() {
-    const track = document.querySelector<HTMLElement>('.marquee--brands .marquee-track');
-    const chips = Array.from(document.querySelectorAll<HTMLElement>('.marquee--brands .brand-logo-chip'));
-    if (!track || !chips.length) return;
-
-    let rafId = 0;
-    let frozenChip: HTMLElement | null = null;
-
-    function currentTrackX(): number {
-      const m = new DOMMatrixReadOnly(getComputedStyle(track as HTMLElement).transform);
-      return m.m41;
-    }
-
-    function freeze(chip: HTMLElement) {
-      if (frozenChip === chip) return;
-      frozenChip = chip;
-      const step = () => {
-        if (frozenChip !== chip) return;
-        chip.style.transform = `translateX(${-currentTrackX()}px)`;
-        rafId = requestAnimationFrame(step);
-      };
-      step();
-    }
-
-    function unfreeze(chip: HTMLElement) {
-      if (frozenChip !== chip) return;
-      frozenChip = null;
-      cancelAnimationFrame(rafId);
-      chip.style.transform = '';
-    }
-
-    chips.forEach((chip) => {
-      chip.addEventListener('mouseenter', () => freeze(chip));
-      chip.addEventListener('mouseleave', () => {
-        unfreeze(chip);
-        chip.classList.remove('is-tooltip-open');
-      });
-      chip.addEventListener('click', () => {
-        const wasOpen = chip.classList.contains('is-tooltip-open');
-        chips.forEach((c) => {
-          c.classList.remove('is-tooltip-open');
-          if (c !== chip) unfreeze(c);
-        });
-        if (wasOpen) {
-          unfreeze(chip);
-        } else {
-          chip.classList.add('is-tooltip-open');
-          freeze(chip);
-        }
-      });
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!(e.target as HTMLElement).closest('.brand-logo-chip')) {
-        chips.forEach((c) => {
-          c.classList.remove('is-tooltip-open');
-          unfreeze(c);
-        });
-      }
-    });
-  }
-  document.addEventListener('astro:page-load', initBrandTooltips);
 </script>
 
 </Layout>
