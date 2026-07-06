@@ -10,10 +10,16 @@ import Layout from '../layouts/Layout.astro';
   <div class="wrap">
     <p class="eyebrow">Referenze</p>
     <p style="margin-top:8px; max-width:560px; color:var(--ink-soft); line-height:1.6;">Alcune delle realtà che nel tempo si sono affidate a Tecno Consult per i loro impianti idro-termo-sanitari.</p>
+    <div class="ref-filter-bar" role="group" aria-label="Filtra referenze per settore">
+      <button type="button" class="ref-filter-pill is-active" data-filter="tutti">Tutti</button>
+      <button type="button" class="ref-filter-pill" data-filter="hotellerie">Hotellerie &amp; Ricettivo</button>
+      <button type="button" class="ref-filter-pill" data-filter="sanita">Sanità &amp; Enti pubblici</button>
+      <button type="button" class="ref-filter-pill" data-filter="industria">Industria &amp; Residenziale</button>
+    </div>
   </div>
 </section>
 
-<section class="ref-block ref-block--hotellerie">
+<section class="ref-block ref-block--hotellerie" data-settore="hotellerie">
   <div class="wrap">
     <div class="ref-section-header reveal">
       <span class="ref-section-cat">Hotellerie &amp; Ricettivo</span>
@@ -37,7 +43,7 @@ import Layout from '../layouts/Layout.astro';
   </div>
 </section>
 
-<section class="ref-block ref-block--sanita">
+<section class="ref-block ref-block--sanita" data-settore="sanita">
   <div class="wrap">
     <div class="ref-section-header reveal">
       <span class="ref-section-cat">Sanità &amp; Enti pubblici</span>
@@ -52,7 +58,7 @@ import Layout from '../layouts/Layout.astro';
   </div>
 </section>
 
-<section class="ref-block ref-block--industria">
+<section class="ref-block ref-block--industria" data-settore="industria">
   <div class="wrap">
     <div class="ref-section-header reveal">
       <span class="ref-section-cat">Industria &amp; Residenziale</span>
@@ -70,5 +76,35 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </div>
 </section>
+
+<script>
+  function initRefFilter() {
+    const pills = Array.from(document.querySelectorAll<HTMLButtonElement>('.ref-filter-pill'));
+    const blocks = Array.from(document.querySelectorAll<HTMLElement>('[data-settore]'));
+    if (!pills.length || !blocks.length) return;
+
+    function showAll() {
+      blocks.forEach((b) => { b.hidden = false; });
+      pills.forEach((p) => p.classList.toggle('is-active', p.dataset.filter === 'tutti'));
+    }
+
+    function isolate(filter: string) {
+      blocks.forEach((b) => { b.hidden = b.dataset.settore !== filter; });
+      pills.forEach((p) => p.classList.toggle('is-active', p.dataset.filter === filter));
+    }
+
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const filter = pill.dataset.filter || 'tutti';
+        if (filter === 'tutti' || pill.classList.contains('is-active')) {
+          showAll();
+        } else {
+          isolate(filter);
+        }
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', initRefFilter);
+</script>
 
 </Layout>
