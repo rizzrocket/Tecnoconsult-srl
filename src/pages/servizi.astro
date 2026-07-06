@@ -73,7 +73,7 @@ const servizi = [
           id={s.id}
           role="button"
           tabindex="0"
-          aria-expanded="false"
+          aria-haspopup="dialog"
           data-titolo={s.titolo}
           data-completo={s.completo}
         >
@@ -84,69 +84,99 @@ const servizi = [
         </div>
       ))}
     </div>
-
-    <div class="servizio-panel" id="servizio-panel" hidden>
-      <div class="panel-inner">
-        <div class="panel-text">
-          <h3 id="panel-titolo"></h3>
-          <p id="panel-completo"></p>
-        </div>
-        <div class="panel-photo">
-          <div class="photo-ph" aria-hidden="true">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.8"/><path d="M21 16l-5-5L5 19" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Foto servizio in arrivo
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
+
+<div class="servizio-modal-overlay" id="servizio-modal-overlay">
+  <div
+    class="servizio-modal"
+    id="servizio-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="servizio-modal-titolo"
+    tabindex="-1"
+  >
+    <button type="button" class="servizio-modal-close" id="servizio-modal-close" aria-label="Chiudi">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2,2 L16,16 M16,2 L2,16"/></svg>
+    </button>
+    <h3 id="servizio-modal-titolo"></h3>
+    <p id="servizio-modal-completo"></p>
+  </div>
+</div>
 
 <script>
   function initServizi() {
     const grid = document.getElementById('servizi-flex');
-    const panel = document.getElementById('servizio-panel');
-    if (!grid || !panel) return;
+    const overlay = document.getElementById('servizio-modal-overlay');
+    const modal = document.getElementById('servizio-modal');
+    const closeBtn = document.getElementById('servizio-modal-close');
+    const titoloEl = document.getElementById('servizio-modal-titolo');
+    const completoEl = document.getElementById('servizio-modal-completo');
+    if (!grid || !overlay || !modal || !closeBtn || !titoloEl || !completoEl) return;
 
-    const titoloEl = document.getElementById('panel-titolo');
-    const completoEl = document.getElementById('panel-completo');
     const cards = Array.from(grid.querySelectorAll<HTMLElement>('.servizio-card'));
-    let current: HTMLElement | null = null;
+    let lastTrigger: HTMLElement | null = null;
 
-    function closePanel() {
-      panel.hidden = true;
-      cards.forEach((c) => {
-        c.classList.remove('is-open');
-        c.setAttribute('aria-expanded', 'false');
-      });
-      current = null;
+    function getFocusable(): HTMLElement[] {
+      return Array.from(
+        modal!.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+        )
+      );
     }
 
-    function openPanel(card: HTMLElement) {
-      if (current === card) {
-        closePanel();
+    function onKeydown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeModal();
         return;
       }
-      cards.forEach((c) => {
-        c.classList.remove('is-open');
-        c.setAttribute('aria-expanded', 'false');
-      });
+      if (e.key === 'Tab') {
+        const focusable = getFocusable();
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    function openModal(card: HTMLElement) {
+      lastTrigger = card;
       titoloEl!.textContent = card.dataset.titolo || '';
       completoEl!.textContent = card.dataset.completo || '';
-      panel.hidden = false;
-      card.classList.add('is-open');
-      card.setAttribute('aria-expanded', 'true');
-      current = card;
+      overlay!.classList.add('is-open');
+      document.addEventListener('keydown', onKeydown);
+      closeBtn!.focus({ preventScroll: true });
+    }
+
+    function closeModal() {
+      overlay!.classList.remove('is-open');
+      document.removeEventListener('keydown', onKeydown);
+      if (lastTrigger) {
+        lastTrigger.focus({ preventScroll: true });
+        lastTrigger = null;
+      }
     }
 
     cards.forEach((card) => {
-      card.addEventListener('click', () => openPanel(card));
+      card.addEventListener('click', () => openModal(card));
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          openPanel(card);
+          openModal(card);
         }
       });
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
     });
 
     // Flash highlight della card corrispondente all'hash (#slug).

@@ -691,37 +691,88 @@ const canonical = Astro.site
     gap:6px;
   }
   .servizio-card .card-cue::before{content:"▸"; transition:transform .2s;}
-  .servizio-card.is-open{border-color:var(--petrol); box-shadow:0 4px 18px rgba(45,85,99,0.10);}
-  .servizio-card.is-open .card-cue::before{transform:rotate(90deg);}
   .servizio-card.flash{
     border-color:var(--copper);
     box-shadow:0 0 0 3px rgba(193,99,43,0.22);
     background:#fbf1ea;
   }
-
-  .servizio-panel{
-    margin-top:20px;
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    background:var(--surface);
-    padding:28px;
-  }
-  .servizio-panel[hidden]{display:none;}
-  .servizio-panel .panel-inner{display:flex; gap:28px; align-items:flex-start;}
-  .panel-text{flex:1; min-width:0;}
-  .panel-text h3{font-size:1.15rem; color:var(--petrol); margin-bottom:12px;}
-  .panel-text p{font-size:0.92rem; line-height:1.75; color:var(--ink-soft);}
-  .panel-photo{flex:0 0 300px; max-width:40%;}
-  .panel-photo .photo-ph{height:220px;}
   @media (max-width:920px){
     .servizi-flex .servizio-card{flex-basis:calc((100% - 16px) / 2);}
   }
-  @media (max-width:760px){
-    .servizio-panel .panel-inner{flex-direction:column;}
-    .panel-photo{flex-basis:auto; max-width:100%; width:100%;}
-  }
   @media (max-width:560px){
     .servizi-flex .servizio-card{flex-basis:100%;}
+  }
+
+  /* ===== Modale servizio (Direzione A — Schema Tecnico) ===== */
+  .servizio-modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:rgba(22,36,42,0.55);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .18s ease, visibility 0s linear .18s;
+  }
+  .servizio-modal-overlay.is-open{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transition:opacity .18s ease;
+  }
+  .servizio-modal{
+    position:relative;
+    width:100%;
+    max-width:620px;
+    max-height:82vh;
+    overflow-y:auto;
+    background:var(--paper);
+    border-radius:12px;
+    border-top:4px solid var(--copper);
+    padding:36px 40px;
+    transform:scale(0.96);
+    transition:transform .18s ease;
+  }
+  .servizio-modal-overlay.is-open .servizio-modal{
+    transform:scale(1);
+  }
+  .servizio-modal h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:500;
+    color:var(--ink);
+    font-size:1.25rem;
+    margin:0 32px 16px 0;
+  }
+  .servizio-modal p{
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--petrol);
+    font-size:0.95rem;
+    line-height:1.75;
+    margin:0;
+  }
+  .servizio-modal-close{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:32px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+    border-radius:6px;
+    background:transparent;
+    color:var(--ink);
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .servizio-modal-close:hover{background:rgba(45,85,99,0.08);}
+  @media (max-width:560px){
+    .servizio-modal{padding:28px 24px;}
   }
 
   /* ===== Referenze: blocchi con colore differenziato ===== */
