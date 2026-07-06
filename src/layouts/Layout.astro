@@ -805,10 +805,36 @@ const canonical = Astro.site
   section.ref-block--hotellerie{ --rb-accent:#b8860b; --rb-chip-bg:#fffaf0; background:#fdf6ec; }
   section.ref-block--sanita{ --rb-accent:#1a6e8a; --rb-chip-bg:#f4fafd; background:#edf5fb; }
   section.ref-block--industria{ --rb-accent:#4a5568; --rb-chip-bg:#f7f8fa; background:#eef0f3; }
+
+  /* ===== Transizioni di pagina: wipe orizzontale petrol/copper ===== */
+  ::view-transition-old(root),
+  ::view-transition-new(root){
+    animation:none;
+    mix-blend-mode:normal;
+  }
+  .page-wipe{position:fixed; inset:0; z-index:9999; pointer-events:none;}
+  .wipe-bar{position:absolute; inset:0; transform:translateX(-100%);}
+  .wipe-bar--petrol{background:var(--petrol);}
+  .wipe-bar--copper{background:var(--copper);}
+  .page-wipe.is-animating .wipe-bar--petrol{animation:pageWipeSweep 380ms ease-in-out;}
+  .page-wipe.is-animating .wipe-bar--copper{animation:pageWipeSweep 380ms ease-in-out 100ms;}
+  @keyframes pageWipeSweep{
+    0%{transform:translateX(-100%);}
+    45%{transform:translateX(0%);}
+    55%{transform:translateX(0%);}
+    100%{transform:translateX(100%);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .page-wipe{display:none;}
+  }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Tecno Consult Srl","url":"https://tecnoconsult-srl.it","logo":"https://tecnoconsult-srl.it/images/tecnoconsult-logo.png","address":{"@type":"PostalAddress","streetAddress":"Via Barcis 2","addressLocality":"San Donà di Piave","postalCode":"30027","addressRegion":"VE","addressCountry":"IT"},"telephone":"+390421512000","email":"info@tecnoconsult-srl.it"}</script>
 </head>
 <body>
+  <div class="page-wipe" id="page-wipe" aria-hidden="true">
+    <span class="wipe-bar wipe-bar--petrol"></span>
+    <span class="wipe-bar wipe-bar--copper"></span>
+  </div>
   <Header />
   <slot />
   <Footer />
@@ -858,6 +884,21 @@ const canonical = Astro.site
       paths.forEach((path) => obs.observe(path));
     }
     document.addEventListener('astro:page-load', initPipeDividers);
+
+    function startPageWipe() {
+      const el = document.getElementById('page-wipe');
+      if (!el) return;
+      el.classList.remove('is-animating');
+      void el.offsetWidth;
+      el.classList.add('is-animating');
+    }
+    function endPageWipe() {
+      const el = document.getElementById('page-wipe');
+      if (!el) return;
+      el.classList.remove('is-animating');
+    }
+    document.addEventListener('astro:before-preparation', startPageWipe);
+    document.addEventListener('astro:page-load', endPageWipe);
   </script>
 </body>
 </html>
