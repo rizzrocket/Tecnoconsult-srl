@@ -1,6 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+// Copertura territoriale per marchio, allineata a /dove-operiamo
+const marchi = [
+  { nome: 'Aquatechnik', file: 'aquatechnik.png', zona: 'Veneto (escluso Verona) · Friuli Venezia Giulia' },
+  { nome: 'ITAP', file: 'itap.jpg', zona: 'Veneto · Friuli Venezia Giulia · Trento' },
+  { nome: 'Radiant', file: 'radiant.svg', zona: 'Veneto (escluso Rovigo) · Friuli Venezia Giulia · Trento' },
+  { nome: 'GDA', file: 'gda.jpg', zona: 'Veneto (escluso Verona e Rovigo) · Friuli Venezia Giulia' },
+  { nome: 'GIA', file: 'gia.png', zona: 'Friuli Venezia Giulia' },
+  { nome: 'Fantini Cosmi', file: 'fantini-cosmi.png', zona: 'Veneto (escluso Verona) · Friuli Venezia Giulia' },
+  { nome: 'Winkler Solar', file: 'winkler-solar.png', zona: 'Vicenza · Padova · Rovigo · Friuli Venezia Giulia' },
+  { nome: 'Swell System', file: 'swell-system.png', zona: 'Veneto (escluso Verona) · Friuli Venezia Giulia (escluso Trieste)' },
+  { nome: 'OLI', file: 'oli.jpg', zona: 'Veneto · Friuli Venezia Giulia' },
+];
+
 // Tutti i clienti delle 3 categorie, in ordine misto, riga unica (no etichette)
 const clienti = [
   'Hotel Napoleon — Jesolo',
@@ -72,27 +85,21 @@ const clienti = [
   <div class="wrap">
     <span class="marquee-label">Marchi rappresentati</span>
   </div>
-  <div class="marquee">
+  <div class="marquee marquee--brands">
     <div class="marquee-track">
-      <div class="brand-logo-chip"><img src="/images/brands/aquatechnik.png" alt="Aquatechnik" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/itap.jpg" alt="ITAP" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/radiant.svg" alt="Radiant" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/gda.jpg" alt="GDA" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/gia.png" alt="GIA" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/fantini-cosmi.png" alt="Fantini Cosmi" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/winkler-solar.png" alt="Winkler Solar" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/swell-system.png" alt="Swell System" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/oli.jpg" alt="OLI" loading="lazy" /></div>
-      <!-- duplica per loop -->
-      <div class="brand-logo-chip"><img src="/images/brands/aquatechnik.png" alt="Aquatechnik" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/itap.jpg" alt="ITAP" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/radiant.svg" alt="Radiant" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/gda.jpg" alt="GDA" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/gia.png" alt="GIA" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/fantini-cosmi.png" alt="Fantini Cosmi" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/winkler-solar.png" alt="Winkler Solar" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/swell-system.png" alt="Swell System" loading="lazy" /></div>
-      <div class="brand-logo-chip"><img src="/images/brands/oli.jpg" alt="OLI" loading="lazy" /></div>
+      {marchi.map((m) => (
+        <div class="brand-logo-chip" data-zona={m.zona}>
+          <img src={`/images/brands/${m.file}`} alt={m.nome} loading="lazy" />
+          <span class="brand-tooltip" role="tooltip">{m.zona}</span>
+        </div>
+      ))}
+      {/* duplica per loop */}
+      {marchi.map((m) => (
+        <div class="brand-logo-chip" data-zona={m.zona}>
+          <img src={`/images/brands/${m.file}`} alt={m.nome} loading="lazy" />
+          <span class="brand-tooltip" role="tooltip">{m.zona}</span>
+        </div>
+      ))}
     </div>
   </div>
 </div>
@@ -217,6 +224,69 @@ const clienti = [
     els.forEach((el) => obs.observe(el));
   }
   document.addEventListener('astro:page-load', initCounters);
+
+  function initBrandTooltips() {
+    const track = document.querySelector<HTMLElement>('.marquee--brands .marquee-track');
+    const chips = Array.from(document.querySelectorAll<HTMLElement>('.marquee--brands .brand-logo-chip'));
+    if (!track || !chips.length) return;
+
+    let rafId = 0;
+    let frozenChip: HTMLElement | null = null;
+
+    function currentTrackX(): number {
+      const m = new DOMMatrixReadOnly(getComputedStyle(track as HTMLElement).transform);
+      return m.m41;
+    }
+
+    function freeze(chip: HTMLElement) {
+      if (frozenChip === chip) return;
+      frozenChip = chip;
+      const step = () => {
+        if (frozenChip !== chip) return;
+        chip.style.transform = `translateX(${-currentTrackX()}px)`;
+        rafId = requestAnimationFrame(step);
+      };
+      step();
+    }
+
+    function unfreeze(chip: HTMLElement) {
+      if (frozenChip !== chip) return;
+      frozenChip = null;
+      cancelAnimationFrame(rafId);
+      chip.style.transform = '';
+    }
+
+    chips.forEach((chip) => {
+      chip.addEventListener('mouseenter', () => freeze(chip));
+      chip.addEventListener('mouseleave', () => {
+        unfreeze(chip);
+        chip.classList.remove('is-tooltip-open');
+      });
+      chip.addEventListener('click', () => {
+        const wasOpen = chip.classList.contains('is-tooltip-open');
+        chips.forEach((c) => {
+          c.classList.remove('is-tooltip-open');
+          if (c !== chip) unfreeze(c);
+        });
+        if (wasOpen) {
+          unfreeze(chip);
+        } else {
+          chip.classList.add('is-tooltip-open');
+          freeze(chip);
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('.brand-logo-chip')) {
+        chips.forEach((c) => {
+          c.classList.remove('is-tooltip-open');
+          unfreeze(c);
+        });
+      }
+    });
+  }
+  document.addEventListener('astro:page-load', initBrandTooltips);
 </script>
 
 </Layout>

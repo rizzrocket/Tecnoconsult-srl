@@ -313,6 +313,7 @@ const canonical = Astro.site
     white-space:nowrap;
   }
   .brand-logo-chip {
+    position: relative;
     flex-shrink: 0;
     border: 1px solid var(--line);
     border-radius: 8px;
@@ -334,6 +335,46 @@ const canonical = Astro.site
     transition: filter .2s;
   }
   .brand-logo-chip:hover img { filter: grayscale(0%); }
+
+  /* ---------- tooltip copertura marchi (marquee home) ---------- */
+  .marquee--brands:hover .marquee-track { animation-play-state: running; }
+  .brand-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 210px;
+    background: var(--ink);
+    color: #fff;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.76rem;
+    line-height: 1.45;
+    text-align: center;
+    padding: 9px 12px;
+    border-radius: 6px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .15s ease;
+    z-index: 20;
+  }
+  .brand-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--ink);
+  }
+  .brand-logo-chip:hover .brand-tooltip,
+  .brand-logo-chip.is-tooltip-open .brand-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+  @media (max-width: 640px) {
+    .brand-tooltip { width: 170px; font-size: 0.72rem; }
+  }
 
   .maps-embed { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line-soft); }
 
