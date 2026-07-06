@@ -57,10 +57,10 @@ const clienti = [
 
   <div class="datasheet">
     <div class="wrap">
-      <div class="ds-item"><div class="ds-key">Fondazione</div><div class="ds-val">1996</div></div>
-      <div class="ds-item"><div class="ds-key">Marchi rappresentati</div><div class="ds-val">9</div></div>
-      <div class="ds-item"><div class="ds-key">Province coperte</div><div class="ds-val">8</div></div>
-      <div class="ds-item"><div class="ds-key">Showroom</div><div class="ds-val">200 m²</div></div>
+      <div class="ds-item"><div class="ds-key">Fondazione</div><div class="ds-val" data-counter data-target="1996"><span class="ds-val-visual" aria-hidden="true">0</span><span class="sr-only">1996</span></div></div>
+      <div class="ds-item"><div class="ds-key">Marchi rappresentati</div><div class="ds-val" data-counter data-target="9"><span class="ds-val-visual" aria-hidden="true">0</span><span class="sr-only">9</span></div></div>
+      <div class="ds-item"><div class="ds-key">Province coperte</div><div class="ds-val" data-counter data-target="8"><span class="ds-val-visual" aria-hidden="true">0</span><span class="sr-only">8</span></div></div>
+      <div class="ds-item"><div class="ds-key">Showroom</div><div class="ds-val" data-counter data-target="200" data-suffix=" m²"><span class="ds-val-visual" aria-hidden="true">0</span><span class="sr-only">200 m²</span></div></div>
     </div>
   </div>
 </section>
@@ -168,5 +168,44 @@ const clienti = [
     </div>
   </div>
 </section>
+
+<script>
+  function initCounters() {
+    const els = Array.from(document.querySelectorAll<HTMLElement>('[data-counter]'));
+    if (!els.length) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function runCounter(el: HTMLElement) {
+      const target = parseInt(el.dataset.target || '0', 10);
+      const suffix = el.dataset.suffix || '';
+      const visual = el.querySelector<HTMLElement>('.ds-val-visual');
+      if (!visual) return;
+      if (reduceMotion) {
+        visual.textContent = target + suffix;
+        return;
+      }
+      const duration = 1200;
+      const start = performance.now();
+      function tick(now: number) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        visual.textContent = Math.round(target * eased) + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          runCounter(e.target as HTMLElement);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    els.forEach((el) => obs.observe(el));
+  }
+  document.addEventListener('astro:page-load', initCounters);
+</script>
 
 </Layout>
