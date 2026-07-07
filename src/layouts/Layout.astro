@@ -905,10 +905,7 @@ const canonical = Astro.site
   <div id="tc-transition" transition:persist aria-hidden="true">
     <svg id="tc-transition-svg">
       <rect id="tc-curtain" x="0" y="0" width="100%" height="100%" style="fill:var(--paper); opacity:0;"></rect>
-      <line id="tc-ref-line" style="stroke:var(--petrol); stroke-width:2.5; fill:none;"></line>
-      <circle id="tc-ref-dot" r="5" style="fill:var(--copper); opacity:0;"></circle>
-      <g id="tc-ticks"></g>
-      <g id="tc-mesh"></g>
+      <g id="tc-logo-lines"></g>
     </svg>
   </div>
   <Header />
@@ -964,168 +961,139 @@ const canonical = Astro.site
     function initPageTransition() {
       const svg = document.getElementById('tc-transition-svg');
       const curtain = document.getElementById('tc-curtain');
-      const refLine = document.getElementById('tc-ref-line');
-      const refDot = document.getElementById('tc-ref-dot');
-      const ticksWrap = document.getElementById('tc-ticks');
-      const meshWrap = document.getElementById('tc-mesh');
+      const logoWrap = document.getElementById('tc-logo-lines');
       if (!svg || svg.dataset.tcInit) return;
       svg.dataset.tcInit = '1';
 
-      const REF_DRAW = 700, REF_HOLD = 80, REF_ERASE = 380;
-      const MESH_N = 22, MESH_STAGGER = 14, MESH_DRAW = 550, MESH_HOLD = 90, MESH_ERASE = 380;
+      // Monogramma pulito "T + C" (solo le linee essenziali del logo, senza il quadrato di
+      // costruzione ne le diagonali della griglia): anello a C quasi completo con una piccola
+      // apertura in basso a destra lungo la diagonale (68°-382°, ~46° di ampiezza centrata a 45°),
+      // barra orizzontale della T in alto (y=35..75) e gambo verticale della T che scende attraverso
+      // il centro dell'anello. Anello in copper come accento, T in petrol. Verificato via render.
+      const CANVAS_W = 350, CANVAS_H = 330;
 
-      function rand(a, b) { return a + Math.random() * (b - a); }
-      function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+      const SHAPES = [
+        { type: 'ring', cx: 175, cy: 165, rOut: 125, rIn: 85, a0: 68, a1: 382, x0: 50, wobble: 30, color: '#C1632B' },
+        { type: 'poly', pts: [[70, 35], [280, 35], [280, 75], [70, 75]], closed: true, x0: 70, wobble: -18, color: '#2D5563' },
+        { type: 'poly', pts: [[155, 75], [195, 75], [195, 280], [155, 280]], closed: true, x0: 155, wobble: 20, color: '#2D5563' }
+      ];
+
+      const DRAW_MS = 560, DRAW_SPAN = 280;
+      const HOLD_MS = 240;
+      const EXIT_MS = 680, EXIT_SPAN = 240;
+
       function reduceMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
-      function buildTracePath(y0, W, H) {
-        let x = 0, y = y0;
-        let d = 'M0 ' + y0.toFixed(1);
-        const steps = 6;
-        for (let i = 0; i < steps; i++) {
-          const isLast = i === steps - 1;
-          if (i % 2 === 0) {
-            let dx;
-            if (isLast) dx = W - x;
-            else {
-              const forward = Math.random() < 0.72;
-              dx = forward ? rand(W * 0.08, W * 0.2) : -rand(W * 0.03, W * 0.09);
-            }
-            x = clamp(x + dx, 0, W);
-            d += ' L' + x.toFixed(1) + ' ' + y.toFixed(1);
+      function buildPaths(W, H) {
+        const size = Math.min(W, H) * 0.46;
+        const scale = size / CANVAS_W;
+        const offX = W / 2 - (CANVAS_W * scale) / 2;
+        const offY = H / 2 - (CANVAS_H * scale) / 2;
+        const tx = (x) => offX + x * scale;
+        const ty = (y) => offY + y * scale;
+
+        return SHAPES.map((s) => {
+          let d;
+          if (s.type === 'ring') {
+            const rOut = s.rOut * scale, rIn = s.rIn * scale;
+            const cx = tx(s.cx), cy = ty(s.cy);
+            const rad0 = (s.a0 * Math.PI) / 180, rad1 = (s.a1 * Math.PI) / 180;
+            const span = ((s.a1 - s.a0) % 360 + 360) % 360;
+            const largeArc = span > 180 ? 1 : 0;
+            const outStart = [cx + rOut * Math.cos(rad0), cy + rOut * Math.sin(rad0)];
+            const outEnd = [cx + rOut * Math.cos(rad1), cy + rOut * Math.sin(rad1)];
+            const inEnd = [cx + rIn * Math.cos(rad1), cy + rIn * Math.sin(rad1)];
+            const inStart = [cx + rIn * Math.cos(rad0), cy + rIn * Math.sin(rad0)];
+            d = 'M' + outStart[0] + ' ' + outStart[1] +
+              ' A' + rOut + ' ' + rOut + ' 0 ' + largeArc + ' 1 ' + outEnd[0] + ' ' + outEnd[1] +
+              ' L' + inEnd[0] + ' ' + inEnd[1] +
+              ' A' + rIn + ' ' + rIn + ' 0 ' + largeArc + ' 0 ' + inStart[0] + ' ' + inStart[1] +
+              ' Z';
           } else {
-            const dy = (Math.random() < 0.5 ? -1 : 1) * rand(H * 0.06, H * 0.18);
-            y = clamp(y + dy, H * 0.03, H * 0.97);
-            d += ' L' + x.toFixed(1) + ' ' + y.toFixed(1);
+            const pts = s.pts.map((p) => tx(p[0]) + ' ' + ty(p[1]));
+            d = 'M' + pts[0] + pts.slice(1).map((p) => ' L' + p).join('') + (s.closed ? ' Z' : '');
           }
-        }
-        if (x < W) d += ' L' + W + ' ' + y.toFixed(1);
-        return d;
+          return { d, x0: s.x0, wobble: s.wobble * scale * 4, color: s.color };
+        });
       }
 
-      function playCoverPhase() {
+      function playDrawPhase() {
         return new Promise((resolve) => {
           if (reduceMotion()) { resolve(); return; }
 
           const W = window.innerWidth, H = window.innerHeight;
           svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-          const cy = H / 2;
-
-          meshWrap.innerHTML = '';
-          ticksWrap.innerHTML = '';
+          logoWrap.innerHTML = '';
           curtain.style.transition = 'none';
           curtain.style.opacity = '0';
-
-          refLine.setAttribute('x1', 0); refLine.setAttribute('y1', String(cy));
-          refLine.setAttribute('x2', String(W)); refLine.setAttribute('y2', String(cy));
-          const refLen = W;
-          refLine.style.transition = 'none';
-          refLine.style.strokeDasharray = String(refLen);
-          refLine.style.strokeDashoffset = String(refLen);
-          refDot.setAttribute('cx', '0'); refDot.setAttribute('cy', String(cy));
-          refDot.style.transition = 'none';
-          refDot.style.opacity = '0';
-
-          const N_TICKS = 14;
-          const ticks = [];
-          for (let i = 1; i < N_TICKS; i++) {
-            const tx = (W / N_TICKS) * i;
-            const t = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            t.setAttribute('x1', String(tx)); t.setAttribute('x2', String(tx));
-            t.setAttribute('y1', String(cy - 7)); t.setAttribute('y2', String(cy + 7));
-            t.setAttribute('stroke', '#2D5563');
-            t.setAttribute('stroke-width', '1.5');
-            t.style.opacity = '0';
-            ticksWrap.appendChild(t);
-            ticks.push({ el: t, x: tx });
-          }
-
           void svg.getBoundingClientRect();
 
-          curtain.style.transition = 'opacity ' + MESH_DRAW + 'ms ease';
-          refLine.style.transition = 'stroke-dashoffset ' + REF_DRAW + 'ms cubic-bezier(.45,0,.2,1)';
-          refDot.style.transition = 'cx ' + REF_DRAW + 'ms cubic-bezier(.45,0,.2,1), opacity 150ms ease';
-          ticks.forEach((tk) => {
-            tk.el.style.transition = 'opacity 150ms ease';
-            tk.el.style.transitionDelay = Math.round((tk.x / W) * REF_DRAW) + 'ms';
+          const paths = buildPaths(W, H);
+          const xs = paths.map((p) => p.x0);
+          const minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+          const span = Math.max(1, maxX - minX);
+
+          const traces = [];
+          paths.forEach((pdata, i) => {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            el.setAttribute('d', pdata.d);
+            el.setAttribute('fill', 'none');
+            el.setAttribute('stroke', pdata.color || '#2D5563');
+            el.setAttribute('stroke-width', '2.6');
+            el.setAttribute('stroke-linecap', 'round');
+            el.setAttribute('stroke-linejoin', 'round');
+            logoWrap.appendChild(el);
+            const len = el.getTotalLength();
+            const drawDelay = ((pdata.x0 - minX) / span) * DRAW_SPAN;
+            const exitDelay = ((pdata.x0 - minX) / span) * EXIT_SPAN;
+            const anim = el.animate(
+              [{ strokeDasharray: len, strokeDashoffset: len }, { strokeDasharray: len, strokeDashoffset: 0 }],
+              { duration: DRAW_MS, delay: drawDelay, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }
+            );
+            traces.push({ el, len, exitDelay, wobble: pdata.wobble, anim });
           });
 
-          requestAnimationFrame(() => {
-            refLine.style.strokeDashoffset = '0';
-            refDot.style.opacity = '1';
-            refDot.setAttribute('cx', String(W));
-            ticks.forEach((tk) => { tk.el.style.opacity = '1'; });
-          });
+          svg.__tcTraces = traces;
+          curtain.animate([{ opacity: 0 }, { opacity: 0.9 }], { duration: DRAW_MS + 120, easing: 'ease', fill: 'forwards' });
 
-          setTimeout(() => {
-            refLine.style.transition = 'stroke-dashoffset ' + REF_ERASE + 'ms ease-in';
-            refDot.style.transition = 'cx ' + REF_ERASE + 'ms ease-in, opacity 200ms ease';
-            refLine.style.strokeDashoffset = String(-refLen);
-            refDot.style.opacity = '0';
-            ticks.forEach((tk) => {
-              tk.el.style.transition = 'opacity 180ms ease';
-              tk.el.style.transitionDelay = '0ms';
-              tk.el.style.opacity = '0';
-            });
-          }, REF_DRAW + REF_HOLD);
-
-          const meshStart = REF_DRAW + REF_HOLD + REF_ERASE;
-
-          setTimeout(() => {
-            const traces = [];
-            for (let i = 0; i < MESH_N; i++) {
-              const y0 = clamp((H / (MESH_N - 1)) * i + rand(-H * 0.02, H * 0.02), H * 0.02, H * 0.98);
-              const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-              p.setAttribute('d', buildTracePath(y0, W, H));
-              p.setAttribute('fill', 'none');
-              p.setAttribute('stroke', (i % 3 === 0) ? '#C1632B' : '#2D5563');
-              p.setAttribute('stroke-width', (i % 3 === 0) ? '1.6' : '1.3');
-              p.setAttribute('stroke-linecap', 'round');
-              p.setAttribute('stroke-linejoin', 'round');
-              p.style.opacity = (i % 3 === 0) ? '0.8' : '0.55';
-              meshWrap.appendChild(p);
-              const len = p.getTotalLength();
-              p.style.strokeDasharray = String(len);
-              p.style.strokeDashoffset = String(len);
-              traces.push({ el: p, len, delay: i * MESH_STAGGER });
-            }
-
-            requestAnimationFrame(() => {
-              curtain.style.opacity = '0.94';
-              traces.forEach((tr) => {
-                tr.el.style.transition = 'stroke-dashoffset ' + MESH_DRAW + 'ms cubic-bezier(.4,0,.2,1) ' + tr.delay + 'ms';
-                tr.el.style.strokeDashoffset = '0';
-              });
-            });
-
-            svg.__tcTraces = traces;
-            const lastDrawFinish = MESH_DRAW + (MESH_N - 1) * MESH_STAGGER;
-            setTimeout(resolve, lastDrawFinish + MESH_HOLD);
-          }, meshStart);
+          const lastFinish = DRAW_MS + DRAW_SPAN;
+          Promise.all(traces.map((t) => t.anim.finished)).then(() => {
+            setTimeout(resolve, HOLD_MS);
+          }).catch(() => setTimeout(resolve, lastFinish + HOLD_MS));
         });
       }
 
-      function playErasePhase() {
+      function playExitPhase() {
         if (reduceMotion()) return;
         const traces = svg.__tcTraces || [];
-        curtain.style.transition = 'opacity ' + MESH_ERASE + 'ms ease';
-        curtain.style.opacity = '0';
+        const W = window.innerWidth;
+
+        curtain.animate([{ opacity: 0.9 }, { opacity: 0 }], { duration: EXIT_MS * 0.7, easing: 'ease', fill: 'forwards' });
+
         traces.forEach((tr) => {
-          tr.el.style.transition = 'stroke-dashoffset ' + MESH_ERASE + 'ms ease-in ' + tr.delay + 'ms';
-          tr.el.style.strokeDashoffset = String(-tr.len);
+          const anim = tr.el.animate(
+            [
+              { transform: 'translate(0px, 0px)', opacity: 1 },
+              { transform: 'translate(' + (W * 0.55) + 'px, ' + (tr.wobble) + 'px)', opacity: 1, offset: 0.6 },
+              { transform: 'translate(' + (W + 200) + 'px, ' + (tr.wobble * 1.4) + 'px)', opacity: 0 }
+            ],
+            { duration: EXIT_MS, delay: tr.exitDelay, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' }
+          );
+          anim.finished.catch(() => {});
         });
-        const lastEraseFinish = MESH_ERASE + (traces.length ? (traces.length - 1) * MESH_STAGGER : 0);
-        setTimeout(() => { meshWrap.innerHTML = ''; }, lastEraseFinish + 60);
+
+        const lastFinish = EXIT_MS + EXIT_SPAN;
+        setTimeout(() => { logoWrap.innerHTML = ''; }, lastFinish + 80);
       }
 
       document.addEventListener('astro:before-preparation', (event) => {
         const originalLoader = event.loader;
         event.loader = async () => {
-          await playCoverPhase();
+          await playDrawPhase();
           await originalLoader();
         };
       });
-      document.addEventListener('astro:after-swap', playErasePhase);
+      document.addEventListener('astro:after-swap', playExitPhase);
     }
     initPageTransition();
   </script>
