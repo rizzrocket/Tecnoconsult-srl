@@ -46,6 +46,7 @@ const canonical = Astro.site
   :root{
     --paper:#eef2f1;
     --surface:#ffffff;
+    --tint:#dee6e6;
     --ink:#16242a;
     --ink-soft:#46565c;
     --petrol:#2d5563;
@@ -74,10 +75,34 @@ const canonical = Astro.site
 
   .eyebrow{
     font-family:'IBM Plex Mono',monospace;
-    font-size:0.72rem;
+    font-size:0.78rem;
     letter-spacing:0.12em;
     text-transform:uppercase;
     color:var(--petrol);
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  /* indicatore tecnico copper prima dell'etichetta */
+  .eyebrow::before{
+    content:"";
+    width:18px;
+    height:2px;
+    background:var(--copper);
+    flex-shrink:0;
+  }
+  /* sezioni principali numerate: 01 / 02 / 03 in copper, stile scheda tecnica */
+  body{counter-reset:sect;}
+  .section-head{counter-increment:sect;}
+  .section-head .eyebrow::before{
+    content:counter(sect,decimal-leading-zero);
+    width:auto;
+    height:auto;
+    background:none;
+    color:var(--copper);
+    font-weight:700;
+    letter-spacing:0.05em;
   }
 
   /* ---------- reveal ---------- */
@@ -206,7 +231,7 @@ const canonical = Astro.site
 
   /* ---------- datasheet strip ---------- */
   .datasheet{
-    border-top:1px solid var(--line);
+    border-top:2px solid var(--petrol);
     border-bottom:1px solid var(--line);
     background:var(--surface);
   }
@@ -215,20 +240,20 @@ const canonical = Astro.site
     grid-template-columns:repeat(4,1fr);
   }
   .ds-item{
-    padding:18px 24px;
+    padding:22px 24px;
     border-right:1px solid var(--line-soft);
   }
   .ds-item:last-child{border-right:none;}
   .ds-key{font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.1em; color:var(--ink-soft); text-transform:uppercase;}
-  .ds-val{font-family:'IBM Plex Mono',monospace; font-size:1.3rem; font-weight:600; color:var(--petrol); margin-top:2px;}
+  .ds-val{font-family:'IBM Plex Mono',monospace; font-size:1.5rem; font-weight:600; color:var(--petrol); margin-top:4px;}
 
   /* ---------- pipe divider ---------- */
   .pipe-divider{display:block; width:100%; height:34px;}
 
   section{padding:70px 0;}
-  .section-head{margin-bottom:34px; max-width:640px;}
-  .section-head h2{font-size:1.9rem; margin-top:8px;}
-  .section-head p{color:var(--ink-soft); margin-top:10px; line-height:1.6;}
+  .section-head{margin-bottom:44px; max-width:680px;}
+  .section-head h2{font-size:clamp(1.8rem,3.2vw,2.6rem); line-height:1.1; letter-spacing:-0.02em; margin-top:12px;}
+  .section-head p{color:var(--ink-soft); margin-top:12px; line-height:1.6;}
 
   /* ---------- chi siamo ---------- */
   .chisiamo{
@@ -489,7 +514,7 @@ const canonical = Astro.site
     padding:22px 20px;
   }
   .servizio-card svg{margin-bottom:14px;}
-  .servizio-card h3{font-size:0.98rem; margin-bottom:8px;}
+  .servizio-card h3{font-size:1.14rem; font-weight:600; color:var(--ink); margin-bottom:8px;}
   .servizio-card p{font-size:0.84rem; color:var(--ink-soft); line-height:1.55;}
 
   /* ---------- anteprima mappa di copertura (home) ---------- */
@@ -549,7 +574,7 @@ const canonical = Astro.site
     border-left:1px solid var(--line);
   }
   .pillar:first-child{border-left:none; padding-left:0;}
-  .pillar h3{font-size:1rem; margin-bottom:8px; color:var(--petrol);}
+  .pillar h3{font-size:1.16rem; font-weight:600; margin-bottom:8px; color:var(--ink);}
   .pillar p{font-size:0.86rem; color:var(--ink-soft); line-height:1.55;}
 
   /* ---------- contatti ---------- */
@@ -644,14 +669,17 @@ const canonical = Astro.site
   .section-affida { padding: 60px 0; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
   /* ===== Referenze page: chip-grid per categoria ===== */
-  .ref-section-header { margin-bottom: 20px; }
+  .ref-section-header { margin-bottom: 32px; }
   .ref-section-cat {
+    display: inline-block;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     color: var(--petrol);
-    border-left: 3px solid var(--copper);
-    padding-left: 14px;
+    border-left: 4px solid var(--copper);
+    padding-left: 18px;
   }
   .ref-name-grid {
     display: flex;
@@ -666,22 +694,44 @@ const canonical = Astro.site
     border: 1px solid var(--line);
     border-radius: 6px;
     padding: 8px 14px;
-    transition: border-color .2s, color .2s;
+    transition: border-color .2s, color .2s, transform .2s;
   }
-  .ref-name-chip:hover { border-color: var(--petrol); color: var(--petrol); }
+  .ref-name-chip:hover { border-color: var(--petrol); color: var(--petrol); transform: translateY(-1px); }
 
   /* ===== Upgrade grafico generale ===== */
-  /* card hover universale */
+  /* card hover universale con micro-sollevamento */
   .servizio-card, .team-card, .founder-card, .bt-card {
-    transition: border-color .2s ease, box-shadow .2s ease;
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
   }
   .servizio-card:hover, .team-card:hover, .bt-card:hover {
     border-color: var(--petrol);
-    box-shadow: 0 4px 18px rgba(45,85,99,0.08);
+    box-shadow: 0 6px 20px rgba(45,85,99,0.10);
+    transform: translateY(-2px);
+  }
+  @media (prefers-reduced-motion:reduce){
+    .servizio-card:hover, .team-card:hover, .bt-card:hover,
+    .ref-name-chip:hover, .brand-logo-tile:hover { transform: none; }
   }
 
-  /* sezioni alternate */
-  section:nth-of-type(even) { background: var(--surface); }
+  /* ===== Divisione sezioni: fasce di fondo (derivazioni della palette) ===== */
+  .section--surface { background: var(--surface); }
+  .section--tint { background: var(--tint); }
+  /* blocco chiave a contrasto forte (riuso dello stile del blocco contatti) */
+  .section--petrol { background: var(--petrol); color: var(--paper); }
+  .section--petrol h2, .section--petrol h3 { color: #fff; }
+  .section--petrol .eyebrow { color: var(--paper); }
+  .section--petrol .eyebrow::before { background: var(--copper); }
+  .section--petrol .section-head .eyebrow::before { color: var(--copper); background: none; }
+  .section--petrol .mission-statement { color: #fff; }
+  .section--petrol .pillar { border-left-color: rgba(255,255,255,0.22); }
+  .section--petrol .pillar h3 { color: #fff; }
+  .section--petrol .pillar p { color: rgba(238,242,241,0.82); }
+  .section--petrol .mv-full-toggle > summary,
+  .section--petrol .card-cue { color: #e7c8b4; }
+  .section--petrol .mv-full-text p { color: rgba(238,242,241,0.85); }
+  @media (max-width:920px){
+    .section--petrol .pillar { border-top-color: rgba(255,255,255,0.22); }
+  }
 
   /* padding sezioni più generoso */
   section { padding: 90px 0; }
@@ -692,7 +742,6 @@ const canonical = Astro.site
     section { padding: 36px 0; }
   }
   @media (max-width: 560px) {
-    .section-head h2 { font-size: 1.45rem; }
     .footer-bottom { flex-direction: column; gap: 4px; }
   }
 
