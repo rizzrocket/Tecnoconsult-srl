@@ -157,3 +157,32 @@ associazione visiva fuorviante.
   rotazione alternata ridotta (max ±2.5°), ampiezza differenziata per filo
   (barra lunga più contenuta), amp per-linea riusata in uscita; stagger
   sx→dx e velo blur invariati, prefers-reduced-motion rispettato.
+- 2026-07-09: Rework finale (branch rework-finale). Quattro interventi.
+  (1) Link marchi: i 4 loghi/card marchio (home griglia + dove-operiamo
+  bt-card, ora convertite da div ad <a>) puntano ai siti ufficiali in nuova
+  scheda (target=_blank rel=noopener noreferrer + aria-label): Radiant
+  radiant.it, ITAP itap.it, GDA generaldaspirazione.com, Aquatechnik
+  aquatechnik.it. In dove-operiamo l'ordine card è Aquatechnik/Radiant/GDA/
+  ITAP: URL abbinati leggendo il .bt-name. (2) "Showroom" → "Centro Didattico
+  Formativo" su tutto il testo visibile (home datasheet "Centro Didattico" +
+  card preview, servizi titolo card, chi-siamo eyebrow/h2/alt immagini);
+  invariati ancora #centro-didattico, nomi file sede-showroom-*.jpg e classi
+  .showroom*. (3+4) Rework grafico, quasi tutto nel CSS globale di
+  Layout.astro: eyebrow con trattino copper (::before) + numerazione sezioni
+  01/02/03 in copper via counter su .section-head; .section-head h2 e
+  .ref-section-cat a clamp (titoli valorizzati, non enormi, line-height 1.1);
+  .servizio-card h3 / .pillar h3 più decisi (1.14-1.16rem, --ink, 600);
+  datasheet come biglietto da visita (bordo top petrol 2px, ds-val 1.5rem,
+  più padding); divisione sezioni con fasce alternate .section--surface /
+  .section--tint (nuova var --tint #dee6e6, derivazione petrol su paper ~8%)
+  + un blocco chiave forte per pagina .section--petrol (fondo petrol pieno,
+  testo chiaro, riuso dello stile del blocco scuro contatti) — rimossa la
+  vecchia alternanza cieca section:nth-of-type(even); hover card universale
+  con micro translateY(-2px) e ref-name-chip hover, entrambi sotto
+  prefers-reduced-motion. Fasce applicate: home (chi-siamo surface, mission&
+  vision tint, servizi preview tint), dove-operiamo (marchi surface, mappa
+  tint), servizi (tint), chi-siamo (Mission=petrol, Vision=tint); referenze
+  invariata nei fondi categoria (già distinti) ma con intestazioni ingrandite.
+  Palette/font invariati, nessuna tagline aggiunta. Verifica: grep showroom
+  in src/pages/ → solo classi/nomi file; npm run build 0 errori; ispezione
+  visiva preview desktop+mobile di tutte le pagine.
