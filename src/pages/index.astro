@@ -3,10 +3,10 @@ import Layout from '../layouts/Layout.astro';
 
 // I 4 marchi rappresentati
 const marchi = [
-  { nome: 'Radiant', file: 'radiant.svg' },
-  { nome: 'ITAP', file: 'itap.jpg' },
-  { nome: 'GDA', file: 'gda.jpg' },
-  { nome: 'Aquatechnik', file: 'aquatechnik.png' },
+  { nome: 'Radiant', file: 'radiant.svg', url: 'https://www.radiant.it' },
+  { nome: 'ITAP', file: 'itap.jpg', url: 'https://www.itap.it' },
+  { nome: 'GDA', file: 'gda.jpg', url: 'https://generaldaspirazione.com' },
+  { nome: 'Aquatechnik', file: 'aquatechnik.png', url: 'https://www.aquatechnik.it' },
 ];
 
 // Tutti i clienti delle 3 categorie, in ordine misto, riga unica (no etichette)
@@ -81,7 +81,7 @@ const clienti = [
     <span class="marquee-label">Marchi rappresentati</span>
     <div class="brand-logo-grid">
       {marchi.map((m) => (
-        <a class="brand-logo-tile" href="/dove-operiamo#mappa-copertura" aria-label={`${m.nome} — copertura territoriale`}>
+        <a class="brand-logo-tile" href={m.url} target="_blank" rel="noopener noreferrer" aria-label={`${m.nome} — sito ufficiale (nuova scheda)`}>
           <img src={`/images/brands/${m.file}`} alt={m.nome} loading="lazy" />
         </a>
       ))}
