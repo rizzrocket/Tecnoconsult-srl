@@ -107,3 +107,53 @@ associazione visiva fuorviante.
   la card vuota), titolo "Il nostro show-room" sopra la gallery, nuova
   sezione Vision (placeholder, testo da fornire) dopo Mission. Referenze:
   rimossi i 4 filtri a pillole, le 3 categorie restano sempre visibili.
+- 2026-07-07: Fix transizione di pagina in Layout.astro — rimosso il monogramma
+  "T+C" disegnato a runtime con path SVG (SHAPES/buildPaths, non era il logo
+  vero), sostituito con overlay a tutta pagina su var(--paper) che mostra il
+  logo reale /images/tecnoconsult-icon.png con fade + scala (stile logoScaleIn
+  dell'hero): fade-in su astro:before-preparation, fade-out su astro:after-swap,
+  prefers-reduced-motion rispettato (animazione saltata).
+- 2026-07-07 (sessione 2): Su richiesta esplicita, sostituita la transizione
+  fade+scala con l'effetto "linee che formano il logo": geometria (ring C +
+  barra + gambo T) ri-misurata via analisi pixel di tecnoconsult-icon.png
+  (cv2, mask su canale colore + contorni) per ricalcare fedelmente le
+  proporzioni reali (centro, raggi, apertura in basso a destra), invece di
+  riusare numeri inventati. Le 3 linee (stroke var(--copper), fill:none,
+  non più bicolore copper/petrol) entrano in scena traslando da sinistra
+  verso la posizione finale (staggerate da sinistra a destra), restano ferme
+  a formare il logo, poi traslano ed escono a destra sfumando. Sfondo: la
+  vecchia "tenda" opaca (rect fill var(--paper)) è stata sostituita da un
+  velo semi-trasparente con backdrop-filter:blur(10px) (#tc-veil), quindi
+  la pagina sottostante si vede sfocata durante il cambio invece di sparire
+  dietro un colore pieno. Verificato con build statica (0 errori) + render
+  isolato della geometria SVG per confronto visivo col logo reale.
+- 2026-07-08: Transizione di pagina, terza iterazione (Layout.astro). Le 3
+  forme chiuse (fascia ad anello + 2 rettangoli) sono diventate 3 LINEE
+  singole stile filo (stroke 4.5px, linecap round): arco aperto a raggio
+  medio per la C, un segmento orizzontale (barra T) e uno verticale (gambo).
+  Geometria ri-misurata via scanline sul contorno scuro dell'icona (il
+  gradiente sfuma a bianco in basso a dx, la vecchia mask colore aveva perso
+  quella zona): canvas 318x302, cerchio centro (151.5,150.5) rOut 140.5,
+  fascia ~31 → linea media r=125; apertura della C a DESTRA (non in basso),
+  da -31.6° (il braccio alto sparisce sotto la barra) a +32° (taglio
+  orizzontale a y~217); barra y media 67 (x 28..277), gambo x=153 fino a
+  y=265 — ora la C scende fino in fondo come nel logo vero. Movimento "a
+  serpente": keyframe intermedi con offset Y sinusoidale (AMP ~2.5vh) +
+  rotazione ±3° (transform-box:fill-box), fase alternata per filo, stagger
+  sx→dx invariato in entrata e uscita; velo blur invariato. Verifica visiva:
+  overlay SVG delle linee sopra tecnoconsult-icon.png renderizzato in PNG e
+  ispezionato col Read tool (arco sulla mezzeria della fascia, termini
+  coincidenti coi tagli reali); npm run build 0 errori (copia in /tmp con
+  npm ci Linux, i binari esbuild del mount sono darwin-arm64).
+- 2026-07-08 (sessione 2): Geometria del logo nella transizione RICALIBRATA
+  con misurazione manuale su griglia sovrapposta a tecnoconsult-icon.png
+  (le due derivazioni automatiche precedenti erano sbagliate): apertura
+  della C corretta da un varco enorme a ore 3 a una piccola tacca a ore 4-5
+  (arco 45°→387°), raggio centro-linea r=116, centro (151.5,150), canvas
+  302x302, barra y=63 x 20..280, gambo x=151.5 y 78..260 — valori verificati
+  visivamente affiancando il render statico al logo vero, NON rimisurare.
+  Motion a serpente rifinito: ondulazione sinusoidale ad ampiezza ~3vh
+  decrescente in entrata (posa dolce, 6 keyframe) e crescente in uscita,
+  rotazione alternata ridotta (max ±2.5°), ampiezza differenziata per filo
+  (barra lunga più contenuta), amp per-linea riusata in uscita; stagger
+  sx→dx e velo blur invariati, prefers-reduced-motion rispettato.

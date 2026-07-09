@@ -504,8 +504,38 @@ const canonical = Astro.site
   .coverage-preview-card img{display:block; width:100%; height:auto;}
   .coverage-preview-card:hover{filter:brightness(1.04); transform:scale(1.01);}
 
-  /* ---------- mission ---------- */
+  /* ---------- mission / vision ---------- */
   .mission-statement{font-size:1.18rem; line-height:1.6; max-width:760px; color:var(--ink);}
+  .mv-full-toggle{margin-top:18px;}
+  .mv-full-toggle > summary{
+    cursor:pointer;
+    list-style:none;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--petrol);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    user-select:none;
+  }
+  .mv-full-toggle > summary::-webkit-details-marker{display:none;}
+  .mv-full-toggle > summary::before{content:"▸"; transition:transform .2s;}
+  .mv-full-toggle[open] > summary::before{transform:rotate(90deg);}
+  .mv-full-text{margin-top:16px; max-width:760px;}
+  .mv-full-text p{font-size:0.95rem; line-height:1.75; color:var(--ink-soft); margin-top:14px;}
+  .mv-full-text p:first-child{margin-top:0;}
+
+  /* ---------- mission & vision preview (home) ---------- */
+  .mv-preview-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:30px;}
+  .mv-preview-card{background:var(--surface); border:1px solid var(--line-soft); border-radius:var(--radius); padding:26px 24px;}
+  .mv-preview-card .ds-key{margin-bottom:10px;}
+  .mv-preview-text{font-size:0.92rem; line-height:1.65; color:var(--ink); margin-bottom:14px;}
+  @media (max-width:720px){
+    .mv-preview-grid{grid-template-columns:1fr;}
+  }
+
   .pillars{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -786,7 +816,7 @@ const canonical = Astro.site
     cursor:pointer;
     transition:border-color .4s ease, box-shadow .4s ease, background .4s ease;
   }
-  .servizio-card .card-cue{
+  .card-cue{
     margin-top:12px;
     font-family:'IBM Plex Mono',monospace;
     font-size:0.72rem;
@@ -796,8 +826,10 @@ const canonical = Astro.site
     display:inline-flex;
     align-items:center;
     gap:6px;
+    text-decoration:none;
   }
-  .servizio-card .card-cue::before{content:"▸"; transition:transform .2s;}
+  .card-cue::before{content:"▸"; transition:transform .2s;}
+  .card-cue:hover{color:var(--copper);}
   .servizio-card.flash{
     border-color:var(--copper);
     box-shadow:0 0 0 3px rgba(193,99,43,0.22);
@@ -891,10 +923,22 @@ const canonical = Astro.site
   section.ref-block--sanita{ --rb-accent:#1a6e8a; --rb-chip-bg:#f4fafd; background:#edf5fb; }
   section.ref-block--industria{ --rb-accent:#4a5568; --rb-chip-bg:#f7f8fa; background:#eef0f3; }
 
-  /* ===== Transizioni di pagina: traccia tecnica ===== */
+  /* ===== Transizioni di pagina: linee che formano il logo ===== */
   ::view-transition-old(root), ::view-transition-new(root){ animation:none; mix-blend-mode:normal; }
   #tc-transition{position:fixed; inset:0; z-index:9999; pointer-events:none;}
-  #tc-transition svg{display:block; width:100%; height:100%;}
+  #tc-veil{
+    position:absolute; inset:0;
+    background:rgba(238,242,241,0.55);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    opacity:0;
+  }
+  #tc-transition-svg{position:absolute; inset:0; width:100%; height:100%; display:block; overflow:visible;}
+  #tc-logo-lines path{
+    fill:none; stroke:var(--copper); stroke-width:4.5;
+    stroke-linecap:round; stroke-linejoin:round;
+    transform-box:fill-box; transform-origin:center;
+  }
   @media (prefers-reduced-motion:reduce){
     #tc-transition{display:none;}
   }
@@ -903,10 +947,8 @@ const canonical = Astro.site
 </head>
 <body>
   <div id="tc-transition" transition:persist aria-hidden="true">
-    <svg id="tc-transition-svg">
-      <rect id="tc-curtain" x="0" y="0" width="100%" height="100%" style="fill:var(--paper); opacity:0;"></rect>
-      <g id="tc-logo-lines"></g>
-    </svg>
+    <div id="tc-veil"></div>
+    <svg id="tc-transition-svg"><g id="tc-logo-lines"></g></svg>
   </div>
   <Header />
   <slot />
@@ -959,125 +1001,143 @@ const canonical = Astro.site
     document.addEventListener('astro:page-load', initPipeDividers);
 
     function initPageTransition() {
+      const overlay = document.getElementById('tc-transition');
+      const veil = document.getElementById('tc-veil');
       const svg = document.getElementById('tc-transition-svg');
-      const curtain = document.getElementById('tc-curtain');
       const logoWrap = document.getElementById('tc-logo-lines');
-      if (!svg || svg.dataset.tcInit) return;
-      svg.dataset.tcInit = '1';
+      if (!overlay || !svg || overlay.dataset.tcInit) return;
+      overlay.dataset.tcInit = '1';
 
-      // Monogramma pulito "T + C" (solo le linee essenziali del logo, senza il quadrato di
-      // costruzione ne le diagonali della griglia): anello a C quasi completo con una piccola
-      // apertura in basso a destra lungo la diagonale (68°-382°, ~46° di ampiezza centrata a 45°),
-      // barra orizzontale della T in alto (y=35..75) e gambo verticale della T che scende attraverso
-      // il centro dell'anello. Anello in copper come accento, T in petrol. Verificato via render.
-      const CANVAS_W = 350, CANVAS_H = 330;
-
-      const SHAPES = [
-        { type: 'ring', cx: 175, cy: 165, rOut: 125, rIn: 85, a0: 68, a1: 382, x0: 50, wobble: 30, color: '#C1632B' },
-        { type: 'poly', pts: [[70, 35], [280, 35], [280, 75], [70, 75]], closed: true, x0: 70, wobble: -18, color: '#2D5563' },
-        { type: 'poly', pts: [[155, 75], [195, 75], [195, 280], [155, 280]], closed: true, x0: 155, wobble: 20, color: '#2D5563' }
+      // Geometria del logo reale ricalibrata con misurazione MANUALE su griglia
+      // di coordinate sovrapposta a public/images/tecnoconsult-icon.png (318x302)
+      // e verificata renderizzando le linee accanto al logo vero: combacia.
+      // Cerchio: centro (151.5, 150), raggio centro-linea r=116; l'apertura
+      // della C è una piccola tacca a ore 4-5 (da 45° a 387°=27°, angoli SVG
+      // y-verso-il-basso), NON un varco enorme a ore 3. Barra T: y=63,
+      // x 20..280. Gambo: x=151.5, da y=78 a y=260.
+      // Ogni pezzo è una LINEA singola (filo), non una forma chiusa.
+      // NON rimisurare: valori verificati visivamente il 2026-07-08.
+      const CANVAS_W = 302, CANVAS_H = 302;
+      const LINES = [
+        { type: 'arc',  cx: 151.5, cy: 150, r: 116, a0: 45, a1: 387, x0: 35.5 },
+        { type: 'line', x1: 20,    y1: 63,  x2: 280, y2: 63,           x0: 20 },
+        { type: 'line', x1: 151.5, y1: 78,  x2: 151.5, y2: 260,        x0: 151.5 }
       ];
 
-      const DRAW_MS = 560, DRAW_SPAN = 280;
-      const HOLD_MS = 240;
-      const EXIT_MS = 680, EXIT_SPAN = 240;
+      const ENTER_MS = 700, ENTER_SPAN = 260;
+      const HOLD_MS = 260;
+      const EXIT_MS = 700, EXIT_SPAN = 260;
 
       function reduceMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
       function buildPaths(W, H) {
-        const size = Math.min(W, H) * 0.46;
+        const size = Math.min(W, H) * 0.5;
         const scale = size / CANVAS_W;
         const offX = W / 2 - (CANVAS_W * scale) / 2;
         const offY = H / 2 - (CANVAS_H * scale) / 2;
         const tx = (x) => offX + x * scale;
         const ty = (y) => offY + y * scale;
 
-        return SHAPES.map((s) => {
+        return LINES.map((s) => {
           let d;
-          if (s.type === 'ring') {
-            const rOut = s.rOut * scale, rIn = s.rIn * scale;
+          if (s.type === 'arc') {
+            // arco singolo aperto a raggio medio: una sola linea curva, non una fascia
+            const r = s.r * scale;
             const cx = tx(s.cx), cy = ty(s.cy);
             const rad0 = (s.a0 * Math.PI) / 180, rad1 = (s.a1 * Math.PI) / 180;
             const span = ((s.a1 - s.a0) % 360 + 360) % 360;
             const largeArc = span > 180 ? 1 : 0;
-            const outStart = [cx + rOut * Math.cos(rad0), cy + rOut * Math.sin(rad0)];
-            const outEnd = [cx + rOut * Math.cos(rad1), cy + rOut * Math.sin(rad1)];
-            const inEnd = [cx + rIn * Math.cos(rad1), cy + rIn * Math.sin(rad1)];
-            const inStart = [cx + rIn * Math.cos(rad0), cy + rIn * Math.sin(rad0)];
-            d = 'M' + outStart[0] + ' ' + outStart[1] +
-              ' A' + rOut + ' ' + rOut + ' 0 ' + largeArc + ' 1 ' + outEnd[0] + ' ' + outEnd[1] +
-              ' L' + inEnd[0] + ' ' + inEnd[1] +
-              ' A' + rIn + ' ' + rIn + ' 0 ' + largeArc + ' 0 ' + inStart[0] + ' ' + inStart[1] +
-              ' Z';
+            const p0 = [cx + r * Math.cos(rad0), cy + r * Math.sin(rad0)];
+            const p1 = [cx + r * Math.cos(rad1), cy + r * Math.sin(rad1)];
+            d = 'M' + p0[0] + ' ' + p0[1] +
+              ' A' + r + ' ' + r + ' 0 ' + largeArc + ' 1 ' + p1[0] + ' ' + p1[1];
           } else {
-            const pts = s.pts.map((p) => tx(p[0]) + ' ' + ty(p[1]));
-            d = 'M' + pts[0] + pts.slice(1).map((p) => ' L' + p).join('') + (s.closed ? ' Z' : '');
+            // segmento singolo (barra o gambo della T)
+            d = 'M' + tx(s.x1) + ' ' + ty(s.y1) + ' L' + tx(s.x2) + ' ' + ty(s.y2);
           }
-          return { d, x0: s.x0, wobble: s.wobble * scale * 4, color: s.color };
+          return { d, x0: s.x0 };
         });
       }
 
-      function playDrawPhase() {
+      function playEnterPhase() {
         return new Promise((resolve) => {
           if (reduceMotion()) { resolve(); return; }
 
           const W = window.innerWidth, H = window.innerHeight;
           svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
           logoWrap.innerHTML = '';
-          curtain.style.transition = 'none';
-          curtain.style.opacity = '0';
+          veil.style.transition = 'none';
+          veil.style.opacity = '0';
           void svg.getBoundingClientRect();
 
           const paths = buildPaths(W, H);
           const xs = paths.map((p) => p.x0);
           const minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
           const span = Math.max(1, maxX - minX);
+          const OFFSET_X = W * 0.55;
 
-          const traces = [];
+          const els = [];
+          const AMP = Math.max(14, H * 0.03); // ampiezza dell'ondulazione "a serpente" (~3vh)
+          const AMP_VAR = [1, 0.75, 0.9]; // arco pieno, barra lunga più contenuta, gambo medio
           paths.forEach((pdata, i) => {
             const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             el.setAttribute('d', pdata.d);
-            el.setAttribute('fill', 'none');
-            el.setAttribute('stroke', pdata.color || '#2D5563');
-            el.setAttribute('stroke-width', '2.6');
-            el.setAttribute('stroke-linecap', 'round');
-            el.setAttribute('stroke-linejoin', 'round');
             logoWrap.appendChild(el);
-            const len = el.getTotalLength();
-            const drawDelay = ((pdata.x0 - minX) / span) * DRAW_SPAN;
-            const exitDelay = ((pdata.x0 - minX) / span) * EXIT_SPAN;
+            const delay = ((pdata.x0 - minX) / span) * ENTER_SPAN;
+            const dir = i % 2 === 0 ? 1 : -1; // fase alternata: ogni filo ondeggia per conto suo
+            const amp = AMP * AMP_VAR[i % AMP_VAR.length];
+            // le linee entrano da sinistra come serpenti: scivolano ondulando
+            // (sinusoide verticale ad ampiezza decrescente + lieve rotazione
+            // alternata) e si posano dolcemente nella posizione finale
             const anim = el.animate(
-              [{ strokeDasharray: len, strokeDashoffset: len }, { strokeDasharray: len, strokeDashoffset: 0 }],
-              { duration: DRAW_MS, delay: drawDelay, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }
+              [
+                { transform: 'translate(' + (-OFFSET_X) + 'px, ' + (dir * amp * 0.9) + 'px) rotate(' + (dir * -2.5) + 'deg)', opacity: 0 },
+                { transform: 'translate(' + (-OFFSET_X * 0.72) + 'px, ' + (-dir * amp) + 'px) rotate(' + (dir * 2) + 'deg)', opacity: 0.7, offset: 0.22 },
+                { transform: 'translate(' + (-OFFSET_X * 0.44) + 'px, ' + (dir * amp * 0.7) + 'px) rotate(' + (dir * -1.5) + 'deg)', opacity: 1, offset: 0.45 },
+                { transform: 'translate(' + (-OFFSET_X * 0.2) + 'px, ' + (-dir * amp * 0.4) + 'px) rotate(' + (dir * 0.9) + 'deg)', offset: 0.68 },
+                { transform: 'translate(' + (-OFFSET_X * 0.06) + 'px, ' + (dir * amp * 0.15) + 'px) rotate(' + (dir * -0.35) + 'deg)', offset: 0.86 },
+                { transform: 'translate(0px, 0px) rotate(0deg)', opacity: 1 }
+              ],
+              { duration: ENTER_MS, delay, easing: 'cubic-bezier(.16,.8,.4,1)', fill: 'forwards' }
             );
-            traces.push({ el, len, exitDelay, wobble: pdata.wobble, anim });
+            els.push({ el, delay, dir, amp, anim });
           });
 
-          svg.__tcTraces = traces;
-          curtain.animate([{ opacity: 0 }, { opacity: 0.9 }], { duration: DRAW_MS + 120, easing: 'ease', fill: 'forwards' });
+          svg.__tcEls = els;
+          veil.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ENTER_MS * 0.6, easing: 'ease', fill: 'forwards' });
 
-          const lastFinish = DRAW_MS + DRAW_SPAN;
-          Promise.all(traces.map((t) => t.anim.finished)).then(() => {
+          const lastFinish = ENTER_MS + ENTER_SPAN;
+          Promise.all(els.map((t) => t.anim.finished)).then(() => {
             setTimeout(resolve, HOLD_MS);
           }).catch(() => setTimeout(resolve, lastFinish + HOLD_MS));
         });
       }
 
       function playExitPhase() {
-        if (reduceMotion()) return;
-        const traces = svg.__tcTraces || [];
-        const W = window.innerWidth;
+        if (reduceMotion()) { logoWrap.innerHTML = ''; return; }
+        const els = svg.__tcEls || [];
+        const W = window.innerWidth, H = window.innerHeight;
+        const OFFSET_X = W * 0.65;
+        const AMP_FALLBACK = Math.max(14, H * 0.03);
 
-        curtain.animate([{ opacity: 0.9 }, { opacity: 0 }], { duration: EXIT_MS * 0.7, easing: 'ease', fill: 'forwards' });
+        veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: EXIT_MS * 0.8, easing: 'ease', fill: 'forwards' });
 
-        traces.forEach((tr) => {
+        els.forEach((tr) => {
+          // stesso ordine sinistra→destra dell'entrata: le linee riprendono a
+          // scorrere verso destra ondulando come serpenti (ampiezza crescente
+          // mentre accelerano) e scivolano fuori dallo schermo sfumando
+          const exitDelay = tr.delay * (EXIT_SPAN / ENTER_SPAN);
+          const dir = tr.dir || 1;
+          const amp = tr.amp || AMP_FALLBACK;
           const anim = tr.el.animate(
             [
-              { transform: 'translate(0px, 0px)', opacity: 1 },
-              { transform: 'translate(' + (W * 0.55) + 'px, ' + (tr.wobble) + 'px)', opacity: 1, offset: 0.6 },
-              { transform: 'translate(' + (W + 200) + 'px, ' + (tr.wobble * 1.4) + 'px)', opacity: 0 }
+              { transform: 'translate(0px, 0px) rotate(0deg)', opacity: 1 },
+              { transform: 'translate(' + (OFFSET_X * 0.07) + 'px, ' + (-dir * amp * 0.2) + 'px) rotate(' + (dir * 0.5) + 'deg)', offset: 0.18 },
+              { transform: 'translate(' + (OFFSET_X * 0.26) + 'px, ' + (dir * amp * 0.5) + 'px) rotate(' + (dir * -1.2) + 'deg)', offset: 0.4 },
+              { transform: 'translate(' + (OFFSET_X * 0.56) + 'px, ' + (-dir * amp * 0.85) + 'px) rotate(' + (dir * 1.8) + 'deg)', opacity: 0.7, offset: 0.65 },
+              { transform: 'translate(' + OFFSET_X + 'px, ' + (dir * amp * 0.6) + 'px) rotate(' + (dir * -2.2) + 'deg)', opacity: 0 }
             ],
-            { duration: EXIT_MS, delay: tr.exitDelay, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' }
+            { duration: EXIT_MS, delay: exitDelay, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' }
           );
           anim.finished.catch(() => {});
         });
@@ -1089,7 +1149,7 @@ const canonical = Astro.site
       document.addEventListener('astro:before-preparation', (event) => {
         const originalLoader = event.loader;
         event.loader = async () => {
-          await playDrawPhase();
+          await playEnterPhase();
           await originalLoader();
         };
       });
