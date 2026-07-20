@@ -9,7 +9,7 @@ import Layout from '../layouts/Layout.astro';
 <section>
   <div class="wrap dove">
     <div class="reveal">
-      <p class="eyebrow" style="margin-bottom:16px;">Dove operiamo</p>
+      <h2 class="sec-title">Dove operiamo</h2>
       <p style="line-height:1.7;">Operiamo nel mercato idro-termo-sanitario, condizionamento, trattamento aria e acqua ed energie alternative in Veneto e Friuli Venezia Giulia.</p>
       <p style="margin-top:14px; font-size:0.9rem; line-height:1.75; color:var(--ink-soft);">Operiamo nei settori civile, industriale, terziario, commerciale, navale, alberghiero e termale. I prodotti e gli impianti che trattiamo comprendono: energie alternative, impianti solari termici e fotovoltaici, pompe di calore, biomassa, caldaie, scaldabagni, centrali termiche e frigorifere, terminali per riscaldamento e condizionamento, sistemi di tubazioni e raccordi per impianti idrici e radianti, aria compressa, impianti termali e antincendio, impianti di aspirazione centralizzata, sistemi di ventilazione residenziale e meccanica controllata, regolazione e termoregolazione, staffaggi e sostegni in acciaio inox.</p>
     </div>
@@ -27,7 +27,7 @@ import Layout from '../layouts/Layout.astro';
 <section class="section--surface">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">Marchi rappresentati</p>
+      <h2>Marchi rappresentati</h2>
       <p>Territorio di competenza per ciascun marchio.</p>
     </div>
     <div class="brand-territory-grid reveal">
@@ -68,10 +68,11 @@ import Layout from '../layouts/Layout.astro';
 <section id="mappa-copertura" class="section--tint">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">Mappa di copertura</p>
-      <p>Passa il mouse (o tocca da mobile) su una provincia per vedere i marchi attivi.</p>
+      <h2>Mappa di copertura</h2>
+      <p>Quattro marchi in dodici province tra Veneto e Friuli Venezia Giulia.</p>
     </div>
-    <div class="coverage-map-wrap reveal" id="coverage-map-wrap">
+    <div class="coverage-split reveal">
+    <div class="coverage-map-wrap" id="coverage-map-wrap">
 <svg id="coverage-svg" class="coverage-map" viewBox="0 0 640 760" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Sans', Arial, sans-serif" role="img" aria-label="Mappa di copertura territoriale per provincia">
 <style>
   .prov {
@@ -130,6 +131,38 @@ import Layout from '../layouts/Layout.astro';
         <div class="ct-title"></div>
         <div class="ct-brands"></div>
       </div>
+      <p class="coverage-hint">Passa il mouse (o tocca da mobile) su una provincia per vedere i marchi attivi. In <span>rame</span> la provincia selezionata.</p>
+    </div>
+    <aside class="coverage-card">
+      <div class="coverage-card-head">Copertura per regione</div>
+      <div class="coverage-region">
+        <span class="map-swatch" style="background:#2D5563;"></span>
+        <div class="coverage-region-body">
+          <div class="coverage-region-name">Veneto <span class="coverage-region-count">7 prov.</span></div>
+          <div class="map-legend-sub">VE · TV · VR · VI · PD · RO · BL</div>
+        </div>
+      </div>
+      <div class="coverage-region">
+        <span class="map-swatch" style="background:#3E6E7C;"></span>
+        <div class="coverage-region-body">
+          <div class="coverage-region-name">Friuli Venezia Giulia <span class="coverage-region-count">4 prov.</span></div>
+          <div class="map-legend-sub">GO · PN · TS · UD</div>
+        </div>
+      </div>
+      <div class="coverage-region">
+        <span class="map-swatch" style="background:#55838F;"></span>
+        <div class="coverage-region-body">
+          <div class="coverage-region-name">Trentino-Alto Adige <span class="coverage-region-count">1 prov.</span></div>
+          <div class="map-legend-sub">Trento (TN)</div>
+        </div>
+      </div>
+      <div class="coverage-card-divider"></div>
+      <div class="data-panel">
+        <div class="data-panel-row"><span class="data-panel-k">Marchi rappresentati</span><span class="data-panel-v">4</span></div>
+        <div class="data-panel-row"><span class="data-panel-k">Province coperte</span><span class="data-panel-v">12</span></div>
+        <div class="data-panel-row"><span class="data-panel-k">Regioni</span><span class="data-panel-v">3</span></div>
+      </div>
+    </aside>
     </div>
   </div>
 </section>

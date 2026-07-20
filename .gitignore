@@ -33,3 +33,10 @@ pnpm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# Working artifacts (not part of the site)
+_attic-foto-generali/
+_attic-inutilizzate/
+_backup-transizione/
+PROMPT-*.md
+BRIEF-*.md

@@ -58,14 +58,25 @@ const servizi = [
   description="Sette aree di servizio, un'unica squadra che segue il prodotto dalla vendita all'assistenza in cantiere."
 >
 
-<!-- ============ SERVIZI ============ -->
+<!-- ============ SERVIZI — INTRO BANNER ============ -->
+<section class="section--intro">
+  <div class="wrap">
+    <div class="split split--wide-text split--reverse reveal">
+      <div>
+        <h2 class="sec-title">Servizi</h2>
+        <p style="font-size:1.06rem; line-height:1.7;">Sette aree di servizio, un'unica squadra che segue il prodotto in tutte le sue fasi: dalla vendita e la preventivazione all'assistenza in cantiere, fino alla formazione nel nostro Centro Didattico.</p>
+        <p style="margin-top:14px; font-size:0.9rem; color:var(--ink-soft); line-height:1.7;">Tocca una card per leggere il dettaglio del servizio.</p>
+      </div>
+      <figure class="split-figure split-figure--framed split-media">
+        <img src="/images/sede/sede-formazione.jpg" alt="Aula del Centro Didattico Formativo Tecno Consult allestita per un corso" loading="lazy" />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVIZI — GRIGLIA ============ -->
 <section class="section--tint">
   <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">Servizi</p>
-      <p>Sette aree di servizio, un'unica squadra che segue il prodotto in tutte le sue fasi.</p>
-    </div>
-
     <div class="servizi-flex" id="servizi-flex">
       {servizi.map((s) => (
         <div
@@ -83,6 +94,29 @@ const servizi = [
           <span class="card-cue">Leggi tutto</span>
         </div>
       ))}
+    </div>
+  </div>
+</section>
+
+<!-- ============ FORMAZIONE ============ -->
+<section id="formazione" class="section--surface">
+  <div class="wrap">
+    <div class="split split--wide-media reveal">
+      <figure class="split-figure split-figure--framed split-media">
+        <img src="/images/formazione/mauro-banco.jpg" alt="Mauro Scarabel spiega al banco demo durante un corso nel Centro Didattico Formativo" loading="lazy" />
+        <figcaption>Giornata al banco · Centro Didattico Formativo</figcaption>
+      </figure>
+      <div>
+        <h2 class="sec-title">Formazione</h2>
+        <p style="line-height:1.7;">Nel Centro Didattico Formativo di oltre 200 m² organizziamo corsi, presentazioni e webinar per installatori, tecnici, progettisti e centri assistenza, sui prodotti delle aziende rappresentate, sulle normative e sulle applicazioni.</p>
+        <p style="margin-top:14px; line-height:1.7;">Accanto alla parte teorica — con proiezione e documentazione tecnica — mettiamo a disposizione un'area dimostrativa per le giornate al banco e l'affiancamento pratico, così che ogni professionista possa vedere, provare e installare correttamente i prodotti.</p>
+        <ul class="plus-list" style="margin-top:22px;">
+          <li>Corsi, presentazioni e webinar</li>
+          <li>Giornate al banco e area dimostrativa</li>
+          <li>Affiancamento pratico in cantiere</li>
+          <li>Ricerca e accreditamento dei centri assistenza</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>

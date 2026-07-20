@@ -7,90 +7,103 @@ import Layout from '../layouts/Layout.astro';
 >
 
 <!-- ============ CHI SIAMO ============ -->
-<section style="padding-top:46px;">
-  <div class="wrap chisiamo">
-    <div class="reveal">
-      <p class="eyebrow" style="margin-bottom:18px;">Chi siamo</p>
+<section class="section--intro">
+  <div class="wrap">
+    <div class="chisiamo-intro reveal">
+      <h2 class="sec-title">Chi siamo</h2>
       <p>Tecno Consult è un'agenzia di rappresentanza con sede a San Donà di Piave (VE). Siamo un team di cinque persone con esperienza diretta nel settore termoidraulico — dalla vendita alla progettazione tecnica — al servizio di grossisti, installatori, tecnici e progettisti in Veneto e Friuli Venezia Giulia.</p>
       <p>Rappresentiamo 4 marchi di riferimento del settore e affianchiamo i nostri clienti dalla scelta del prodotto fino al cantiere.</p>
     </div>
-    <div class="founder-card reveal">
-      <div class="photo-ph founder-photo" aria-hidden="true">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.8"/><path d="M21 16l-5-5L5 19" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Foto in arrivo
+    <div class="intro-duo reveal">
+      <div class="founder-card">
+        <div class="founder-photo">
+          <img src="/images/team/mauro-scarabel.jpg" alt="Ritratto di Mauro Scarabel, fondatore di Tecno Consult" loading="lazy" />
+        </div>
+        <div class="founder-body">
+          <div class="ds-key">Fondatore</div>
+          <div class="founder-name">Mauro Scarabel</div>
+          <div class="founder-role">Titolare — vendite e relazioni commerciali</div>
+          <div style="height:1px; background:var(--line-soft); margin:14px 0;"></div>
+          <div class="ds-key">Sede operativa</div>
+          <p style="font-size:0.86rem; color:var(--ink-soft); margin-top:6px; line-height:1.5;">Via Barcis 2<br>30027 San Donà di Piave (VE)</p>
+          <div style="height:1px; background:var(--line-soft); margin:14px 0;"></div>
+          <div class="ds-key">Email</div>
+          <a class="team-contact" style="margin-top:6px; display:block;" href="mailto:mauro.scarabel@tecnoconsult-srl.it">mauro.scarabel@tecnoconsult-srl.it</a>
+        </div>
       </div>
-      <div class="ds-key">Fondatore</div>
-      <div class="founder-name">Mauro Scarabel</div>
-      <div class="founder-role">Titolare — vendite e relazioni commerciali</div>
-      <div style="height:1px; background:var(--line-soft); margin:16px 0;"></div>
-      <div class="ds-key">Sede operativa</div>
-      <p style="font-size:0.86rem; color:var(--ink-soft); margin-top:6px; line-height:1.5;">Via Barcis 2<br>30027 San Donà di Piave (VE)</p>
-      <div style="height:1px; background:var(--line-soft); margin:16px 0;"></div>
-      <div class="ds-key">Email</div>
-      <a class="team-contact" style="margin-top:6px; display:block;" href="mailto:mauro.scarabel@tecnoconsult-srl.it">mauro.scarabel@tecnoconsult-srl.it</a>
+      <aside class="team-photo-card">
+        <h3>Il nostro Team</h3>
+        <figure>
+          <img src="/images/team/foto-gruppo.jpg" alt="Il team di Tecno Consult davanti alla sede di San Donà di Piave" loading="lazy" />
+        </figure>
+      </aside>
     </div>
   </div>
 
   <div class="wrap">
     <div class="team-grid">
       <div class="team-card reveal">
-        <div class="avatar">LF</div>
+        <div class="team-portrait"><img src="/images/team/laura-ferrazzo.jpg" alt="Ritratto di Laura Ferrazzo" loading="lazy" /></div>
         <div class="team-name">Laura Ferrazzo</div>
         <div class="team-role">Marketing — contatti e appuntamenti</div>
         <a class="team-contact" href="mailto:marketing@tecnoconsult-srl.it">marketing@<br>tecnoconsult-srl.it</a>
       </div>
       <div class="team-card reveal">
-        <div class="avatar">MS</div>
+        <div class="team-portrait"><img src="/images/team/monica-scarabel.jpg" alt="Ritratto di Monica Scarabel" loading="lazy" /></div>
         <div class="team-name">Monica Scarabel</div>
         <div class="team-role">Gestione ordini e amministrazione</div>
         <a class="team-contact" href="mailto:info@tecnoconsult-srl.it">info@<br>tecnoconsult-srl.it</a>
       </div>
       <div class="team-card reveal">
-        <div class="avatar">MC</div>
+        <div class="team-portrait"><img src="/images/team/maurizio-callegarin.jpg" alt="Ritratto di Maurizio Callegarin" loading="lazy" /></div>
         <div class="team-name">Maurizio Callegarin</div>
         <div class="team-role">Consulenza, promozione, formazione</div>
         <a class="team-contact" href="mailto:maurizio.callegarin@tecnoconsult-srl.it">maurizio.callegarin@<br>tecnoconsult-srl.it</a>
       </div>
       <div class="team-card reveal">
-        <div class="avatar">FM</div>
+        <div class="team-portrait"><img src="/images/team/francesco-mazziotta.jpg" alt="Ritratto di Francesco Mazziotta" loading="lazy" /></div>
         <div class="team-name">Francesco Mazziotta</div>
         <div class="team-role">Ufficio tecnico — preventivazione</div>
         <a class="team-contact" href="mailto:tecnico@tecnoconsult-srl.it">tecnico@<br>tecnoconsult-srl.it</a>
       </div>
-      <div class="team-card team-card--empty reveal">
-        <div class="avatar avatar--empty" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke-linecap="round"/></svg>
-        </div>
+      <div class="team-card reveal">
+        <div class="team-portrait"><img src="/images/team/riccardo-scarabel.jpg" alt="Ritratto di Riccardo Scarabel" loading="lazy" /></div>
         <div class="team-name">Riccardo Scarabel</div>
+        <div class="team-role">Agente</div>
       </div>
-      <div class="team-card team-card--empty reveal">
-        <div class="avatar avatar--empty" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke-linecap="round"/></svg>
-        </div>
-        <div class="team-role">Posizione da definire</div>
+      <div class="team-card reveal">
+        <div class="team-portrait"><img src="/images/team/alessio-longato.jpg" alt="Ritratto di Alessio Longato" loading="lazy" /></div>
+        <div class="team-name">Alessio Longato</div>
+        <div class="team-role">Ufficio tecnico — preventivazione</div>
       </div>
     </div>
-    <p class="photo-note">Foto del team da inserire — placeholder con iniziali in attesa degli scatti reali.</p>
   </div>
+</section>
 
-  <div class="wrap showroom">
+<!-- ============ CENTRO DIDATTICO FORMATIVO ============ -->
+<section class="section--surface">
+  <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">Centro Didattico</p>
       <h2>Il nostro Centro Didattico Formativo</h2>
+      <p>Oltre 200 m² di area espositiva e didattica, con i prodotti delle aziende rappresentate: aula da 30 posti, area dimostrativa e area conviviale.</p>
     </div>
-    <div class="showroom-scroll reveal">
-      <div class="showroom-card">
-        <figure><img src="/images/sede/sede-formazione.jpg" alt="Centro Didattico Formativo Tecno Consult" loading="lazy" /></figure>
-      </div>
-      <div class="showroom-card">
-        <figure><img src="/images/sede/sede-showroom-1.jpg" alt="Centro Didattico Formativo — Radiant" loading="lazy" /></figure>
-      </div>
-      <div class="showroom-card">
-        <figure><img src="/images/sede/sede-showroom-2.jpg" alt="Centro Didattico Formativo — Itap" loading="lazy" /></figure>
-      </div>
-      <div class="showroom-card">
-        <figure><img src="/images/sede/sede-showroom-3.jpg" alt="Centro Didattico Formativo — Aquatechnik" loading="lazy" /></figure>
-      </div>
+    <div class="cdf-gallery reveal">
+      <figure class="cdf-item cdf-item--lead">
+        <img src="/images/formazione/corso-aula.jpg" alt="Aula del Centro Didattico Formativo durante un corso, con i partecipanti seduti" loading="lazy" />
+        <figcaption>Aula formativa · 30 posti</figcaption>
+      </figure>
+      <figure class="cdf-item">
+        <img src="/images/sede/sede-showroom-1.jpg" alt="Parete espositiva caldaie Radiant nel Centro Didattico" loading="lazy" />
+        <figcaption>Radiant</figcaption>
+      </figure>
+      <figure class="cdf-item">
+        <img src="/images/sede/sede-showroom-2.jpg" alt="Pannelli espositivi Itap con valvole e collettori" loading="lazy" />
+        <figcaption>Itap</figcaption>
+      </figure>
+      <figure class="cdf-item cdf-item--wide">
+        <img src="/images/sede/sede-showroom-3.jpg" alt="Modello dimostrativo di tubazioni Aquatechnik" loading="lazy" />
+        <figcaption>Aquatechnik</figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -101,7 +114,7 @@ import Layout from '../layouts/Layout.astro';
 <section id="mission" class="section--petrol">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">Mission</p>
+      <h2>Mission</h2>
     </div>
     <p class="mission-statement reveal">Da oltre 30 anni mettiamo la nostra esperienza al servizio di aziende mandanti e clienti, con impegno, passione e competenza. Diamo valore alle persone e a una stretta di mano, per costruire relazioni di successo.</p>
     <details class="mv-full-toggle reveal">
@@ -142,10 +155,12 @@ import Layout from '../layouts/Layout.astro';
 <section id="vision" class="section--tint">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">Vision</p>
+      <h2>Vision</h2>
     </div>
-    <p class="mission-statement reveal">Vogliamo essere il punto di riferimento del mercato idro-termo-sanitario nel Triveneto: un nome sinonimo di serietà, competenza e fiducia. Relazioni costruite nel tempo — questo il Valore che diamo a ogni stretta di mano.</p>
-    <details class="mv-full-toggle reveal">
+    <div class="split split--wide-text reveal" style="align-items:start;">
+      <div>
+        <p class="mission-statement">Vogliamo essere il punto di riferimento del mercato idro-termo-sanitario nel Triveneto: un nome sinonimo di serietà, competenza e fiducia. Relazioni costruite nel tempo — questo il Valore che diamo a ogni stretta di mano.</p>
+    <details class="mv-full-toggle">
       <summary class="card-cue">Leggi tutto</summary>
       <div class="mv-full-text">
         <p>Immaginiamo un futuro in cui il nome Tecno Consult non sia soltanto quello di un'agenzia di rappresentanza, ma quello di un punto di riferimento riconosciuto e stimato nel mercato idro-termo-sanitario, del condizionamento e delle energie alternative del Triveneto: un nome che aziende mandanti, installatori e clienti associno naturalmente a serietà, competenza, affidabilità e fiducia reciproca.</p>
@@ -158,6 +173,17 @@ import Layout from '../layouts/Layout.astro';
         <p>Più relazioni, più servizi, più qualità e presenza più capillare nel territorio, questi i nostri obbiettivi.</p>
       </div>
     </details>
+      </div>
+      <aside class="data-panel">
+        <div class="ds-key" style="margin-bottom:12px;">I nostri obiettivi</div>
+        <ul class="plus-list">
+          <li>Relazioni</li>
+          <li>Servizi</li>
+          <li>Qualità</li>
+          <li>Presenza capillare nel territorio</li>
+        </ul>
+      </aside>
+    </div>
   </div>
 </section>
 

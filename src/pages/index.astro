@@ -92,9 +92,18 @@ const clienti = [
 <!-- ============ MAPPA DI COPERTURA ============ -->
 <section>
   <div class="wrap">
-    <a class="coverage-preview-card reveal" href="/dove-operiamo#mappa-copertura" aria-label="Vai alla mappa di copertura territoriale">
-      <img src="/images/mappa-nordest.svg" alt="Anteprima mappa di copertura territoriale Tecno Consult" loading="lazy" />
-    </a>
+    <div class="split split--wide-media split--reverse reveal">
+      <div class="split-text">
+        <h2 class="sec-title">Copertura territoriale</h2>
+        <p style="line-height:1.7;">Rappresentiamo 4 marchi in 12 province tra Veneto e Friuli Venezia Giulia. Passa alla mappa interattiva per vedere i marchi attivi provincia per provincia.</p>
+        <div class="cta-row" style="margin-top:22px;">
+          <a href="/dove-operiamo#mappa-copertura" class="btn btn-ghost">Apri la mappa di copertura →</a>
+        </div>
+      </div>
+      <a class="coverage-preview-card split-media" href="/dove-operiamo#mappa-copertura" aria-label="Vai alla mappa di copertura territoriale">
+        <img src="/images/mappa-nordest.svg" alt="Anteprima mappa di copertura territoriale Tecno Consult" loading="lazy" />
+      </a>
+    </div>
   </div>
 </section>
 
@@ -102,16 +111,48 @@ const clienti = [
 <section class="section--surface">
   <div class="wrap chisiamo-home">
     <div class="reveal">
-      <p class="eyebrow" style="margin-bottom:18px;">Chi siamo</p>
+      <h2 class="sec-title">Chi siamo</h2>
       <p>Tecno Consult è un'agenzia di rappresentanza con sede a San Donà di Piave (VE). Siamo un team di cinque persone con esperienza diretta nel settore termoidraulico — dalla vendita alla progettazione tecnica — al servizio di grossisti, installatori, tecnici e progettisti in Veneto e Friuli Venezia Giulia.</p>
       <div class="cta-row" style="margin-top:22px;">
         <a href="/chi-siamo" class="btn btn-ghost">Scopri il team</a>
         <a href="/contatti" class="btn btn-primary">Contattaci</a>
       </div>
     </div>
-    <div class="photo-ph reveal" aria-hidden="true">
-      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.8"/><path d="M21 16l-5-5L5 19" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Foto in arrivo
+    <figure class="chisiamo-home-photo reveal">
+      <img src="/images/team/foto-gruppo-home.jpg" alt="Il team di Tecno Consult davanti alla sede di San Donà di Piave" loading="lazy" />
+    </figure>
+  </div>
+</section>
+
+<!-- ============ CENTRO DIDATTICO FORMATIVO ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Centro Didattico Formativo</h2>
+      <p>Mettiamo a disposizione un'area espositiva tecnica e didattica di oltre 200 m² con i prodotti e le attrezzature delle aziende rappresentate. Organizziamo presentazioni, corsi di formazione e informazione e webinar, con posti a sedere per 30 persone, proiezione, area dimostrativa e area conviviale.</p>
+    </div>
+    <div class="split split--wide-media cdf-home-split reveal">
+      <div class="split-text">
+        <p style="line-height:1.7;">Formiamo installatori, tecnici e centri assistenza sui prodotti, sulle normative e sulle applicazioni, con giornate al banco e affiancamento pratico.</p>
+        <aside class="data-panel" style="margin-top:24px;">
+          <div class="data-panel-row"><span class="data-panel-k">Area espositiva e didattica</span><span class="data-panel-v">200 m²</span></div>
+          <div class="data-panel-row"><span class="data-panel-k">Posti a sedere</span><span class="data-panel-v">30</span></div>
+          <div class="data-panel-row"><span class="data-panel-k">Attività formative</span><span class="data-panel-v">Corsi · Webinar · Banco</span></div>
+        </aside>
+        <div class="cta-row" style="margin-top:24px;">
+          <a href="/servizi#centro-didattico" class="btn btn-ghost">Scopri il Centro Didattico →</a>
+        </div>
+      </div>
+      <div class="cdf-home-gallery">
+        <figure class="cdf-fig cdf-home-lead">
+          <img src="/images/formazione/corso-gruppo.jpg" alt="Gruppo di professionisti a fine corso nel Centro Didattico Formativo Tecno Consult" loading="lazy" />
+          <figcaption>Corsi e presentazioni · San Donà di Piave (VE)</figcaption>
+        </figure>
+        <figure class="cdf-fig cdf-home-support">
+          <img src="/images/formazione/corso-aula.jpg" alt="Partecipanti seduti in aula durante un corso al Centro Didattico Formativo" loading="lazy" />
+          <figcaption>Aula formativa · 30 posti a sedere</figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </section>
@@ -120,7 +161,7 @@ const clienti = [
 <section class="section--tint">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">Mission &amp; Vision</p>
+      <h2>Mission &amp; Vision</h2>
     </div>
     <div class="mv-preview-grid reveal">
       <div class="mv-preview-card">
@@ -160,10 +201,10 @@ const clienti = [
 <section class="section--tint">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">Servizi</p>
+      <h2>Servizi</h2>
       <p>Dall'offerta alla consegna, dal cantiere alla formazione.</p>
     </div>
-    <div class="servizi-grid">
+    <div class="servizi-preview-grid">
       <a href="/servizi#vendita" class="servizio-card reveal">
         <svg width="30" height="30" viewBox="0 0 30 30"><path d="M5,22 L11,10 L19,18 L25,8" fill="none" stroke="#2d5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h3>Vendita</h3>
@@ -179,10 +220,16 @@ const clienti = [
         <h3>Assistenza post-vendita</h3>
         <p>Sopralluoghi in cantiere, supporto tecnico e indirizzamento ai centri assistenza.</p>
       </a>
-      <a href="/servizi#centro-didattico" class="servizio-card reveal">
-        <svg width="30" height="30" viewBox="0 0 30 30"><rect x="4" y="7" width="22" height="13" rx="1.5" fill="none" stroke="#2d5563" stroke-width="2"/><line x1="11" y1="24" x2="19" y2="24" stroke="#2d5563" stroke-width="2"/><line x1="15" y1="20" x2="15" y2="24" stroke="#2d5563" stroke-width="2"/></svg>
-        <h3>Centro Didattico Formativo</h3>
-        <p>200 m² di spazio espositivo. Corsi e webinar fino a 30 persone.</p>
+      <a href="/servizi#centro-didattico" class="servizio-card servizio-card--featured reveal">
+        <div class="sc-feat-body">
+          <svg width="30" height="30" viewBox="0 0 30 30"><rect x="4" y="7" width="22" height="13" rx="1.5" fill="none" stroke="#2d5563" stroke-width="2"/><line x1="11" y1="24" x2="19" y2="24" stroke="#2d5563" stroke-width="2"/><line x1="15" y1="20" x2="15" y2="24" stroke="#2d5563" stroke-width="2"/></svg>
+          <h3>Centro Didattico Formativo</h3>
+          <p>200 m² di spazio espositivo attrezzato. Corsi, webinar e presentazioni fino a 30 persone.</p>
+          <span class="card-cue">Scopri lo spazio</span>
+        </div>
+        <div class="sc-feat-media">
+          <img src="/images/sede/sede-formazione.jpg" alt="Aula del Centro Didattico Formativo Tecno Consult" loading="lazy" />
+        </div>
       </a>
     </div>
     <div style="margin-top:22px;">

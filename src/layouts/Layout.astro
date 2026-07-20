@@ -28,7 +28,8 @@ const canonical = Astro.site
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <title>{title}</title>
 <link rel="canonical" href={canonical} />
-<link rel="icon" type="image/png" href="/images/tecnoconsult-icon.png" />
+<link rel="icon" type="image/png" href="/images/favicon-tc.png?v=2" />
+<link rel="apple-touch-icon" href="/images/favicon-tc.png?v=2" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:type" content="website" />
@@ -41,10 +42,11 @@ const canonical = Astro.site
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<ViewTransitions />
+<ViewTransitions fallback="swap" />
 <style is:global>
   :root{
     --paper:#eef2f1;
+    --paper-2:#e6ebea;
     --surface:#ffffff;
     --tint:#dee6e6;
     --ink:#16242a;
@@ -62,7 +64,14 @@ const canonical = Astro.site
   body{
     margin:0;
     overflow-x:hidden;
-    background:var(--paper);
+    /* fondo lavorato: gradiente tenue + reticolo tecnico "carta blueprint"
+       a bassissima opacità; visibile solo nelle sezioni senza fascia piena */
+    background-color:var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(45,85,99,0.035) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(90deg, rgba(45,85,99,0.035) 0 1px, transparent 1px 34px),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+    background-attachment:fixed;
     color:var(--ink);
     font-family:'IBM Plex Sans',sans-serif;
     -webkit-font-smoothing:antialiased;
@@ -92,19 +101,6 @@ const canonical = Astro.site
     background:var(--copper);
     flex-shrink:0;
   }
-  /* sezioni principali numerate: 01 / 02 / 03 in copper, stile scheda tecnica */
-  body{counter-reset:sect;}
-  .section-head{counter-increment:sect;}
-  .section-head .eyebrow::before{
-    content:counter(sect,decimal-leading-zero);
-    width:auto;
-    height:auto;
-    background:none;
-    color:var(--copper);
-    font-weight:700;
-    letter-spacing:0.05em;
-  }
-
   /* ---------- reveal ---------- */
   .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
   .reveal.is-visible{opacity:1; transform:none;}
@@ -115,30 +111,37 @@ const canonical = Astro.site
   /* ---------- nav ---------- */
   header{
     position:sticky; top:0; z-index:50;
-    background:rgba(238,242,241,0.92);
+    /* barra menu in marrone mocha con scritte bianche.
+       PER RIPRISTINARE l'originale: background:rgba(238,242,241,0.92);
+       border-bottom:1px solid var(--line-soft); e rimettere i colori testo:
+       .brand-word=var(--ink) / span=var(--petrol); .nav-links a=var(--ink-soft),
+       hover/current=var(--petrol); .nav-tel border+color=var(--petrol),
+       hover bg=var(--petrol); .nav-tel-mobile a=var(--copper);
+       .nav-toggle span background=var(--ink). */
+    background:rgba(150,114,90,0.97);
     backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line-soft);
+    border-bottom:1px solid rgba(90,60,44,0.4);
   }
   .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 28px; max-width:var(--maxw); margin:0 auto;}
   .brand{display:flex; align-items:center; gap:10px; text-decoration:none;}
   .brand img{height:30px; width:auto; display:block;}
-  .brand-word{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.02rem; color:var(--ink); letter-spacing:-0.01em;}
-  .brand-word span{color:var(--petrol);}
+  .brand-word{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.02rem; color:#fff; letter-spacing:-0.01em;}
+  .brand-word span{color:rgba(255,255,255,0.82);}
   .nav-links{display:flex; gap:26px; list-style:none; margin:0; padding:0;}
-  .nav-links a{font-size:0.86rem; text-decoration:none; color:var(--ink-soft); font-weight:500;}
-  .nav-links a:hover{color:var(--petrol);}
-  .nav-links a[aria-current="page"]{color:var(--petrol); font-weight:600;}
+  .nav-links a{font-size:0.86rem; text-decoration:none; color:rgba(255,255,255,0.9); font-weight:500;}
+  .nav-links a:hover{color:#fff;}
+  .nav-links a[aria-current="page"]{color:#fff; font-weight:600;}
   .nav-tel{
     font-family:'IBM Plex Mono',monospace;
     font-size:0.82rem;
-    border:1px solid var(--petrol);
-    color:var(--petrol);
+    border:1px solid rgba(255,255,255,0.7);
+    color:#fff;
     padding:7px 14px;
     border-radius:999px;
     text-decoration:none;
     white-space:nowrap;
   }
-  .nav-tel:hover{background:var(--petrol); color:#fff;}
+  .nav-tel:hover{background:#fff; color:#96725a;}
   .nav-tel-mobile{display:none;}
   .nav-toggle-input{display:none;}
   .nav-toggle{
@@ -153,7 +156,7 @@ const canonical = Astro.site
     flex-shrink:0;
   }
   .nav-toggle span{width:24px;}
-  .nav-toggle span{display:block; width:100%; height:2px; background:var(--ink); border-radius:2px; transition:transform .25s ease, opacity .25s ease;}
+  .nav-toggle span{display:block; width:100%; height:2px; background:#fff; border-radius:2px; transition:transform .25s ease, opacity .25s ease;}
   .nav-toggle-input:checked ~ .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
   .nav-toggle-input:checked ~ .nav-toggle span:nth-child(2){opacity:0;}
   .nav-toggle-input:checked ~ .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
@@ -201,8 +204,8 @@ const canonical = Astro.site
     align-items:center;
     justify-content:center;
     width:100%;
-    max-width:420px;
-    aspect-ratio:1;
+    max-width:340px;
+    aspect-ratio:16/10;
   }
   .hero-logo-halo{
     position:absolute;
@@ -213,8 +216,8 @@ const canonical = Astro.site
   }
   .hero-logo{
     position:relative;
-    width:62%;
-    max-width:280px;
+    width:82%;
+    max-width:260px;
     height:auto;
     animation:logoScaleIn .9s ease-out both, logoBreathe 6s ease-in-out 0.9s infinite;
   }
@@ -250,65 +253,102 @@ const canonical = Astro.site
   /* ---------- pipe divider ---------- */
   .pipe-divider{display:block; width:100%; height:34px;}
 
-  section{padding:70px 0;}
-  .section-head{margin-bottom:44px; max-width:680px;}
-  .section-head h2{font-size:clamp(1.8rem,3.2vw,2.6rem); line-height:1.1; letter-spacing:-0.02em; margin-top:12px;}
+  section{padding:clamp(44px,6vw,60px) 0;}
+  /* fasce con intro breve iniziale a inizio pagina interna: meno banda vuota
+     sotto l'header, il contenuto parte presto */
+  .section--intro{padding-top:clamp(24px,3.4vw,34px);}
+  .section-head{margin-bottom:34px; max-width:680px;}
+  /* Titoli di sezione presenti ma non giganti — regola condivisa
+     tra gli h2 dentro .section-head e gli h2 sciolti con .sec-title */
+  .section-head h2, .sec-title{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(1.6rem, 1.05rem + 1.7vw, 2.25rem);
+    line-height:1.12; letter-spacing:-0.02em; font-weight:700;
+    color:var(--ink); margin:0 0 12px;
+  }
+  .section-head h2::after, .sec-title::after{
+    content:""; display:block; width:44px; height:3px;
+    background:var(--copper); margin-top:12px;
+  }
+  .section-head--center h2::after{margin-left:auto; margin-right:auto;}
+  .section-head .eyebrow{margin-bottom:8px;}
   .section-head p{color:var(--ink-soft); margin-top:12px; line-height:1.6;}
+  /* titolo forte centrato come apertura di una sezione chiave */
+  .section-head--center{max-width:760px; margin-left:auto; margin-right:auto; text-align:center;}
+  .section-head--center .eyebrow{justify-content:center;}
 
   /* ---------- chi siamo ---------- */
-  .chisiamo{
-    display:grid;
-    grid-template-columns:1.4fr 0.9fr;
-    gap:48px;
-    align-items:center;
-  }
-  .chisiamo p{font-size:1rem; line-height:1.7; color:var(--ink);}
-  .chisiamo p + p{margin-top:14px;}
+  .chisiamo-intro{max-width:720px;}
+  .chisiamo-intro p{font-size:1rem; line-height:1.7; color:var(--ink);}
+  .chisiamo-intro p + p{margin-top:14px;}
+  /* founder come biglietto da visita: ritratto ampio affiancato ai dati (Mauro
+     è il volto dell'azienda → ritratto non più piccolo dei ritratti team) */
   .founder-card{
+    max-width:620px;
+    margin-top:30px;
     border:1px solid var(--line);
+    border-top:3px solid var(--petrol);
     border-radius:var(--radius);
     background:var(--surface);
-    padding:20px 22px;
+    padding:24px 26px;
+    display:grid;
+    grid-template-columns:250px 1fr;
+    gap:28px;
+    align-items:center;
+  }
+  .founder-photo{aspect-ratio:4/5; margin:0; overflow:hidden; border:1px solid var(--line-soft); border-radius:var(--radius); background:var(--surface);}
+  .founder-photo img{display:block; width:100%; height:100%; object-fit:cover; object-position:center 40%;}
+  .founder-body{min-width:0;}
+  /* intro chi-siamo a due schede: Mauro + "Il nostro Team" (foto di gruppo) */
+  .intro-duo{display:grid; grid-template-columns:1.15fr 0.85fr; gap:22px; align-items:stretch; margin-top:30px;}
+  .intro-duo .founder-card{max-width:none; margin-top:0;}
+  .team-photo-card{display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--line); border-top:3px solid var(--copper); border-radius:var(--radius); background:var(--surface);}
+  .team-photo-card h3{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.15rem; color:var(--ink); padding:20px 24px 14px;}
+  .team-photo-card figure{margin:0; flex:1; min-height:0;}
+  .team-photo-card img{display:block; width:100%; height:100%; object-fit:cover; min-height:240px;}
+  @media (max-width:760px){
+    .intro-duo{grid-template-columns:1fr;}
   }
   .founder-card .ds-key{margin-bottom:6px;}
-  .founder-card .founder-name{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.1rem;}
+  .founder-card .founder-name{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.15rem;}
   .founder-card .founder-role{font-size:0.86rem; color:var(--ink-soft); margin-top:2px;}
+  @media (max-width:560px){
+    .founder-card{grid-template-columns:1fr; max-width:340px;}
+    .founder-photo{max-width:240px;}
+  }
 
   /* ---------- team ---------- */
   .team-grid{
     display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:18px;
+    grid-template-columns:repeat(3,minmax(0,260px));
+    justify-content:center;
+    gap:22px;
     margin-top:14px;
   }
   .team-card{
     background:var(--surface);
     border:1px solid var(--line-soft);
     border-radius:var(--radius);
-    padding:16px;
+    padding:14px;
     text-align:left;
   }
-  .avatar{
-    width:100%;
-    aspect-ratio:1;
-    border:1.5px dashed var(--line);
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:1.3rem;
-    color:var(--ink-soft);
-    background:repeating-linear-gradient(45deg, rgba(45,85,99,0.04) 0 8px, transparent 8px 16px);
+  /* ritratto: riquadro 4:5 con foto reale (object-fit cover) */
+  .team-portrait{
+    aspect-ratio:4/5;
     margin-bottom:12px;
+    overflow:hidden;
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius);
+    background:var(--surface);
   }
-  .team-card--empty{display:flex; flex-direction:column; justify-content:flex-start;}
-  .avatar--empty{color:var(--line);}
-  .team-card--empty .team-role{color:var(--ink-soft); font-style:italic;}
+  .team-portrait img{display:block; width:100%; height:100%; object-fit:cover; object-position:center 38%;}
   .team-name{font-weight:600; font-size:0.94rem;}
-  .team-role{font-size:0.78rem; color:var(--ink-soft); margin-top:3px; line-height:1.4;}
+  .team-role{font-size:0.78rem; color:var(--ink-soft); margin-top:3px; line-height:1.4; min-height:1px;}
   .team-contact{font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--petrol); margin-top:8px; word-break:break-word; display:block; text-decoration:none;}
-  .photo-note{font-size:0.72rem; color:var(--ink-soft); margin-top:14px; font-style:italic;}
+  .photo-note{font-size:0.72rem; color:var(--ink-soft); margin-top:16px; font-style:italic;}
+  @media (max-width:920px){
+    .team-grid{grid-template-columns:repeat(3,1fr);}
+  }
 
   /* ---------- marquee ---------- */
   .marquee-section{background:var(--surface); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:42px 0;}
@@ -608,7 +648,12 @@ const canonical = Astro.site
   .footer-contacts { display: flex; flex-direction: column; gap: 6px; }
   .footer-contacts a, .footer-contacts span { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--ink-soft); text-decoration: none; }
   .footer-contacts a:hover { color: var(--copper); }
-  .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding-top: 18px; border-top: 1px solid var(--line-soft); font-size: 0.72rem; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px 20px; padding-top: 18px; border-top: 1px solid var(--line-soft); font-size: 0.72rem; }
+  .footer-powered { display: flex; align-items: center; gap: 10px; }
+  .footer-powered-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+  .footer-powered-badge { display: inline-flex; align-items: center; justify-content: center; background: var(--copper); border-radius: 8px; padding: 3px 5px; }
+  .footer-powered-logo { height: 26px; width: auto; display: block; border-radius: 5px; }
+  .footer-legal { display: flex; flex-direction: column; gap: 4px; text-align: right; }
   @media (max-width: 720px) {
     .footer-grid { grid-template-columns: 1fr 1fr; }
   }
@@ -622,8 +667,6 @@ const canonical = Astro.site
     .hero-logo-stage{max-width:240px; margin:8px auto 0;}
     .datasheet .wrap{grid-template-columns:repeat(2,1fr);}
     .ds-item:nth-child(2n){border-right:none;}
-    .chisiamo{grid-template-columns:1fr;}
-    .team-grid{grid-template-columns:repeat(2,1fr);}
     .servizi-grid{grid-template-columns:repeat(2,1fr);}
     .dove{grid-template-columns:1fr;}
     .pillars{grid-template-columns:1fr; gap:18px;}
@@ -640,18 +683,18 @@ const canonical = Astro.site
       gap:0;
       margin-top:14px;
       padding-top:10px;
-      border-top:1px solid var(--line-soft);
+      border-top:1px solid rgba(255,255,255,0.25);
     }
     .nav-toggle-input:checked ~ .nav-links{display:flex;}
     .nav-links li{width:100%;}
-    .nav-links a{display:block; padding:12px 2px; border-bottom:1px solid var(--line-soft); font-size:0.94rem;}
+    .nav-links a{display:block; padding:12px 2px; border-bottom:1px solid rgba(255,255,255,0.2); font-size:0.94rem;}
     .nav-links li:last-child a{border-bottom:none;}
     .nav-tel{display:none;}
     .nav-tel-mobile{display:block;}
     .nav-tel-mobile a{
       font-size:1rem;
       padding:14px 0;
-      color:var(--copper);
+      color:#fff;
       font-weight:600;
     }
   }
@@ -669,13 +712,13 @@ const canonical = Astro.site
   .section-affida { padding: 60px 0; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
   /* ===== Referenze page: chip-grid per categoria ===== */
-  .ref-section-header { margin-bottom: 32px; }
+  .ref-section-header { margin-bottom: 28px; display:flex; align-items:baseline; flex-wrap:wrap; gap:10px 18px; }
   .ref-section-cat {
     display: inline-block;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    font-size: clamp(1.7rem, 3vw, 2.4rem);
-    line-height: 1.1;
+    font-size: clamp(2rem, 3.6vw, 2.9rem);
+    line-height: 1.08;
     letter-spacing: -0.02em;
     color: var(--petrol);
     border-left: 4px solid var(--copper);
@@ -714,14 +757,23 @@ const canonical = Astro.site
   }
 
   /* ===== Divisione sezioni: fasce di fondo (derivazioni della palette) ===== */
-  .section--surface { background: var(--surface); }
-  .section--tint { background: var(--tint); }
-  /* blocco chiave a contrasto forte (riuso dello stile del blocco contatti) */
-  .section--petrol { background: var(--petrol); color: var(--paper); }
+  /* transizioni nette e volute: filo tecnico tra una fascia e l'altra */
+  .section--surface { background: var(--surface); border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft); }
+  .section--tint { background: var(--tint); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  /* blocco chiave a contrasto forte (riuso dello stile del blocco contatti):
+     accento copper in alto + reticolo scuro in overlay, non un rettangolo piatto */
+  .section--petrol {
+    background-color: var(--petrol);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 30px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.045) 0 1px, transparent 1px 30px);
+    color: var(--paper);
+    border-top:2px solid var(--copper);
+    border-bottom:1px solid var(--petrol-deep);
+  }
   .section--petrol h2, .section--petrol h3 { color: #fff; }
   .section--petrol .eyebrow { color: var(--paper); }
   .section--petrol .eyebrow::before { background: var(--copper); }
-  .section--petrol .section-head .eyebrow::before { color: var(--copper); background: none; }
   .section--petrol .mission-statement { color: #fff; }
   .section--petrol .pillar { border-left-color: rgba(255,255,255,0.22); }
   .section--petrol .pillar h3 { color: #fff; }
@@ -733,16 +785,211 @@ const canonical = Astro.site
     .section--petrol .pillar { border-top-color: rgba(255,255,255,0.22); }
   }
 
-  /* padding sezioni più generoso */
-  section { padding: 90px 0; }
-  @media (max-width: 768px) {
-    section { padding: 52px 0; }
-  }
-  @media (max-width: 480px) {
-    section { padding: 36px 0; }
-  }
   @media (max-width: 560px) {
-    .footer-bottom { flex-direction: column; gap: 4px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .footer-legal { text-align: left; }
+  }
+
+  /* ===== Blocchi split foto/testo (asimmetria controllata) ===== */
+  .split{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(28px,5vw,56px);
+    align-items:center;
+  }
+  .split--wide-text{grid-template-columns:1.15fr 0.85fr;}
+  .split--wide-media{grid-template-columns:0.85fr 1.15fr;}
+  .split-figure{margin:0; position:relative;}
+  .split-figure img{
+    display:block; width:100%; height:100%;
+    aspect-ratio:4/3; object-fit:cover;
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius);
+  }
+  /* cornice tecnica: sottile riquadro copper sfalsato dietro la foto */
+  .split-figure--framed::before{
+    content:""; position:absolute; inset:14px -14px -14px 14px;
+    border:1.5px solid var(--copper); border-radius:var(--radius);
+    z-index:-1; opacity:0.5;
+  }
+  .split-figure figcaption{
+    margin-top:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft);
+    display:flex; align-items:center; gap:8px;
+  }
+  .split-figure figcaption::before{content:""; width:16px; height:2px; background:var(--copper); flex-shrink:0;}
+  @media (max-width:760px){
+    .split, .split--wide-text, .split--wide-media{grid-template-columns:1fr; gap:24px;}
+    .split--reverse .split-media{order:-1;}
+    .split-figure--framed::before{inset:10px -8px -10px 8px;}
+  }
+
+  /* ===== Pannello dati mono (riempie il lato libero di un testo) ===== */
+  .data-panel{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:3px solid var(--copper);
+    border-radius:var(--radius);
+    padding:22px 24px;
+  }
+  .section--petrol .data-panel{
+    background:rgba(255,255,255,0.05);
+    border-color:rgba(255,255,255,0.16);
+    border-left-color:var(--copper);
+  }
+  .data-panel-row{display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:11px 0; border-top:1px solid var(--line-soft);}
+  .data-panel-row:first-child{border-top:none;}
+  .section--petrol .data-panel-row{border-top-color:rgba(255,255,255,0.12);}
+  .data-panel-k{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft);}
+  .section--petrol .data-panel-k{color:rgba(238,242,241,0.7);}
+  .data-panel-v{font-family:'IBM Plex Mono',monospace; font-size:0.94rem; font-weight:600; color:var(--petrol); text-align:right;}
+  .section--petrol .data-panel-v{color:#fff;}
+  /* lista obiettivi: il "+" richiama il "Più" del testo Vision */
+  .plus-list{list-style:none; margin:0; padding:0;}
+  .plus-list li{display:flex; align-items:baseline; gap:12px; padding:13px 0; border-top:1px solid var(--line-soft); font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:1.02rem; color:var(--ink);}
+  .plus-list li:first-child{border-top:none;}
+  .plus-list li::before{content:"+"; color:var(--copper); font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:1.15rem; line-height:1;}
+
+  /* ===== Servizi preview (home): bento con tessera featured ===== */
+  .servizi-preview-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-top:30px;
+  }
+  .servizio-card--featured{
+    grid-column:1 / -1;
+    display:grid;
+    grid-template-columns:1fr 1.05fr;
+    gap:0;
+    padding:0;
+    overflow:hidden;
+    align-items:stretch;
+  }
+  .sc-feat-body{padding:26px 30px; display:flex; flex-direction:column; justify-content:center;}
+  .sc-feat-body h3{font-size:1.28rem;}
+  .sc-feat-body p{font-size:0.9rem; margin-bottom:0;}
+  .sc-feat-media{position:relative; min-height:210px; background:var(--tint);}
+  .sc-feat-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  @media (max-width:720px){
+    .servizi-preview-grid{grid-template-columns:1fr 1fr;}
+    .servizio-card--featured{grid-template-columns:1fr;}
+    .sc-feat-media{min-height:180px; order:-1;}
+  }
+  @media (max-width:480px){
+    .servizi-preview-grid{grid-template-columns:1fr;}
+  }
+
+  /* ===== Gallery Centro Didattico Formativo (chi-siamo): feature vera ===== */
+  .cdf-gallery{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-template-rows:clamp(150px,22vw,230px) clamp(150px,22vw,230px);
+    gap:14px;
+    margin-top:8px;
+  }
+  .cdf-item{margin:0; position:relative; overflow:hidden; border:1px solid var(--line-soft); border-radius:var(--radius); background:var(--surface);}
+  .cdf-item img{display:block; width:100%; height:100%; object-fit:cover; transition:transform .5s ease;}
+  .cdf-item:hover img{transform:scale(1.04);}
+  .cdf-item--lead{grid-column:1 / 3; grid-row:1 / 3;}
+  .cdf-item--wide{grid-column:3 / 5;}
+  .cdf-item figcaption{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:18px 14px 9px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.06em;
+    text-transform:uppercase; color:#fff;
+    background:linear-gradient(0deg, rgba(22,36,42,0.82), transparent);
+  }
+  @media (prefers-reduced-motion:reduce){ .cdf-item img{transition:none;} }
+  @media (max-width:640px){
+    .cdf-gallery{grid-template-columns:1fr 1fr; grid-template-rows:none;}
+    .cdf-item{aspect-ratio:4/3;}
+    .cdf-item--lead{grid-column:1 / -1; grid-row:auto; aspect-ratio:16/9;}
+    .cdf-item--wide{grid-column:1 / -1; aspect-ratio:16/9;}
+  }
+
+  /* ===== Banner intro con foto (servizi) ===== */
+  .intro-banner{align-items:stretch;}
+  .intro-banner .split-figure img{aspect-ratio:auto; min-height:100%;}
+  @media (max-width:760px){
+    .intro-banner .split-figure img{aspect-ratio:16/9; min-height:0;}
+  }
+
+  /* ===== Mosaico Centro Didattico in home (lead gruppo + scatto di supporto) =====
+     La galleria si allunga fino all'altezza della colonna testo (niente vuoti):
+     due foto in mosaico verticale con didascalie leggibili in overlay. */
+  .cdf-home-split{align-items:stretch;}
+  /* il testo si centra verticalmente: niente spazio vuoto in fondo alla colonna */
+  .cdf-home-split .split-text{align-self:center;}
+  .cdf-home-gallery{
+    display:grid;
+    grid-template-rows:1.5fr 1fr;
+    gap:14px;
+    height:100%;
+    min-height:360px;
+  }
+  .cdf-fig{
+    position:relative; margin:0; min-height:0;
+    overflow:hidden;
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius);
+    background:var(--surface);
+  }
+  /* immagini in overlay assoluto: riempiono sempre la tessera senza gonfiare la riga */
+  .cdf-fig img{position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover;}
+  .cdf-home-lead img{object-position:center 42%;}
+  .cdf-fig figcaption{
+    position:absolute; left:0; right:0; bottom:0; z-index:1;
+    padding:20px 16px 11px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.68rem;
+    letter-spacing:0.06em; text-transform:uppercase; color:#fff;
+    background:linear-gradient(0deg, rgba(22,36,42,0.85), rgba(22,36,42,0.4) 55%, transparent);
+  }
+  @media (max-width:760px){
+    .cdf-home-split .split-text{align-self:stretch;}
+    .cdf-home-gallery{grid-template-rows:none; height:auto; min-height:0;}
+    .cdf-fig{aspect-ratio:16/9;}
+  }
+
+  /* ===== Mappa copertura affiancata a legenda/dati (dove operiamo) ===== */
+  .coverage-split{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:clamp(28px,5vw,52px);
+    align-items:start;
+  }
+  .coverage-split .coverage-map-wrap{margin:0; max-width:520px;}
+  .map-swatch{width:20px; height:20px; border-radius:5px; flex-shrink:0; border:1px solid rgba(0,0,0,0.08);}
+  .map-legend-sub{font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--ink-soft); letter-spacing:0.03em; margin-top:2px;}
+  .coverage-hint{font-size:0.78rem; color:var(--ink-soft); margin-top:14px; line-height:1.55; text-align:center;}
+  .coverage-hint span{color:var(--copper); font-weight:600;}
+  /* scheda di copertura: legenda regioni + stat in un unico blocco tecnico */
+  .coverage-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-top:2px solid var(--petrol);
+    border-radius:var(--radius);
+    padding:22px 24px;
+  }
+  .coverage-card-head{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:16px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .coverage-card-head::before{content:""; width:16px; height:2px; background:var(--copper);}
+  .coverage-region{display:flex; align-items:flex-start; gap:12px; padding:12px 0; border-top:1px solid var(--line-soft);}
+  .coverage-region:first-of-type{border-top:none; padding-top:0;}
+  .coverage-region-body{min-width:0;}
+  .coverage-region .map-swatch{margin-top:2px;}
+  .coverage-region-name{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:0.95rem; color:var(--ink); display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
+  .coverage-region-count{font-family:'IBM Plex Mono',monospace; font-size:0.7rem; font-weight:600; letter-spacing:0.04em; color:var(--copper);}
+  .coverage-card-divider{height:1px; background:var(--line); margin:16px 0;}
+  .coverage-card .data-panel{margin:0; background:none; border:none; border-radius:0; padding:0;}
+  @media (max-width:820px){
+    .coverage-split{grid-template-columns:1fr; gap:28px;}
+    .coverage-split .coverage-map-wrap{max-width:520px; margin:0 auto;}
   }
 
   /* bottoni più raffinati */
@@ -802,10 +1049,9 @@ const canonical = Astro.site
     align-items:center;
   }
   .chisiamo-home .photo-ph{aspect-ratio:3/2;}
+  .chisiamo-home-photo{margin:0; aspect-ratio:3/2; overflow:hidden; border:1px solid var(--line-soft); border-radius:var(--radius); background:var(--surface);}
+  .chisiamo-home-photo img{display:block; width:100%; height:100%; object-fit:cover;}
   @media (max-width:760px){ .chisiamo-home{grid-template-columns:1fr;} }
-
-  /* founder card placeholder */
-  .founder-photo{aspect-ratio:3/2; margin-bottom:16px;}
 
   /* dove operiamo: placeholder mappa */
   .map-ph{min-height:320px; height:100%;}
@@ -976,20 +1222,30 @@ const canonical = Astro.site
   section.ref-block--industria{ --rb-accent:#4a5568; --rb-chip-bg:#f7f8fa; background:#eef0f3; }
 
   /* ===== Transizioni di pagina: linee che formano il logo ===== */
-  ::view-transition-old(root), ::view-transition-new(root){ animation:none; mix-blend-mode:normal; }
+  /* Spegne del tutto l'animazione di default della View Transitions API
+     (Safari/Chrome): la transizione la gestiamo solo noi con l'overlay. */
+  ::view-transition-group(root),
+  ::view-transition-image-pair(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root){ animation:none !important; mix-blend-mode:normal; }
   #tc-transition{position:fixed; inset:0; z-index:9999; pointer-events:none;}
   #tc-veil{
     position:absolute; inset:0;
-    background:rgba(238,242,241,0.55);
+    /* quasi opaco: durante la transizione lo scambio della pagina avviene
+       nascosto sotto il velo, così non si vede "caricare due volte" */
+    background:rgba(238,242,241,0.97);
     backdrop-filter:blur(10px);
     -webkit-backdrop-filter:blur(10px);
     opacity:0;
   }
   #tc-transition-svg{position:absolute; inset:0; width:100%; height:100%; display:block; overflow:visible;}
-  #tc-logo-lines path{
-    fill:none; stroke:var(--copper); stroke-width:4.5;
+  /* Le linee del logo (centerline estratte da svglogo.svg, in
+     /images/logo-lines.svg): ogni <path> è una linea che si "disegna" da
+     sinistra via stroke-dashoffset, poi si cancella verso destra. */
+  #tc-lines path{
+    fill:none; stroke:var(--copper); stroke-width:2.4;
     stroke-linecap:round; stroke-linejoin:round;
-    transform-box:fill-box; transform-origin:center;
+    vector-effect:non-scaling-stroke;
   }
   @media (prefers-reduced-motion:reduce){
     #tc-transition{display:none;}
@@ -1000,7 +1256,7 @@ const canonical = Astro.site
 <body>
   <div id="tc-transition" transition:persist aria-hidden="true">
     <div id="tc-veil"></div>
-    <svg id="tc-transition-svg"><g id="tc-logo-lines"></g></svg>
+    <svg id="tc-transition-svg"><g id="tc-lines"></g></svg>
   </div>
   <Header />
   <slot />
@@ -1056,146 +1312,120 @@ const canonical = Astro.site
       const overlay = document.getElementById('tc-transition');
       const veil = document.getElementById('tc-veil');
       const svg = document.getElementById('tc-transition-svg');
-      const logoWrap = document.getElementById('tc-logo-lines');
-      if (!overlay || !svg || overlay.dataset.tcInit) return;
+      const linesG = document.getElementById('tc-lines');
+      if (!overlay || !svg || !linesG || overlay.dataset.tcInit || window.__tcBound) return;
       overlay.dataset.tcInit = '1';
+      window.__tcBound = true;   // i listener si agganciano una volta sola
 
-      // Geometria del logo reale ricalibrata con misurazione MANUALE su griglia
-      // di coordinate sovrapposta a public/images/tecnoconsult-icon.png (318x302)
-      // e verificata renderizzando le linee accanto al logo vero: combacia.
-      // Cerchio: centro (151.5, 150), raggio centro-linea r=116; l'apertura
-      // della C è una piccola tacca a ore 4-5 (da 45° a 387°=27°, angoli SVG
-      // y-verso-il-basso), NON un varco enorme a ore 3. Barra T: y=63,
-      // x 20..280. Gambo: x=151.5, da y=78 a y=260.
-      // Ogni pezzo è una LINEA singola (filo), non una forma chiusa.
-      // NON rimisurare: valori verificati visivamente il 2026-07-08.
-      const CANVAS_W = 302, CANVAS_H = 302;
-      const LINES = [
-        { type: 'arc',  cx: 151.5, cy: 150, r: 116, a0: 45, a1: 387, x0: 35.5 },
-        { type: 'line', x1: 20,    y1: 63,  x2: 280, y2: 63,           x0: 20 },
-        { type: 'line', x1: 151.5, y1: 78,  x2: 151.5, y2: 260,        x0: 151.5 }
-      ];
+      // Linee del logo VERO: centerline estratte da svglogo.svg e salvate in
+      // /images/logo-lines.svg (34 tracciati-stroke aperti). Ogni linea si
+      // DISEGNA da sinistra (stroke-dashoffset L->0) e poi si CANCELLA verso
+      // destra (0 -> -L), sfalsate per posizione orizzontale. Nessuna geometria
+      // inventata: sono le stesse linee del logo, solo come centerline.
+      let lineDefs = null;        // [{ d, fx }]  fx = x minima normalizzata 0..1
+      let vbW = 1, vbH = 1;
+      fetch('/images/logo-lines.svg')
+        .then((r) => r.text())
+        .then((txt) => {
+          const doc = new DOMParser().parseFromString(txt, 'image/svg+xml');
+          const root = doc.querySelector('svg');
+          const vb = (root && root.getAttribute('viewBox') || '0 0 1000 1000').split(/\s+/).map(Number);
+          vbW = vb[2] || 1000; vbH = vb[3] || 1000;
+          lineDefs = Array.from(doc.querySelectorAll('path')).map((p) => {
+            const d = p.getAttribute('d') || '';
+            const nums = d.match(/-?\d+(?:\.\d+)?/g) || [];
+            let minx = Infinity;
+            for (let i = 0; i < nums.length; i += 2) minx = Math.min(minx, parseFloat(nums[i]));
+            return { d, fx: (isFinite(minx) ? minx : 0) / vbW };
+          });
+        })
+        .catch(() => {});
 
-      const ENTER_MS = 700, ENTER_SPAN = 260;
-      const HOLD_MS = 260;
-      const EXIT_MS = 700, EXIT_SPAN = 260;
+      // Tempi (ms). L'ingresso è awaited dal loader, quindi tenuto contenuto.
+      const SPREAD_IN = 430, DRAW_IN = 380, JIT_IN = 90, HOLD_MS = 180;
+      const SPREAD_OUT = 430, DRAW_OUT = 430, JIT_OUT = 90;
+      const NS = 'http://www.w3.org/2000/svg';
+      let items = [];
+      let cleanupTimer = null;
+      let running = false;   // evita che una fase parta due volte sovrapposte
 
       function reduceMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
-      function buildPaths(W, H) {
-        const size = Math.min(W, H) * 0.5;
-        const scale = size / CANVAS_W;
-        const offX = W / 2 - (CANVAS_W * scale) / 2;
-        const offY = H / 2 - (CANVAS_H * scale) / 2;
-        const tx = (x) => offX + x * scale;
-        const ty = (y) => offY + y * scale;
-
-        return LINES.map((s) => {
-          let d;
-          if (s.type === 'arc') {
-            // arco singolo aperto a raggio medio: una sola linea curva, non una fascia
-            const r = s.r * scale;
-            const cx = tx(s.cx), cy = ty(s.cy);
-            const rad0 = (s.a0 * Math.PI) / 180, rad1 = (s.a1 * Math.PI) / 180;
-            const span = ((s.a1 - s.a0) % 360 + 360) % 360;
-            const largeArc = span > 180 ? 1 : 0;
-            const p0 = [cx + r * Math.cos(rad0), cy + r * Math.sin(rad0)];
-            const p1 = [cx + r * Math.cos(rad1), cy + r * Math.sin(rad1)];
-            d = 'M' + p0[0] + ' ' + p0[1] +
-              ' A' + r + ' ' + r + ' 0 ' + largeArc + ' 1 ' + p1[0] + ' ' + p1[1];
-          } else {
-            // segmento singolo (barra o gambo della T)
-            d = 'M' + tx(s.x1) + ' ' + ty(s.y1) + ' L' + tx(s.x2) + ' ' + ty(s.y2);
-          }
-          return { d, x0: s.x0 };
-        });
+      // annulla ogni animazione ancora attiva sul velo (persiste tra le pagine:
+      // senza questo le animazioni fill:forwards si accumulerebbero e darebbero
+      // micro-sfarfallii) e sulle linee
+      function cancelAll() {
+        if (veil.getAnimations) veil.getAnimations().forEach((a) => a.cancel());
+        items.forEach((o) => { if (o.el.getAnimations) o.el.getAnimations().forEach((a) => a.cancel()); });
       }
 
+      // costruisce i <path> centrati/scalati nel viewport, nascosti (dashoffset=L)
+      function build() {
+        if (!lineDefs) return false;
+        if (cleanupTimer) { clearTimeout(cleanupTimer); cleanupTimer = null; }
+        cancelAll();
+        const W = window.innerWidth, H = window.innerHeight;
+        svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+        linesG.innerHTML = '';
+        const size = Math.min(W, H) * 0.5;
+        const scale = size / Math.max(vbW, vbH);
+        const g = document.createElementNS(NS, 'g');
+        g.setAttribute('transform',
+          'translate(' + (W / 2) + ',' + (H / 2) + ') scale(' + scale + ') ' +
+          'translate(' + (-vbW / 2) + ',' + (-vbH / 2) + ')');
+        linesG.appendChild(g);
+        items = lineDefs.map((def) => {
+          const el = document.createElementNS(NS, 'path');
+          el.setAttribute('d', def.d);
+          g.appendChild(el);
+          const L = el.getTotalLength() || 1;
+          el.style.strokeDasharray = L;
+          el.style.strokeDashoffset = L;
+          return { el, L, fx: def.fx };
+        });
+        return items.length > 0;
+      }
+
+      // ENTRATA: ogni linea si disegna da SINISTRA; sfalsate per x.
       function playEnterPhase() {
         return new Promise((resolve) => {
-          if (reduceMotion()) { resolve(); return; }
-
-          const W = window.innerWidth, H = window.innerHeight;
-          svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-          logoWrap.innerHTML = '';
+          if (reduceMotion() || running || !build()) { resolve(); return; }
+          running = true;
           veil.style.transition = 'none';
           veil.style.opacity = '0';
           void svg.getBoundingClientRect();
 
-          const paths = buildPaths(W, H);
-          const xs = paths.map((p) => p.x0);
-          const minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
-          const span = Math.max(1, maxX - minX);
-          const OFFSET_X = W * 0.55;
-
-          const els = [];
-          const AMP = Math.max(14, H * 0.03); // ampiezza dell'ondulazione "a serpente" (~3vh)
-          const AMP_VAR = [1, 0.75, 0.9]; // arco pieno, barra lunga più contenuta, gambo medio
-          paths.forEach((pdata, i) => {
-            const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            el.setAttribute('d', pdata.d);
-            logoWrap.appendChild(el);
-            const delay = ((pdata.x0 - minX) / span) * ENTER_SPAN;
-            const dir = i % 2 === 0 ? 1 : -1; // fase alternata: ogni filo ondeggia per conto suo
-            const amp = AMP * AMP_VAR[i % AMP_VAR.length];
-            // le linee entrano da sinistra come serpenti: scivolano ondulando
-            // (sinusoide verticale ad ampiezza decrescente + lieve rotazione
-            // alternata) e si posano dolcemente nella posizione finale
-            const anim = el.animate(
-              [
-                { transform: 'translate(' + (-OFFSET_X) + 'px, ' + (dir * amp * 0.9) + 'px) rotate(' + (dir * -2.5) + 'deg)', opacity: 0 },
-                { transform: 'translate(' + (-OFFSET_X * 0.72) + 'px, ' + (-dir * amp) + 'px) rotate(' + (dir * 2) + 'deg)', opacity: 0.7, offset: 0.22 },
-                { transform: 'translate(' + (-OFFSET_X * 0.44) + 'px, ' + (dir * amp * 0.7) + 'px) rotate(' + (dir * -1.5) + 'deg)', opacity: 1, offset: 0.45 },
-                { transform: 'translate(' + (-OFFSET_X * 0.2) + 'px, ' + (-dir * amp * 0.4) + 'px) rotate(' + (dir * 0.9) + 'deg)', offset: 0.68 },
-                { transform: 'translate(' + (-OFFSET_X * 0.06) + 'px, ' + (dir * amp * 0.15) + 'px) rotate(' + (dir * -0.35) + 'deg)', offset: 0.86 },
-                { transform: 'translate(0px, 0px) rotate(0deg)', opacity: 1 }
-              ],
-              { duration: ENTER_MS, delay, easing: 'cubic-bezier(.16,.8,.4,1)', fill: 'forwards' }
+          let maxIn = 0;
+          items.forEach((o) => {
+            const delay = o.fx * SPREAD_IN + Math.random() * JIT_IN;
+            const dur = DRAW_IN + Math.random() * 140;
+            maxIn = Math.max(maxIn, delay + dur);
+            o.el.animate(
+              [{ strokeDashoffset: o.L }, { strokeDashoffset: 0 }],
+              { duration: dur, delay: delay, easing: 'cubic-bezier(.3,0,.3,1)', fill: 'both' }
             );
-            els.push({ el, delay, dir, amp, anim });
           });
-
-          svg.__tcEls = els;
-          veil.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ENTER_MS * 0.6, easing: 'ease', fill: 'forwards' });
-
-          const lastFinish = ENTER_MS + ENTER_SPAN;
-          Promise.all(els.map((t) => t.anim.finished)).then(() => {
-            setTimeout(resolve, HOLD_MS);
-          }).catch(() => setTimeout(resolve, lastFinish + HOLD_MS));
+          veil.animate([{ opacity: 0 }, { opacity: 1 }], { duration: maxIn * 0.6, easing: 'ease', fill: 'forwards' });
+          setTimeout(resolve, maxIn + HOLD_MS);
         });
       }
 
+      // USCITA: ogni linea si cancella scorrendo verso DESTRA (offset 0 -> -L).
       function playExitPhase() {
-        if (reduceMotion()) { logoWrap.innerHTML = ''; return; }
-        const els = svg.__tcEls || [];
-        const W = window.innerWidth, H = window.innerHeight;
-        const OFFSET_X = W * 0.65;
-        const AMP_FALLBACK = Math.max(14, H * 0.03);
-
-        veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: EXIT_MS * 0.8, easing: 'ease', fill: 'forwards' });
-
-        els.forEach((tr) => {
-          // stesso ordine sinistra→destra dell'entrata: le linee riprendono a
-          // scorrere verso destra ondulando come serpenti (ampiezza crescente
-          // mentre accelerano) e scivolano fuori dallo schermo sfumando
-          const exitDelay = tr.delay * (EXIT_SPAN / ENTER_SPAN);
-          const dir = tr.dir || 1;
-          const amp = tr.amp || AMP_FALLBACK;
-          const anim = tr.el.animate(
-            [
-              { transform: 'translate(0px, 0px) rotate(0deg)', opacity: 1 },
-              { transform: 'translate(' + (OFFSET_X * 0.07) + 'px, ' + (-dir * amp * 0.2) + 'px) rotate(' + (dir * 0.5) + 'deg)', offset: 0.18 },
-              { transform: 'translate(' + (OFFSET_X * 0.26) + 'px, ' + (dir * amp * 0.5) + 'px) rotate(' + (dir * -1.2) + 'deg)', offset: 0.4 },
-              { transform: 'translate(' + (OFFSET_X * 0.56) + 'px, ' + (-dir * amp * 0.85) + 'px) rotate(' + (dir * 1.8) + 'deg)', opacity: 0.7, offset: 0.65 },
-              { transform: 'translate(' + OFFSET_X + 'px, ' + (dir * amp * 0.6) + 'px) rotate(' + (dir * -2.2) + 'deg)', opacity: 0 }
-            ],
-            { duration: EXIT_MS, delay: exitDelay, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' }
+        running = false;
+        if (reduceMotion() || !items.length) { linesG.innerHTML = ''; return; }
+        let maxOut = 0;
+        items.forEach((o) => {
+          const delay = o.fx * SPREAD_OUT + Math.random() * JIT_OUT;
+          const dur = DRAW_OUT + Math.random() * 140;
+          maxOut = Math.max(maxOut, delay + dur);
+          o.el.animate(
+            [{ strokeDashoffset: 0 }, { strokeDashoffset: -o.L }],
+            { duration: dur, delay: delay, easing: 'cubic-bezier(.5,0,.4,1)', fill: 'both' }
           );
-          anim.finished.catch(() => {});
         });
-
-        const lastFinish = EXIT_MS + EXIT_SPAN;
-        setTimeout(() => { logoWrap.innerHTML = ''; }, lastFinish + 80);
+        veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: maxOut * 0.85, easing: 'ease', fill: 'forwards' });
+        cleanupTimer = setTimeout(() => { linesG.innerHTML = ''; items = []; cleanupTimer = null; }, maxOut + 80);
       }
 
       document.addEventListener('astro:before-preparation', (event) => {
